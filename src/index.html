@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>IRON_OS</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -12,8 +12,8 @@
       <p id="Current_Time"></p>
     </div>
     <div class="StartIcons">
-        <img src="./5579832.png" alt="Welcome_Icon" class="WelcomeIcon" id="WelcomeOpen">
-        <img src="./iron-man-removebg-preview.png" alt="IronBook_Icon" class="IronBook" id="OpenA1">
+        <img src="../assets/5579832.png" alt="Welcome_Icon" class="WelcomeIcon" id="WelcomeOpen">
+        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="IronBook" id="OpenA1">
     </div>
 
     <div class="Window1" id="WelcomeWindow" style="display: none;">
@@ -26,9 +26,27 @@
     </div>
     
 
-    <div class="Window2 selected" id="IronPad">
-      <h1>Coming Soon!</h1>
-      <p class="General" id="CloseWindow">Close</p>
+    <div class="Window2" id="IronPad" style="display: none;">
+      <header class="window-header" id="IronPadheader">
+        <h1>IronBook</h1>
+        <button class="close-btn" id="closeIronPad">×</button>
+      </header>
+      <div class="ironbook-layout">
+        <aside class="sidebar">
+          <h3>Notes</h3>
+          <ul id="notesList"></ul>
+          <button id="newNoteBtn">+ New Note</button>
+        </aside>
+        <main class="editor-area">
+          <input type="text" id="noteTitle" placeholder="Untitled" />
+          <textarea id="noteContent" placeholder="Start writing..."></textarea>
+          <div class="editor-actions">
+            <button id="saveNoteBtn">Save</button>
+            <button id="saveAsNoteBtn">Save As...</button>
+            <button id="deleteNoteBtn">Delete</button>
+          </div>
+        </main>
+      </div>
     </div>
   </body>
   <script src="./script.js"></script>
