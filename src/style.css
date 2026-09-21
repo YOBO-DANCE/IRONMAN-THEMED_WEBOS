@@ -1,11 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Caacupe+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caacupe+One&family=Orbitron:wght@400;700&display=swap');
 *{
     margin: 0;
     padding: 0;
 }
 
 :root{
-    --Icon-height: 5rem;
+    --red: var(--red);
+    --gold: var(--gold);
+    --dark: var(--dark);
 }
 
 body{
@@ -14,40 +16,68 @@ body{
     background-size: cover;
 }
 
-.Window1{
+/* Shared window base */
+.window{
     position: absolute;
-    top: 50%;
-    left: 22%;
     color: #000;
-    border: 2px solid #000;
+    border: 2px solid var(--red);
     border-radius: 1rem;
     padding: 10px;
-    transform: translate(-50%, -50%);
     background-color: aquamarine;
     display: flex;
     flex-direction: column;
+}
+
+/* Shared background-overlay pattern (positioning here, image in each app) */
+.overlay{
+    overflow: hidden;
+}
+
+.overlay::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.overlay > *{
+    position: relative;
+    z-index: 1;
+}
+
+/* Shared button base */
+.btn{
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn:active{
+    transform: scale(0.95);
 }
 
 .TopBar{
     display: flex;
     padding: 1rem;
     justify-content: space-between;
-    border: 2px solid aqua;
+    border: 2px solid var(--red);
     border-radius: 12%;
 }
 
 .TopBar p {
-    border: 2px solid gold;
+    border: 2px solid var(--gold);
     border-radius: 10px;
     padding: 10px;
     backdrop-filter: blur(20px);
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-.General {
+#closeWindow {
     display: flex;
     justify-content: center;
-    border: 2px solid #000;
+    border: 2px solid var(--gold);
     border-radius: 10px;
     font-family: "Caacupe One", sans-serif;
     font-weight: 900;
@@ -65,36 +95,23 @@ body{
     filter: drop-shadow(0 5px 10px black);
 }
 
-.WelcomeIcon {
-    height: var(--Icon-height);
-    cursor: pointer;
-}
 
-.IronBook {
-    height: var(--Icon-height);
+
+.desktop-icon {
+    height: 5rem;
     cursor: pointer;
+    border-radius: 1rem;
 }
 
 .selected{
-    border: 0.5px solid #000;
+    border: 2px solid var(--gold);
 }
 
-.Window2{
-    color: #000;
-    position: absolute;
-    top: 20%;
-    left: 30%;
-    border-radius: 1rem;
-    padding: 10px;
-    background-color: aquamarine;
-    display: flex;
-    flex-direction: column;
-    min-width: 500px;
-    min-height: 400px;
-}
-
-.Window2 h1 {
-    padding-bottom: 10px;
+/* Chibi Iron Man overlay inside IronBook only */
+#IronPad::before{
+    background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp) no-repeat center center;
+    background-size: contain;
+    opacity: 0.15;
 }
 
 /* IronBook - basic layout, style on top of this */
@@ -103,7 +120,7 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--red);
     cursor: grab;
 }
 
@@ -127,7 +144,7 @@ body{
 
 .sidebar {
     width: 180px;
-    border-right: 1px solid #000;
+    border-right: 1px solid var(--red);
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
@@ -158,6 +175,7 @@ body{
 #notesList li.active {
     background: rgba(0,0,0,0.2);
     font-weight: bold;
+    border-left: 3px solid var(--red);
 }
 
 #newNoteBtn {
@@ -175,6 +193,7 @@ body{
 #noteTitle {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
+    caret-color: var(--gold);
 }
 
 #noteContent {
@@ -183,6 +202,7 @@ body{
     padding: 0.5rem;
     resize: vertical;
     font-family: inherit;
+    caret-color: var(--red);
 }
 
 .editor-actions {
@@ -191,7 +211,118 @@ body{
     margin-top: 0.5rem;
 }
 
-.editor-actions button {
+.editor-actions .btn,
+#newNoteBtn {
     padding: 0.5rem 1rem;
-    cursor: pointer;
+    background: linear-gradient(135deg, var(--red), #c62828);
+    color: #fff;
+}
+
+.editor-actions .btn:hover,
+#newNoteBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+}
+
+/* IronCalc - Stark tech theme */
+#IronCalc::before{
+    background: radial-gradient(circle at 50% 15%, rgba(229,57,53,0.08), transparent 60%);
+}
+
+.calc-display{
+    background: radial-gradient(ellipse at center, rgba(229,57,53,0.15), transparent 70%), var(--dark);
+    border: 2px solid var(--red);
+    border-radius: 8px;
+    padding: 1rem;
+    color: var(--gold);
+    font-family: 'Orbitron', monospace;
+    text-align: right;
+}
+
+.calc-expression{
+    font-size: 0.85rem;
+    opacity: 0.5;
+    min-height: 1.2em;
+    word-break: break-all;
+}
+
+.calc-result{
+    font-size: 2.2rem;
+    font-weight: 700;
+    min-height: 2.8rem;
+    word-break: break-all;
+}
+
+.calc-mode{
+    font-size: 0.7rem;
+    color: var(--red);
+    margin-top: 0.3rem;
+    text-align: left;
+}
+
+.calc-keypad{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 0.75rem;
+}
+
+.calc-btn{
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Orbitron', monospace;
+    padding: 0.75rem 0;
+}
+
+.calc-btn:focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+.calc-btn.num{
+    background: #1a1a1a;
+    color: var(--gold);
+    border: 1px solid #333;
+}
+
+.calc-btn.num:hover{
+    background: #252525;
+    box-shadow: 0 0 10px rgba(255,214,0,0.35);
+}
+
+.calc-btn.op{
+    background: linear-gradient(135deg, var(--red), #b71c1c);
+    color: #fff;
+}
+
+.calc-btn.op:hover{
+    box-shadow: 0 0 14px rgba(229,57,53,0.7);
+}
+
+.calc-btn.fn{
+    background: #111;
+    color: var(--red);
+    border: 1px solid var(--gold);
+}
+
+.calc-btn.fn:hover{
+    background: #1a1a1a;
+    box-shadow: 0 0 10px rgba(255,214,0,0.4);
+}
+
+.calc-btn.special{
+    background: linear-gradient(135deg, var(--gold), #e6c200);
+    color: #000;
+}
+
+.calc-btn.special:hover{
+    box-shadow: 0 0 14px rgba(255,214,0,0.7);
+}
+
+.calc-btn.wide{
+    grid-column: span 2;
+}
+
+.calc-btn.tall{
+    grid-row: span 3;
 }
