@@ -1,106 +1,145 @@
+// Clock
 setInterval(function () {
-  document.querySelector("#Current_Time").innerHTML = new Date().toLocaleString();
+  document.querySelector("#Current_Time").textContent = new Date().toLocaleString();
 }, 500);
 
-// Make the DIV element draggable:
-dragElement(document.querySelector("#WelcomeWindow"));
-dragElement(document.querySelector("#IronPad"));
+// Simple drag: drag window by its header (or whole window if no header)
+function makeDraggable(element) {
+  if (!element) return;
+  var header = element.querySelector(".window-header") || element;
 
-// Step 1: Define a function called `dragElement` that makes an HTML element draggable.
-function dragElement(element) {
-  // Step 2: Set up variables to keep track of the element's position.
-  var initialX = 0;
-  var initialY = 0;
-  var currentX = 0;
-  var currentY = 0;
-
-  // Step 3: Check if there is a special header element associated with the draggable element.
-  if (document.getElementById(element.id + "header")) {
-    // Step 4: If present, assign the `dragMouseDown` function to the header's `onmousedown` event.
-    // This allows you to drag the window around by its header.
-    document.getElementById(element.id + "header").onmousedown = startDragging;
-  } else {
-    // Step 5: If not present, assign the function directly to the draggable element's `onmousedown` event.
-    // This allows you to drag the window by holding down anywhere on the window.
-    element.onmousedown = startDragging;
-  }
-
-  // Step 6: Define the `startDragging` function to capture the initial mouse position and set up event listeners.
-  function startDragging(e) {
-    e = e || window.event;
+  header.addEventListener("pointerdown", function (e) {
+    if (e.target.closest("button, input, textarea")) return;
     e.preventDefault();
-    // Step 7: Get the mouse cursor position at startup.
-    initialX = e.clientX;
-    initialY = e.clientY;
-    // Step 8: Set up event listeners for mouse movement (`elementDrag`) and mouse button release (`closeDragElement`).
-    document.onmouseup = stopDragging;
-    document.onmousemove = dragElement;
-  }
+    var offsetX = e.clientX - element.offsetLeft;
+    var offsetY = e.clientY - element.offsetTop;
 
-  // Step 9: Define the `elementDrag` function to calculate the new position of the element based on mouse movement.
-  function dragElement(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // Step 10: Calculate the new cursor position.
-    currentX = initialX - e.clientX;
-    currentY = initialY - e.clientY;
-    initialX = e.clientX;
-    initialY = e.clientY;
-    // Step 11: Update the element's new position by modifying its `top` and `left` CSS properties.
-    element.style.top = (element.offsetTop - currentY) + "px";
-    element.style.left = (element.offsetLeft - currentX) + "px";
-  }
-
-  // Step 12: Define the `stopDragging` function to stop tracking mouse movement by removing the event listeners.
-  function stopDragging() {
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
+    function move(ev) {
+      element.style.left = (ev.clientX - offsetX) + "px";
+      element.style.top = (ev.clientY - offsetY) + "px";
+    }
+    function stop() {
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", stop);
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", stop);
+  });
 }
 
-var Welcome_Screen = document.querySelector("#WelcomeWindow");
-var Welcome_Screen_Close = document.querySelector("#closeWindow");
-var Welcome_Screen_Open = document.querySelector("#WelcomeOpen");
-var Close_Window = document
+makeDraggable(document.querySelector("#WelcomeWindow"));
+makeDraggable(document.querySelector("#IronPad"));
 
-function closeWindow(element) {
-  element.style.display = "none"
+// Windows: show / hide by id
+function openWindow(id) {
+  document.getElementById(id).style.display = "flex";
 }
 
-function openWindow(element) {
-  element.style.display = "flex"
+function closeWindow(id) {
+  document.getElementById(id).style.display = "none";
 }
 
-Welcome_Screen_Open.addEventListener("click", () => {
-    openWindow(Welcome_Screen)
+// Close buttons: new IronBook button + old Welcome "Close" text
+document.querySelector("#closeIronPad").addEventListener("click", function () {
+  closeWindow("IronPad");
+});
+document.querySelector("#closeWindow").addEventListener("click", function () {
+  closeWindow("WelcomeWindow");
 });
 
-Welcome_Screen_Close.addEventListener("click", () => {
-    closeWindow(Welcome_Screen)
-});
-
-
-
-var selectedIcon = undefined
-
-function selectIcon(element) {
-  element.classList.add("selected");
-  selectedIcon = element
+// Icons: first click selects, second click opens. Simple toggle.
+function setupIcon(iconId, windowId) {
+  var icon = document.querySelector(iconId);
+  icon.addEventListener("click", function () {
+    var isOpen = icon.classList.toggle("selected");
+    document.getElementById(windowId).style.display = isOpen ? "flex" : "none";
+  });
 }
 
-function deselectIcon(element) {
-  element.classList.remove("selected");
-  selectedIcon = undefined
-}
+setupIcon("#WelcomeOpen", "WelcomeWindow");
+setupIcon("#OpenA1", "IronPad");
 
-function HandleIconTap(element) {
-    if(element.classList.contains("selected")) {
-        deselectIcon(element)
-        openWindow(window)
+// IronBook: plain text notes saved in localStorage
+var IronBook = {
+  notes: [],
+  currentId: null,
+
+  init: function () {
+    this.notes = JSON.parse(localStorage.getItem("ironbook-notes")) || [];
+    this.showList();
+    document.querySelector("#newNoteBtn").addEventListener("click", () => this.newNote());
+    document.querySelector("#saveNoteBtn").addEventListener("click", () => this.saveNote(false));
+    document.querySelector("#saveAsNoteBtn").addEventListener("click", () => this.saveNote(true));
+    document.querySelector("#deleteNoteBtn").addEventListener("click", () => this.deleteNote());
+    document.querySelector("#notesList").addEventListener("click", (e) => {
+      var li = e.target.closest("li");
+      if (li) this.openNote(li.dataset.id);
+    });
+  },
+
+  keep: function () {
+    localStorage.setItem("ironbook-notes", JSON.stringify(this.notes));
+  },
+
+  showList: function () {
+    var list = document.querySelector("#notesList");
+    list.innerHTML = "";
+    this.notes.forEach((note) => {
+      var li = document.createElement("li");
+      li.textContent = note.title || "Untitled";
+      li.dataset.id = note.id;
+      if (note.id === this.currentId) li.classList.add("active");
+      list.appendChild(li);
+    });
+  },
+
+  newNote: function () {
+    this.currentId = null;
+    document.querySelector("#noteTitle").value = "";
+    document.querySelector("#noteContent").value = "";
+    this.showList();
+  },
+
+  openNote: function (id) {
+    var note = this.notes.find((n) => n.id === id);
+    if (!note) return;
+    this.currentId = id;
+    document.querySelector("#noteTitle").value = note.title;
+    document.querySelector("#noteContent").value = note.content;
+    this.showList();
+  },
+
+  saveNote: function (saveAs) {
+    var title = document.querySelector("#noteTitle").value.trim() || "Untitled";
+    var content = document.querySelector("#noteContent").value;
+
+    if (saveAs) {
+      var name = prompt("Save as:", title);
+      if (name === null) return; // cancelled
+      title = name.trim() || "Untitled";
+      document.querySelector("#noteTitle").value = title;
+      this.currentId = null; // force new note
     }
-    else{
-        selectIcon(element)
-    }
-}
 
-HandleIconTap("#OpenA1")
+    if (this.currentId === null) {
+      this.currentId = Date.now().toString();
+      this.notes.unshift({ id: this.currentId, title: title, content: content });
+    } else {
+      var note = this.notes.find((n) => n.id === this.currentId);
+      note.title = title;
+      note.content = content;
+    }
+    this.keep();
+    this.showList();
+  },
+
+  deleteNote: function () {
+    if (this.currentId === null) return;
+    if (!confirm("Delete this note?")) return;
+    this.notes = this.notes.filter((n) => n.id !== this.currentId);
+    this.keep();
+    this.newNote();
+  }
+};
+
+IronBook.init();
