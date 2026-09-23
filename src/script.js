@@ -27,20 +27,8 @@ function makeDraggable(element) {
   });
 }
 
-// All windows draggable, icons auto-wired via data-window, one close handler
-document.querySelectorAll(".window").forEach(makeDraggable);
-
-document.addEventListener("click", function (e) {
-  var closeBtn = e.target.closest(".close-btn, #closeWindow");
-  if (closeBtn) closeWindow(closeBtn.closest(".window").id);
-});
-
-document.querySelectorAll("[data-window]").forEach(function (icon) {
-  icon.addEventListener("click", function () {
-    var isOpen = icon.classList.toggle("selected");
-    document.getElementById(icon.dataset.window).style.display = isOpen ? "flex" : "none";
-  });
-});
+makeDraggable(document.querySelector("#WelcomeWindow"));
+makeDraggable(document.querySelector("#IronPad"));
 
 // Windows: show / hide by id
 function openWindow(id) {
@@ -51,20 +39,25 @@ function closeWindow(id) {
   document.getElementById(id).style.display = "none";
 }
 
-// Shared localStorage helper
-var Store = {
-  get: function (key, fallback) {
-    try {
-      var value = JSON.parse(localStorage.getItem(key));
-      return value === null || value === undefined ? fallback : value;
-    } catch (e) {
-      return fallback;
-    }
-  },
-  set: function (key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-};
+// Close buttons: new IronBook button + old Welcome "Close" text
+document.querySelector("#closeIronPad").addEventListener("click", function () {
+  closeWindow("IronPad");
+});
+document.querySelector("#closeWindow").addEventListener("click", function () {
+  closeWindow("WelcomeWindow");
+});
+
+// Icons: first click selects, second click opens. Simple toggle.
+function setupIcon(iconId, windowId) {
+  var icon = document.querySelector(iconId);
+  icon.addEventListener("click", function () {
+    var isOpen = icon.classList.toggle("selected");
+    document.getElementById(windowId).style.display = isOpen ? "flex" : "none";
+  });
+}
+
+setupIcon("#WelcomeOpen", "WelcomeWindow");
+setupIcon("#OpenA1", "IronPad");
 
 // IronBook: plain text notes saved in localStorage
 var IronBook = {
@@ -72,7 +65,7 @@ var IronBook = {
   currentId: null,
 
   init: function () {
-    this.notes = Store.get("ironbook-notes", []);
+    this.notes = JSON.parse(localStorage.getItem("ironbook-notes")) || [];
     this.list = document.querySelector("#notesList");
     this.title = document.querySelector("#noteTitle");
     this.content = document.querySelector("#noteContent");
@@ -88,7 +81,7 @@ var IronBook = {
   },
 
   keep: function () {
-    Store.set("ironbook-notes", this.notes);
+    localStorage.setItem("ironbook-notes", JSON.stringify(this.notes));
   },
 
   showList: function () {
@@ -155,37 +148,38 @@ IronBook.init();
 
 // IronCalc: scientific calculator, mouse + keyboard, DEG/RAD toggle
 var IronCalc = {
-  tokens: [], // [{d: display text, c: code text}]
+  disp: "",   // pretty text shown in display
+  code: "",   // evaluable JS built alongside disp
   result: "0",
   angleMode: "deg",
 
-  // [label, class, code?, display?] — code and display default to label
+  // [label, class, display text, code text]
   keys: [
-    ["(", "fn"], [")", "fn"], ["AC", "special", "ac"], ["⌫", "special", "back"],
-    ["sin(", "fn", "Math.sin("], ["cos(", "fn", "Math.cos("], ["tan(", "fn", "Math.tan("], ["÷", "op", "/"],
-    ["asin(", "fn", "Math.asin("], ["acos(", "fn", "Math.acos("], ["atan(", "fn", "Math.atan("], ["×", "op", "*"],
-    ["log(", "fn", "Math.log10("], ["ln(", "fn", "Math.log("], ["√(", "fn", "Math.sqrt("], ["−", "op", "-"],
-    ["xʸ", "fn", "Math.pow(", "pow("], ["π", "fn", "Math.PI"], ["e", "fn", "Math.E"], ["+", "op"],
-    ["7", "num"], ["8", "num"], ["9", "num"], ["DEG", "special", "mode"],
-    ["4", "num"], ["5", "num"], ["6", "num"], ["=", "special tall", "eq"],
-    ["1", "num"], ["2", "num"], ["3", "num"],
-    ["0", "num wide"], [".", "num"]
+    ["(", "fn", "(", "("], [")", "fn", ")", ")"], ["AC", "special", "ac", "ac"], ["⌫", "special", "back", "back"],
+    ["sin", "fn", "sin(", "Math.sin("], ["cos", "fn", "cos(", "Math.cos("], ["tan", "fn", "tan(", "Math.tan("], ["÷", "op", "÷", "/"],
+    ["asin", "fn", "asin(", "Math.asin("], ["acos", "fn", "acos(", "Math.acos("], ["atan", "fn", "atan(", "Math.atan("], ["×", "op", "×", "*"],
+    ["log", "fn", "log(", "Math.log10("], ["ln", "fn", "ln(", "Math.log("], ["√", "fn", "√(", "Math.sqrt("], ["−", "op", "−", "-"],
+    ["xʸ", "fn", "pow(", "Math.pow("], ["π", "fn", "π", "Math.PI"], ["e", "fn", "e", "Math.E"], ["+", "op", "+", "+"],
+    ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["DEG", "special", "mode", "mode"],
+    ["4", "num", "4", "4"], ["5", "num", "5", "5"], ["6", "num", "6", "6"], ["=", "special tall", "eq", "eq"],
+    ["1", "num", "1", "1"], ["2", "num", "2", "2"], ["3", "num", "3", "3"],
+    ["0", "num wide", "0", "0"], [".", "num", ".", "."]
   ],
 
-  // Degree-mode wrappers, prepended at eval time
-  degHelpers: `var DSIN=function(x){return Math.sin(x*Math.PI/180)};
-var DCOS=function(x){return Math.cos(x*Math.PI/180)};
-var DTAN=function(x){return Math.tan(x*Math.PI/180)};
-var DASIN=function(x){return Math.asin(x)*180/Math.PI};
-var DACOS=function(x){return Math.acos(x)*180/Math.PI};
-var DATAN=function(x){return Math.atan(x)*180/Math.PI};`,
+  // Degree-mode wrappers, defined once and prepended at eval time
+  degHelpers: "var DSIN=function(x){return Math.sin(x*Math.PI/180)};"
+    + "var DCOS=function(x){return Math.cos(x*Math.PI/180)};"
+    + "var DTAN=function(x){return Math.tan(x*Math.PI/180)};"
+    + "var DASIN=function(x){return Math.asin(x)*180/Math.PI};"
+    + "var DACOS=function(x){return Math.acos(x)*180/Math.PI};"
+    + "var DATAN=function(x){return Math.atan(x)*180/Math.PI};",
 
   init: function () {
     this.exprEl = document.querySelector("#calcExpr");
     this.resEl = document.querySelector("#calcResult");
     this.modeEl = document.querySelector("#calcMode");
     this.keypad = document.querySelector("#calcKeypad");
-    this.angleMode = Store.get("ironcalc-angle", "deg");
+    this.angleMode = localStorage.getItem("ironcalc-angle") || "deg";
     this.renderKeypad();
     this.updateDisplay();
     this.bindKeys();
@@ -196,36 +190,34 @@ var DATAN=function(x){return Math.atan(x)*180/Math.PI};`,
     this.keypad.innerHTML = "";
     this.keys.forEach(function (k) {
       var btn = document.createElement("button");
-      btn.className = "btn calc-btn " + k[1];
+      btn.className = "calc-btn " + k[1];
       btn.textContent = k[0];
-      btn.addEventListener("click", function () { self.handle(k[3] || k[0], k[2] || k[0]); });
+      btn.addEventListener("click", function () { self.handle(k[2], k[3]); });
       self.keypad.appendChild(btn);
     });
   },
 
   handle: function (disp, code) {
-    if (code === "ac") { this.tokens = []; this.result = "0"; }
-    else if (code === "back") { this.tokens.pop(); }
+    if (code === "ac") { this.disp = ""; this.code = ""; this.result = "0"; }
+    else if (code === "back") { this.disp = this.disp.slice(0, -1); this.code = this.code.slice(0, -1); }
     else if (code === "eq") { this.evaluate(); return; }
     else if (code === "mode") { this.toggleAngleMode(); return; }
-    else { this.tokens.push({ d: disp, c: code }); }
+    else { this.disp += disp; this.code += code; }
     this.updateDisplay();
-  },
-
-  text: function (key) {
-    return this.tokens.map(function (t) { return t[key]; }).join("");
   },
 
   toggleAngleMode: function () {
     this.angleMode = this.angleMode === "deg" ? "rad" : "deg";
-    Store.set("ironcalc-angle", this.angleMode);
+    localStorage.setItem("ironcalc-angle", this.angleMode);
     this.modeEl.textContent = this.angleMode.toUpperCase();
   },
 
   evaluate: function () {
     try {
-      var code = this.text("c");
-      if (!code || /[+\-*/(,.]$/.test(code)) throw "Invalid";
+      var code = this.code;
+      if (!code) return;
+      // Only allow safe characters (built from our own buttons + keyboard map)
+      if (/[^0-9+\-*/()., MathsincotagrlqpwPIE]/.test(code)) throw "Invalid";
       var pre = "";
       if (this.angleMode === "deg") {
         code = code
@@ -240,16 +232,18 @@ var DATAN=function(x){return Math.atan(x)*180/Math.PI};`,
       var value = Function('"use strict";' + pre + ' return (' + code + ')')();
       if (typeof value !== "number" || !isFinite(value)) throw "Invalid";
       this.result = String(Math.round(value * 1e10) / 1e10);
-      this.tokens = [{ d: this.result, c: this.result }];
+      this.disp = this.result;
+      this.code = this.result;
     } catch (e) {
       this.result = "Error";
-      this.tokens = [];
+      this.disp = "";
+      this.code = "";
     }
     this.updateDisplay();
   },
 
   updateDisplay: function () {
-    this.exprEl.textContent = this.text("d");
+    this.exprEl.textContent = this.disp;
     this.resEl.textContent = this.result;
     this.modeEl.textContent = this.angleMode.toUpperCase();
   },
@@ -271,5 +265,10 @@ var DATAN=function(x){return Math.atan(x)*180/Math.PI};`,
   }
 };
 
-// IronCalc auto-wired above via .window + data-window + .close-btn
+// IronCalc wiring
+makeDraggable(document.querySelector("#IronCalc"));
+setupIcon("#CalcOpen", "IronCalc");
+document.querySelector("#closeIronCalc").addEventListener("click", function () {
+  closeWindow("IronCalc");
+});
 IronCalc.init();

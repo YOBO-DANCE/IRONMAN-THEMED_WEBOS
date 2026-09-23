@@ -4,23 +4,17 @@
     padding: 0;
 }
 
-:root{
-    --red: var(--red);
-    --gold: var(--gold);
-    --dark: var(--dark);
-}
-
 body{
     background: url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif);
     color: #fff;
     background-size: cover;
 }
 
-/* Shared window base */
+/* Shared window base (was duplicated in .Window1 + .Window2) */
 .window{
     position: absolute;
     color: #000;
-    border: 2px solid var(--red);
+    border: 2px solid #e53935;
     border-radius: 1rem;
     padding: 10px;
     background-color: aquamarine;
@@ -28,46 +22,22 @@ body{
     flex-direction: column;
 }
 
-/* Shared background-overlay pattern (positioning here, image in each app) */
-.overlay{
-    overflow: hidden;
-}
-
-.overlay::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.overlay > *{
-    position: relative;
-    z-index: 1;
-}
-
-/* Shared button base */
-.btn{
-    cursor: pointer;
-    border: none;
-    border-radius: 6px;
-    transition: transform 0.1s, box-shadow 0.2s;
-}
-
-.btn:active{
-    transform: scale(0.95);
+.Window1{
+    top: 50%;
+    left: 22%;
+    transform: translate(-50%, -50%);
 }
 
 .TopBar{
     display: flex;
     padding: 1rem;
     justify-content: space-between;
-    border: 2px solid var(--red);
+    border: 2px solid #e53935;
     border-radius: 12%;
 }
 
 .TopBar p {
-    border: 2px solid var(--gold);
+    border: 2px solid #ffd600;
     border-radius: 10px;
     padding: 10px;
     backdrop-filter: blur(20px);
@@ -77,7 +47,7 @@ body{
 #closeWindow {
     display: flex;
     justify-content: center;
-    border: 2px solid var(--gold);
+    border: 2px solid #ffd600;
     border-radius: 10px;
     font-family: "Caacupe One", sans-serif;
     font-weight: 900;
@@ -100,18 +70,35 @@ body{
 .desktop-icon {
     height: 5rem;
     cursor: pointer;
-    border-radius: 1rem;
 }
 
 .selected{
-    border: 2px solid var(--gold);
+    border: 2px solid #ffd600;
+}
+
+.Window2{
+    top: 20%;
+    left: 30%;
+    min-width: 500px;
+    min-height: 400px;
+    overflow: hidden;
 }
 
 /* Chibi Iron Man overlay inside IronBook only */
-#IronPad::before{
+.Window2::before{
+    content: "";
+    position: absolute;
+    inset: 0;
     background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp) no-repeat center center;
     background-size: contain;
     opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.Window2 > *{
+    position: relative;
+    z-index: 1;
 }
 
 /* IronBook - basic layout, style on top of this */
@@ -120,7 +107,7 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem;
-    border-bottom: 1px solid var(--red);
+    border-bottom: 1px solid #e53935;
     cursor: grab;
 }
 
@@ -144,7 +131,7 @@ body{
 
 .sidebar {
     width: 180px;
-    border-right: 1px solid var(--red);
+    border-right: 1px solid #e53935;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
@@ -175,7 +162,7 @@ body{
 #notesList li.active {
     background: rgba(0,0,0,0.2);
     font-weight: bold;
-    border-left: 3px solid var(--red);
+    border-left: 3px solid #e53935;
 }
 
 #newNoteBtn {
@@ -193,7 +180,7 @@ body{
 #noteTitle {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    caret-color: var(--gold);
+    caret-color: #ffd600;
 }
 
 #noteContent {
@@ -202,7 +189,7 @@ body{
     padding: 0.5rem;
     resize: vertical;
     font-family: inherit;
-    caret-color: var(--red);
+    caret-color: #e53935;
 }
 
 .editor-actions {
@@ -211,30 +198,57 @@ body{
     margin-top: 0.5rem;
 }
 
-.editor-actions .btn,
+.editor-actions button,
 #newNoteBtn {
     padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, var(--red), #c62828);
+    cursor: pointer;
+    background: linear-gradient(135deg, #e53935, #c62828);
     color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: transform 0.1s, box-shadow 0.2s;
 }
 
-.editor-actions .btn:hover,
+.editor-actions button:hover,
 #newNoteBtn:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
 }
 
+.editor-actions button:active,
+#newNoteBtn:active {
+    transform: translateY(0);
+}
+
 /* IronCalc - Stark tech theme */
-#IronCalc::before{
+.Calculator{
+    top: 15%;
+    left: 40%;
+    min-width: 340px;
+    min-height: 480px;
+    overflow: hidden;
+}
+
+.Calculator::before{
+    content: "";
+    position: absolute;
+    inset: 0;
     background: radial-gradient(circle at 50% 15%, rgba(229,57,53,0.08), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.Calculator > *{
+    position: relative;
+    z-index: 1;
 }
 
 .calc-display{
-    background: radial-gradient(ellipse at center, rgba(229,57,53,0.15), transparent 70%), var(--dark);
-    border: 2px solid var(--red);
+    background: radial-gradient(ellipse at center, rgba(229,57,53,0.15), transparent 70%), #0d0d0d;
+    border: 2px solid #e53935;
     border-radius: 8px;
     padding: 1rem;
-    color: var(--gold);
+    color: #ffd600;
     font-family: 'Orbitron', monospace;
     text-align: right;
 }
@@ -255,7 +269,7 @@ body{
 
 .calc-mode{
     font-size: 0.7rem;
-    color: var(--red);
+    color: #e53935;
     margin-top: 0.3rem;
     text-align: left;
 }
@@ -268,20 +282,28 @@ body{
 }
 
 .calc-btn{
+    border: none;
+    border-radius: 6px;
     font-size: 1.1rem;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.08s;
     font-family: 'Orbitron', monospace;
     padding: 0.75rem 0;
 }
 
+.calc-btn:active{
+    transform: scale(0.93);
+}
+
 .calc-btn:focus-visible{
-    outline: 2px solid var(--gold);
+    outline: 2px solid #ffd600;
     outline-offset: 2px;
 }
 
 .calc-btn.num{
     background: #1a1a1a;
-    color: var(--gold);
+    color: #ffd600;
     border: 1px solid #333;
 }
 
@@ -291,7 +313,7 @@ body{
 }
 
 .calc-btn.op{
-    background: linear-gradient(135deg, var(--red), #b71c1c);
+    background: linear-gradient(135deg, #e53935, #b71c1c);
     color: #fff;
 }
 
@@ -301,8 +323,8 @@ body{
 
 .calc-btn.fn{
     background: #111;
-    color: var(--red);
-    border: 1px solid var(--gold);
+    color: #e53935;
+    border: 1px solid #ffd600;
 }
 
 .calc-btn.fn:hover{
@@ -311,7 +333,7 @@ body{
 }
 
 .calc-btn.special{
-    background: linear-gradient(135deg, var(--gold), #e6c200);
+    background: linear-gradient(135deg, #ffd600, #e6c200);
     color: #000;
 }
 

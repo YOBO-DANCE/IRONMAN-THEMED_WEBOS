@@ -12,12 +12,12 @@
       <p id="Current_Time"></p>
     </div>
     <div class="StartIcons">
-        <img src="../assets/5579832.png" alt="Welcome_Icon" class="desktop-icon" data-window="WelcomeWindow">
-        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="desktop-icon" data-window="IronPad">
-        <img src="../assets/IronCalc.png" alt="IronCalc" class="desktop-icon" data-window="IronCalc">
+        <img src="../assets/5579832.png" alt="Welcome_Icon" class="desktop-icon" id="WelcomeOpen">
+        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="desktop-icon" id="OpenA1">
+        <img src="../assets/IronCalc.png" alt="IronCalc" class="desktop-icon" id="CalcOpen" style="border-radius: 1rem;">
     </div>
 
-    <div class="window" id="WelcomeWindow" style="display: none; top: 50%; left: 22%; transform: translate(-50%, -50%);">
+    <div class="window Window1" id="WelcomeWindow" style="display: none;">
       <h1>Hi, and Welcome!</h1>
       <p>
         I am Tanmay Hathile! A 13 year old whose <br />
@@ -27,7 +27,7 @@
     </div>
      
 
-    <div class="window overlay" id="IronPad" style="display: none; top: 20%; left: 30%; min-width: 500px; min-height: 400px;">
+    <div class="window Window2" id="IronPad" style="display: none;">
       <header class="window-header" id="IronPadheader">
         <h1>IronBook</h1>
         <button class="close-btn" id="closeIronPad">×</button>
@@ -36,21 +36,21 @@
         <aside class="sidebar">
           <h3>Notes</h3>
           <ul id="notesList"></ul>
-          <button class="btn" id="newNoteBtn">+ New Note</button>
+          <button id="newNoteBtn">+ New Note</button>
         </aside>
         <main class="editor-area">
           <input type="text" id="noteTitle" placeholder="Untitled" />
           <textarea id="noteContent" placeholder="Start writing..."></textarea>
           <div class="editor-actions">
-            <button class="btn" id="saveNoteBtn">Save</button>
-            <button class="btn" id="saveAsNoteBtn">Save As...</button>
-            <button class="btn" id="deleteNoteBtn">Delete</button>
+            <button id="saveNoteBtn">Save</button>
+            <button id="saveAsNoteBtn">Save As...</button>
+            <button id="deleteNoteBtn">Delete</button>
           </div>
         </main>
       </div>
     </div>
 
-    <div class="window overlay" id="IronCalc" style="display: none; top: 15%; left: 40%; min-width: 340px; min-height: 480px;">
+    <div class="window Calculator" id="IronCalc" style="display: none;">
       <header class="window-header">
         <h1>IronCalc</h1>
         <button class="close-btn" id="closeIronCalc">×</button>
