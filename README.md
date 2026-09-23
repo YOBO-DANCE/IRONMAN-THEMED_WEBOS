@@ -2,7 +2,7 @@
 
 ## Wondered how Iron Man controls his suit and his tech? Well now you know with the tech of *Stark* and the suit of *IRON*
 
-![Hero picture](<screenshots_and_recording/Screenshot 2026-09-22 022720.png>)
+![Hero picture](<README_ASSETS/Screenshot 2026-09-06 180519.png>)
 
 # Live Demo
 
