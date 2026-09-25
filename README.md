@@ -1,6 +1,6 @@
 <img align=center src="README_ASSETS/Cool Text - Iron OS 516058731425365.png" alt="IRON OS"></img>
 
-## Wondered how Iron Man controls his suit and his tech? Well now you know with the tech of *Stark* and the suit of *IRON*
+## An Web based OS with the tech of *Stark* and Power of *IRON*
 
 ![Hero picture](<README_ASSETS/Screenshot 2026-09-06 180519.png>)
 
@@ -35,7 +35,7 @@ ___
 
 # Features
 
-- A Welcome window(Just want to brag bout' it😅)
+- A Welcome window(Just want to brag bout' it)
 
 - IronBook stores all your thoughts in one place. Got a plan of attack...No, just attack you don't need to store it, but when it comes to actual thoughts and plan...open Ironbook.
 
@@ -44,13 +44,50 @@ ___
 - Time and Workstation Info on top of your screen.
 
 - Thats it!
-# Shoutout to HackClub and Blueberry Jam
-
-A big shoutout to Hackclub and Blueberry Jam because without hackclub I couldn't have the even thought that I can make a OS inside HTML. Blueberry Jam gave me the Tutorial of the life(T.O.T.L.).
-
-Big shoutout to @SerenityUX on github, without him there was no way I could got the T.O.T.L
 
 ___
 
-*Captain America: Stark we need a Plan of Attack!* <br>
-*Tony Stark: I got a plan of attack...Attack*
+# HOW IT WORKS
+
+Static site - no framework, no build. `index.html` = desktop, `style.css` = theme, `script.js` = OS.
+
+```mermaid
+graph TD
+    A[index.html] --> B[TopBar<br/>Clock #Current_Time]
+    A --> C[StartIcons<br/>3 icons]
+    C --> D[WelcomeWindow #WelcomeWindow]
+    C --> E[IronBook #IronPad]
+    C --> F[IronCalc #IronCalc]
+    B -.-> G[script.js:2<br/>setInterval]
+    D & E & F -.-> H[script.js:7<br/>makeDraggable]
+    D & E & F -.-> I[script.js:34<br/>open/closeWindow<br/>setupIcon]
+    E -.-> J[script.js:63<br/>IronBook<br/>localStorage ironbook-notes]
+    F -.-> K[script.js:150<br/>IronCalc<br/>disp/code + DEG/RAD]
+    A -.-> L[style.css:14 .window base]
+    F -.-> M[style.css:224<br/>Calculator Stark theme]
+    J --> N[(localStorage)]
+    K --> N
+```
+
+# HALL OF ARMOR — CREDITS
+
+| Suit Part | Credit |
+|---|---|
+| Theme | Iron Man / Stark Industries (Marvel) |
+| Fonts | `Orbitron` + `Caacupe One` via Google Fonts (`style.css:1`) |
+| Art | `assets/` wallpapers, icons, chibi overlay (`style.css:88` — pngtree, rest artist-unknown) |
+| Stack | Vanilla HTML/CSS/JS, zero deps — Vercel deploy, Mermaid diagram |
+
+# Badges
+
+<p align=center>
+<img alt="GitHub followers" src="https://img.shields.io/github/followers/YOBO-DANCE">
+<img alt="GitHub forks" src="https://img.shields.io/github/forks/YOBO-DANCE/IRONMAN-THEMED_WEBOS">
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/YOBO-DANCE/IRONMAN-THEMED_WEBOS">
+<img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fironman-themed-webos.vercel.app%2F">
+</p>
+
+___
+
+*Iron Man "Doth mother know you weareth her drapes?"*<br>
+*Thor(Point Break) ...*
