@@ -78,9 +78,10 @@ body{
 
 .Window2{
     top: 20%;
-    left: 30%;
+    left: 8%;
     min-width: 500px;
     min-height: 400px;
+    max-width: calc(100vw - 2rem);
     overflow: hidden;
 }
 
@@ -223,9 +224,10 @@ body{
 /* IronCalc - Stark tech theme */
 .Calculator{
     top: 15%;
-    left: 40%;
+    left: 58%;
     min-width: 340px;
     min-height: 480px;
+    max-width: calc(100vw - 2rem);
     overflow: hidden;
 }
 
