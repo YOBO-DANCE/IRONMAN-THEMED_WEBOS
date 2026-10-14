@@ -13,8 +13,9 @@
     </div>
     <div class="StartIcons">
         <img src="../assets/5579832.png" alt="Welcome_Icon" class="desktop-icon" id="WelcomeOpen">
-        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="desktop-icon" id="OpenA1">
+        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook" class="desktop-icon" id="OpenA1">
         <img src="../assets/IronCalc.png" alt="IronCalc" class="desktop-icon" id="CalcOpen" style="border-radius: 1rem;">
+        <img src="../assets/Jarv_Termi.png" alt="Jarv_Termi" class="desktop-icon" id="Jarvis_Open" style="border-radius: 1rem;">
     </div>
 
     <div class="window Window1" id="WelcomeWindow" style="display: none;">
@@ -64,8 +65,21 @@
       </div>
     </div>
 
-    <div class="window Ironterm" id="Ironterm" style="display: none;">
-      
+    <div class="window Javis_Termi" id="Javis_Termi" style="display: none;">
+      <header class="window-header" id="Javis_Termiheader">
+        <h1>Javis_Termi</h1>
+        <button class="close-btn" id="closeJavis_Termi">×</button>
+      </header>
+      <div class="terminal-body">
+        <div class="terminal-output" id="terminalOutput">
+          <p class="system-welcome">JARVIS_OS Secure Terminal v1.0.0</p>
+          <p class="system-welcome">Type <span class="terminal-highlight">'help'</span> for a list of available commands.</p>
+        </div>
+        <div class="terminal-input-line">
+          <span class="terminal-prompt">iron@jarvis:~$</span>
+          <input type="text" id="terminalInput" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
     </div>
 
   </body>

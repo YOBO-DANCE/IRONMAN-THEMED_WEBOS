@@ -350,3 +350,103 @@ body{
 .calc-btn.tall{
     grid-row: span 3;
 }
+
+/* Jarvis Terminal CSS Styling */
+.Javis_Termi {
+    top: 30%;
+    left: 32%;
+    width: 580px;
+    height: 360px;
+    background-color: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(12px);
+    border: 2px solid #e53935;
+    box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+    font-family: 'Orbitron', monospace;
+    color: #ffd600;
+    overflow: hidden;
+}
+
+.Javis_Termi::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.Javis_Termi > * {
+    position: relative;
+    z-index: 1;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    overflow: hidden;
+}
+
+.terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.terminal-output::-webkit-scrollbar {
+    width: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+    background: #e53935;
+    border-radius: 2px;
+}
+
+.system-welcome {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.terminal-highlight {
+    color: #e53935;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(229, 57, 53, 0.4);
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.terminal-prompt {
+    color: #ffd600;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#terminalInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffd600;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    caret-color: #e53935;
+}

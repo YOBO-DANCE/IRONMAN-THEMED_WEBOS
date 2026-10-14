@@ -163,7 +163,7 @@ var IronCalc = {
   code: "",   // evaluable JS built alongside disp
   result: "0",
 
-  // [label, class, display text, code text]
+  // [label, class, display text, code text] to my stupid future self >_<
   keys: [
     ["AC", "special wide", "ac", "ac"], ["÷", "op", "÷", "/"], ["×", "op", "×", "*"],
     ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["−", "op", "−", "-"],
@@ -249,3 +249,129 @@ document.querySelector("#closeIronCalc").addEventListener("click", function () {
   closeWindow("IronCalc");
 });
 IronCalc.init();
+
+// Javis_Termi JS Logic
+var Javis_Termi = {
+    history: [],
+    historyIndex: -1,
+
+    init: function () {
+        this.outputEl = document.querySelector("#terminalOutput");
+        this.inputEl = document.querySelector("#terminalInput");
+        
+        if (!this.inputEl || !this.outputEl) return;
+
+        this.inputEl.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                var cmd = this.inputEl.value.trim();
+                if (cmd) {
+                    this.executeCommand(cmd);
+                    this.history.push(cmd);
+                    this.historyIndex = this.history.length;
+                    this.inputEl.value = "";
+                }
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.inputEl.value = this.history[this.historyIndex];
+                }
+            } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (this.historyIndex < this.history.length - 1) {
+                    this.historyIndex++;
+                    this.inputEl.value = this.history[this.historyIndex];
+                } else {
+                    this.historyIndex = this.history.length;
+                    this.inputEl.value = "";
+                }
+            }
+        });
+
+        var termWin = document.querySelector("#Javis_Termi");
+        if (termWin) {
+            termWin.addEventListener("click", () => {
+                this.inputEl.focus();
+            });
+        }
+    },
+
+    printLine: function (text, isHtml = false) {
+        var p = document.createElement("p");
+        if (isHtml) {
+            p.innerHTML = text;
+        } else {
+            p.textContent = text;
+        }
+        this.outputEl.appendChild(p);
+        this.outputEl.scrollTop = this.outputEl.scrollHeight;
+    },
+
+    executeCommand: function (rawCmd) {
+        this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+        
+        var parts = rawCmd.split(" ");
+        var cmd = parts[0].toLowerCase();
+        var args = parts.slice(1);
+
+        switch (cmd) {
+            case "help":
+                this.printLine("Available commands:");
+                this.printLine("  help             - Show this help menu");
+                this.printLine("  clear            - Clear terminal screen");
+                this.printLine("  time             - Display current date and time");
+                this.printLine("  echo [text]      - Echo back provided text");
+                this.printLine("  calc [expr]      - Evaluate math expression (e.g. calc 25 * 4)");
+                this.printLine("  open [app]       - Launch app (notepad, calc)");
+                break;
+
+            case "clear":
+                this.outputEl.innerHTML = "";
+                break;
+
+            case "time":
+                this.printLine(`System Time: ${new Date().toLocaleString()}`);
+                break;
+
+            case "echo":
+                this.printLine(args.join(" ") || "");
+                break;
+
+            case "calc":
+                try {
+                    var expr = args.join("");
+                    if (!expr) throw new Error("No expression");
+                    if (/[^0-9+\-*/(). ]/.test(expr)) throw new Error("Invalid characters");
+                    var res = Function('"use strict"; return (' + expr + ')')();
+                    this.printLine(`Result: ${res}`);
+                } catch (err) {
+                    this.printLine("Error: Invalid calculation syntax.");
+                }
+                break;
+
+            case "open":
+                var target = (args[0] || "").toLowerCase();
+                if (target === "notepad" || target === "ironbook") {
+                    openWindow("IronPad");
+                    this.printLine("Opening IronBook...");
+                } else if (target === "calc" || target === "calculator") {
+                    openWindow("IronCalc");
+                    this.printLine("Opening IronCalc...");
+                } else {
+                    this.printLine(`Unknown app: '${args[0]}'. Try 'notepad' or 'calc'.`);
+                }
+                break;
+
+            default:
+                this.printLine(`Command not recognized: '${cmd}'. Type 'help' for options.`);
+                break;
+        }
+    }
+};
+
+makeDraggable(document.querySelector("#Javis_Termi"));
+setupIcon("#TermOpen", "Javis_Termi");
+document.querySelector("#closeJavis_Termi").addEventListener("click", function () {
+    closeWindow("Javis_Termi");
+});
+Javis_Termi.init();
