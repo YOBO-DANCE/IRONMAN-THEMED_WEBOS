@@ -148,8 +148,186 @@ function setupWindowResizing() {
   });
 }
 
+// IronPlayer
+var IronPlayer = {
+    playlist: [
+        {
+            title: "Babydoll",
+            artist: "Dominic Fike",
+            src: "../Test_playlist/Babydoll.mp3"
+        },
+        {
+            title: "Daylight",
+            artist: "David Kushner",
+            src: "../Test_playlist/David Kushner - Daylight Official Music Video.mp3"
+        },
+        {
+            title: "End Of Beginning",
+            artist: "Djo",
+            src: "../Test_playlist/Djo - End Of Beginning Official Audio.mp3"
+        },
+        {
+            title: "white keys",
+            artist: "Dominic Fike",
+            src: "../Test_playlist/Dominic Fike - white keys Lyrics.mp3"
+        },
+        {
+            title: "Perfect",
+            artist: "Ed Sheeran",
+            src: "../Test_playlist/Ed Sheeran - Perfect Lyrics.mp3"
+        },
+        {
+            title: "Sailor Song",
+            artist: "Gigi Perez",
+            src: "../Test_playlist/Gigi Perez - Sailor Song Official Music Video.mp3"
+        },
+        {
+            title: "Too Sweet",
+            artist: "Hozier",
+            src: "../Test_playlist/Hozier - Too Sweet Official Video.mp3"
+        },
+        {
+            title: "Earrings",
+            artist: "Malcolm Todd",
+            src: "../Test_playlist/Malcolm Todd - Earrings Official Visualizer.mp3"
+        },
+        {
+            title: "back to friends",
+            artist: "sombr",
+            src: "../Test_playlist/sombr - back to friends official video.mp3"
+        },
+        {
+            title: "Bad Habit",
+            artist: "Steve Lacy",
+            src: "../Test_playlist/Steve Lacy - Bad Habit Official Video.mp3"
+        },
+        {
+          title: "Dracula",
+          artist: "Tama Impala",
+          src: "../Test_playlist/Tame Impala - Dracula Official Video.mp3"
+        },
+        {
+          title: "Loser",
+          artist: "Tama Impala",
+          src: "../Test_playlist/Temper City - Self Aware Official Video.mp3"
+        },
+        {
+          title: "Self Aware",
+          artist: "Temper City",
+          src: "../Test_playlist/Temper City - Self Aware Official Video.mp3"
+        },
+        {
+          title: "Riptide",
+          artist: "Vance Joy",
+          src: "../Test_playlist/Vance Joy - Riptide Official Video.mp3"
+        }
+    ],
+    currentIndex: 0,
+    isPlaying: false,
 
-// IronBook: plain text notes saved in localStorage
+    init: function () {
+        // Cache DOM elements
+        this.audio = document.getElementById("audioEngine");
+        this.titleEl = document.getElementById("trackTitle");
+        this.artistEl = document.getElementById("trackArtist");
+        this.playBtn = document.getElementById("playPauseBtn");
+        this.progress = document.getElementById("trackProgress");
+        this.volume = document.getElementById("volumeSlider");
+        this.select = document.getElementById("trackSelect");
+
+        if (!this.audio) return;
+
+        this.playlist.forEach((track, index) => {
+            var opt = document.createElement("option");
+            opt.value = index;
+            opt.textContent = track.title;
+            this.select.appendChild(opt);
+        });
+
+        // Event Listeners for controls
+        this.playBtn.addEventListener("click", () => this.togglePlay());
+        document.getElementById("prevTrackBtn").addEventListener("click", () => this.prevTrack());
+        document.getElementById("nextTrackBtn").addEventListener("click", () => this.nextTrack());
+
+        this.select.addEventListener("change", (e) => {
+            this.loadTrack(parseInt(e.target.value));
+            this.playTrack();
+        });
+
+        this.volume.addEventListener("input", (e) => {
+            this.audio.volume = e.target.value / 100;
+        });
+
+        this.audio.addEventListener("timeupdate", () => {
+            if (this.audio.duration) {
+                this.progress.value = (this.audio.currentTime / this.audio.duration) * 100;
+            }
+        });
+
+        this.progress.addEventListener("input", (e) => {
+            if (this.audio.duration) {
+                this.audio.currentTime = (e.target.value / 100) * this.audio.duration;
+            }
+        });
+
+        this.audio.addEventListener("ended", () => {
+            this.nextTrack();
+        });
+
+        // Initialize default volume and first track metadata
+        this.audio.volume = this.volume.value / 100;
+        this.loadTrack(0);
+    },
+
+    loadTrack: function (index) {
+        this.currentIndex = index;
+        var track = this.playlist[index];
+        this.audio.src = track.src;
+        this.titleEl.textContent = track.title;
+        this.artistEl.textContent = track.artist;
+        this.select.value = index;
+    },
+
+    togglePlay: function () {
+        if (this.isPlaying) {
+            this.audio.pause();
+            this.playBtn.textContent = "▶";
+            this.isPlaying = false;
+        } else {
+            this.playTrack();
+        }
+    },
+
+    playTrack: function () {
+        this.audio.play().then(() => {
+            this.playBtn.textContent = "⏸";
+            this.isPlaying = true;
+        }).catch(err => {
+            console.log("Playback prevented or error loading audio source.");
+        });
+    },
+
+    nextTrack: function () {
+        var next = (this.currentIndex + 1) % this.playlist.length;
+        this.loadTrack(next);
+        this.playTrack();
+    },
+
+    prevTrack: function () {
+        var prev = (this.currentIndex - 1 + this.playlist.length) % this.playlist.length;
+        this.loadTrack(prev);
+        this.playTrack();
+    }
+};
+
+makeDraggable(document.querySelector("#IronPlayer"));
+setupIcon("#PlayerOpen", "IronPlayer");
+document.querySelector("#closeIronPlayer").addEventListener("click", function () {
+    closeWindow("IronPlayer");
+});
+IronPlayer.init();
+
+// IronBook
 var IronBook = {
   notes: [],
   currentId: null,
@@ -236,7 +414,7 @@ var IronBook = {
 
 IronBook.init();
 
-// IronCalc: basic calculator, mouse + keyboard
+// IronCalc
 var IronCalc = {
   disp: "",
   code: "",
@@ -327,7 +505,7 @@ document.querySelector("#closeIronCalc").addEventListener("click", function () {
 });
 IronCalc.init();
 
-// Javis_Terminal: Stark HUD Mini Terminal
+// Javis_Terminal
 var Javis_Terminal = {
     history: [],
     historyIndex: -1,
