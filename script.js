@@ -4,11 +4,18 @@ setInterval(function () {
 }, 500);
 
 // Simple drag: drag window by its header (or whole window if no header)
+// ponytail: global zTop, per-window stack only if needed
+let zTop = 10;
+function bringToFront(el) {
+  if (el) el.style.zIndex = ++zTop;
+}
+
 function makeDraggable(element) {
   if (!element) return;
   var header = element.querySelector(".window-header") || element;
 
   header.addEventListener("pointerdown", function (e) {
+    bringToFront(element);
     if (e.target.closest("button, input, textarea")) return;
     e.preventDefault();
     var offsetX = e.clientX - element.offsetLeft;
@@ -32,7 +39,9 @@ makeDraggable(document.querySelector("#IronPad"));
 
 // Windows: show / hide by id
 function openWindow(id) {
-  document.getElementById(id).style.display = "flex";
+  var el = document.getElementById(id);
+  el.style.display = "flex";
+  bringToFront(el);
 }
 
 function closeWindow(id) {
@@ -52,7 +61,9 @@ function setupIcon(iconId, windowId) {
   var icon = document.querySelector(iconId);
   icon.addEventListener("click", function () {
     var isOpen = icon.classList.toggle("selected");
-    document.getElementById(windowId).style.display = isOpen ? "flex" : "none";
+    var win = document.getElementById(windowId);
+    win.style.display = isOpen ? "flex" : "none";
+    if (isOpen) bringToFront(win);
   });
 }
 
@@ -146,40 +157,26 @@ var IronBook = {
 
 IronBook.init();
 
-// IronCalc: scientific calculator, mouse + keyboard, DEG/RAD toggle
+// IronCalc: basic calculator, mouse + keyboard
 var IronCalc = {
   disp: "",   // pretty text shown in display
   code: "",   // evaluable JS built alongside disp
   result: "0",
-  angleMode: "deg",
 
   // [label, class, display text, code text]
   keys: [
-    ["(", "fn", "(", "("], [")", "fn", ")", ")"], ["AC", "special", "ac", "ac"], ["⌫", "special", "back", "back"],
-    ["sin", "fn", "sin(", "Math.sin("], ["cos", "fn", "cos(", "Math.cos("], ["tan", "fn", "tan(", "Math.tan("], ["÷", "op", "÷", "/"],
-    ["asin", "fn", "asin(", "Math.asin("], ["acos", "fn", "acos(", "Math.acos("], ["atan", "fn", "atan(", "Math.atan("], ["×", "op", "×", "*"],
-    ["log", "fn", "log(", "Math.log10("], ["ln", "fn", "ln(", "Math.log("], ["√", "fn", "√(", "Math.sqrt("], ["−", "op", "−", "-"],
-    ["xʸ", "fn", "pow(", "Math.pow("], ["π", "fn", "π", "Math.PI"], ["e", "fn", "e", "Math.E"], ["+", "op", "+", "+"],
-    ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["DEG", "special", "mode", "mode"],
-    ["4", "num", "4", "4"], ["5", "num", "5", "5"], ["6", "num", "6", "6"], ["=", "special tall", "eq", "eq"],
-    ["1", "num", "1", "1"], ["2", "num", "2", "2"], ["3", "num", "3", "3"],
+    ["AC", "special wide", "ac", "ac"], ["÷", "op", "÷", "/"], ["×", "op", "×", "*"],
+    ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["−", "op", "−", "-"],
+    ["4", "num", "4", "4"], ["5", "num", "5", "5"], ["6", "num", "6", "6"], ["+", "op", "+", "+"],
+    ["1", "num", "1", "1"], ["2", "num", "2", "2"], ["3", "num", "3", "3"], ["=", "special tall", "eq", "eq"],
     ["0", "num wide", "0", "0"], [".", "num", ".", "."]
   ],
-
-  // Degree-mode wrappers, defined once and prepended at eval time
-  degHelpers: "var DSIN=function(x){return Math.sin(x*Math.PI/180)};"
-    + "var DCOS=function(x){return Math.cos(x*Math.PI/180)};"
-    + "var DTAN=function(x){return Math.tan(x*Math.PI/180)};"
-    + "var DASIN=function(x){return Math.asin(x)*180/Math.PI};"
-    + "var DACOS=function(x){return Math.acos(x)*180/Math.PI};"
-    + "var DATAN=function(x){return Math.atan(x)*180/Math.PI};",
 
   init: function () {
     this.exprEl = document.querySelector("#calcExpr");
     this.resEl = document.querySelector("#calcResult");
-    this.modeEl = document.querySelector("#calcMode");
     this.keypad = document.querySelector("#calcKeypad");
-    this.angleMode = localStorage.getItem("ironcalc-angle") || "deg";
+    localStorage.removeItem("ironcalc-angle");
     this.renderKeypad();
     this.updateDisplay();
     this.bindKeys();
@@ -201,35 +198,16 @@ var IronCalc = {
     if (code === "ac") { this.disp = ""; this.code = ""; this.result = "0"; }
     else if (code === "back") { this.disp = this.disp.slice(0, -1); this.code = this.code.slice(0, -1); }
     else if (code === "eq") { this.evaluate(); return; }
-    else if (code === "mode") { this.toggleAngleMode(); return; }
     else { this.disp += disp; this.code += code; }
     this.updateDisplay();
-  },
-
-  toggleAngleMode: function () {
-    this.angleMode = this.angleMode === "deg" ? "rad" : "deg";
-    localStorage.setItem("ironcalc-angle", this.angleMode);
-    this.modeEl.textContent = this.angleMode.toUpperCase();
   },
 
   evaluate: function () {
     try {
       var code = this.code;
       if (!code) return;
-      // Only allow safe characters (built from our own buttons + keyboard map)
-      if (/[^0-9+\-*/()., MathsincotagrlqpwPIE]/.test(code)) throw "Invalid";
-      var pre = "";
-      if (this.angleMode === "deg") {
-        code = code
-          .replace(/Math\.sin\(/g, "DSIN(")
-          .replace(/Math\.cos\(/g, "DCOS(")
-          .replace(/Math\.tan\(/g, "DTAN(")
-          .replace(/Math\.asin\(/g, "DASIN(")
-          .replace(/Math\.acos\(/g, "DACOS(")
-          .replace(/Math\.atan\(/g, "DATAN(");
-        pre = this.degHelpers;
-      }
-      var value = Function('"use strict";' + pre + ' return (' + code + ')')();
+      if (/[^0-9+\-*/(). ]/.test(code)) throw "Invalid";
+      var value = Function('"use strict"; return (' + code + ')')();
       if (typeof value !== "number" || !isFinite(value)) throw "Invalid";
       this.result = String(Math.round(value * 1e10) / 1e10);
       this.disp = this.result;
@@ -245,7 +223,6 @@ var IronCalc = {
   updateDisplay: function () {
     this.exprEl.textContent = this.disp;
     this.resEl.textContent = this.result;
-    this.modeEl.textContent = this.angleMode.toUpperCase();
   },
 
   bindKeys: function () {
@@ -254,7 +231,7 @@ var IronCalc = {
       "0": ["0", "0"], "1": ["1", "1"], "2": ["2", "2"], "3": ["3", "3"], "4": ["4", "4"],
       "5": ["5", "5"], "6": ["6", "6"], "7": ["7", "7"], "8": ["8", "8"], "9": ["9", "9"],
       ".": [".", "."], "+": ["+", "+"], "-": ["−", "-"], "*": ["×", "*"], "/": ["÷", "/"],
-      "(": ["(", "("], ")": [")", ")"], "Enter": ["eq", "eq"], "=": ["eq", "eq"],
+      "Enter": ["eq", "eq"], "=": ["eq", "eq"],
       "Backspace": ["back", "back"], "Escape": ["ac", "ac"]
     };
     document.addEventListener("keydown", function (e) {
