@@ -3,8 +3,7 @@ setInterval(function () {
   document.querySelector("#Current_Time").textContent = new Date().toLocaleString();
 }, 500);
 
-// Simple drag: drag window by its header (or whole window if no header)
-// ponytail: global zTop, per-window stack only if needed
+// Simple drag: drag window by its header
 let zTop = 10;
 function bringToFront(el) {
   if (el) el.style.zIndex = ++zTop;
@@ -48,7 +47,7 @@ function closeWindow(id) {
   document.getElementById(id).style.display = "none";
 }
 
-// Close buttons: new IronBook button + old Welcome "Close" text
+// Close buttons binding
 document.querySelector("#closeIronPad").addEventListener("click", function () {
   closeWindow("IronPad");
 });
@@ -56,7 +55,7 @@ document.querySelector("#closeWindow").addEventListener("click", function () {
   closeWindow("WelcomeWindow");
 });
 
-// Icons: first click selects, second click opens. Simple toggle.
+// Icons setup: first click selects, second click opens. Simple toggle.
 function setupIcon(iconId, windowId) {
   var icon = document.querySelector(iconId);
   icon.addEventListener("click", function () {
@@ -69,6 +68,86 @@ function setupIcon(iconId, windowId) {
 
 setupIcon("#WelcomeOpen", "WelcomeWindow");
 setupIcon("#OpenA1", "IronPad");
+
+// Resizable Windows
+document.addEventListener("DOMContentLoaded", () => {
+  setupWindowResizing();
+});
+
+function setupWindowResizing() {
+  const directions = ['top', 'right', 'bottom', 'left', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
+  const windows = document.querySelectorAll('.window');
+
+  windows.forEach(win => {
+    // 1. Inject the 8 resizer handles into each window
+    directions.forEach(dir => {
+      const resizer = document.createElement('div');
+      resizer.className = `win-resizer ${dir}`;
+      win.appendChild(resizer);
+
+      // 2. Attach dragging mechanics
+      resizer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Stops click event propagation down to background panels
+
+        // Get live geometric bounds
+        let originalWidth = win.offsetWidth;
+        let originalHeight = win.offsetHeight;
+        let originalX = win.offsetLeft;
+        let originalY = win.offsetTop;
+        
+        let originalMouseX = e.clientX;
+        let originalMouseY = e.clientY;
+
+        const minWidth = 250;
+        const minHeight = 150;
+
+        function resize(mouseEvent) {
+          const widthDiff = mouseEvent.clientX - originalMouseX;
+          const heightDiff = mouseEvent.clientY - originalMouseY;
+
+          const isTop = dir.includes('top');
+          const isBottom = dir.includes('bottom');
+          const isLeft = dir.includes('left');
+          const isRight = dir.includes('right');
+
+          // Horizontal management
+          if (isRight) {
+            const width = originalWidth + widthDiff;
+            if (width > minWidth) win.style.width = `${width}px`;
+          } else if (isLeft) {
+            const width = originalWidth - widthDiff;
+            if (width > minWidth) {
+              win.style.width = `${width}px`;
+              win.style.left = `${originalX + widthDiff}px`;
+            }
+          }
+
+          // Vertical management
+          if (isBottom) {
+            const height = originalHeight + heightDiff;
+            if (height > minHeight) win.style.height = `${height}px`;
+          } else if (isTop) {
+            const height = originalHeight - heightDiff;
+            if (height > minHeight) {
+              win.style.height = `${height}px`;
+              win.style.top = `${originalY + heightDiff}px`;
+            }
+          }
+        }
+
+        function stopResize() {
+          window.removeEventListener('mousemove', resize);
+          window.removeEventListener('mouseup', stopResize);
+        }
+
+        window.addEventListener('mousemove', resize);
+        window.addEventListener('mouseup', stopResize);
+      });
+    });
+  });
+}
+
 
 // IronBook: plain text notes saved in localStorage
 var IronBook = {
@@ -128,10 +207,10 @@ var IronBook = {
 
     if (saveAs) {
       var name = prompt("Save as:", title);
-      if (name === null) return; // cancelled
+      if (name === null) return;
       title = name.trim() || "Untitled";
       this.title.value = title;
-      this.currentId = null; // force new note
+      this.currentId = null;
     }
 
     if (this.currentId === null) {
@@ -159,11 +238,10 @@ IronBook.init();
 
 // IronCalc: basic calculator, mouse + keyboard
 var IronCalc = {
-  disp: "",   // pretty text shown in display
-  code: "",   // evaluable JS built alongside disp
+  disp: "",
+  code: "",
   result: "0",
 
-  // [label, class, display text, code text] to my stupid future self >_<
   keys: [
     ["AC", "special wide", "ac", "ac"], ["÷", "op", "÷", "/"], ["×", "op", "×", "*"],
     ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["−", "op", "−", "-"],
@@ -242,7 +320,6 @@ var IronCalc = {
   }
 };
 
-// IronCalc wiring
 makeDraggable(document.querySelector("#IronCalc"));
 setupIcon("#CalcOpen", "IronCalc");
 document.querySelector("#closeIronCalc").addEventListener("click", function () {
@@ -250,8 +327,8 @@ document.querySelector("#closeIronCalc").addEventListener("click", function () {
 });
 IronCalc.init();
 
-// Javis_Termi JS Logic
-var Javis_Termi = {
+// Javis_Terminal: Stark HUD Mini Terminal
+var Javis_Terminal = {
     history: [],
     historyIndex: -1,
 
@@ -288,7 +365,7 @@ var Javis_Termi = {
             }
         });
 
-        var termWin = document.querySelector("#Javis_Termi");
+        var termWin = document.querySelector("#Javis_Terminal");
         if (termWin) {
             termWin.addEventListener("click", () => {
                 this.inputEl.focus();
@@ -369,9 +446,9 @@ var Javis_Termi = {
     }
 };
 
-makeDraggable(document.querySelector("#Javis_Termi"));
-setupIcon("#TermOpen", "Javis_Termi");
-document.querySelector("#closeJavis_Termi").addEventListener("click", function () {
-    closeWindow("Javis_Termi");
+makeDraggable(document.querySelector("#Javis_Terminal"));
+setupIcon("#TermOpen", "Javis_Terminal");
+document.querySelector("#closeJavis_Terminal").addEventListener("click", function () {
+    closeWindow("Javis_Terminal");
 });
-Javis_Termi.init();
+Javis_Terminal.init();

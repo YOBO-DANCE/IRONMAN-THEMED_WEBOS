@@ -10,7 +10,7 @@ body{
     background-size: cover;
 }
 
-/* Shared window base (was duplicated in .Window1 + .Window2) */
+/* Shared window base */
 .window{
     position: absolute;
     color: #000;
@@ -20,7 +20,30 @@ body{
     background-color: aquamarine;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    min-width: 250px;
+    min-height: 150px;
 }
+
+.win-resizer{
+    position: absolute !important;
+    box-sizing: border-box;
+    z-index: 9999;
+    /* background: rgba(255, 0, 0, 0.2); */  /* If you want to see the handlers comment out those line */
+}
+
+/* Edge Handles (6px thick clickable zone) */
+.win-resizer.top    { top: -4px; left: 12px; right: 12px; height: 6px; cursor: n-resize; }
+.win-resizer.right  { top: 12px; bottom: 12px; right: -4px; width: 6px; cursor: e-resize; }
+.win-resizer.bottom { bottom: -4px; left: 12px; right: 12px; height: 6px; cursor: s-resize; }
+.win-resizer.left   { top: 12px; bottom: 12px; left: -4px; width: 6px; cursor: w-resize; }
+
+/* Corner Handles (Larger 14px boxes to account for your rounded 1rem corners) */
+.win-resizer.top-left     { top: -5px; left: -5px; width: 14px; height: 14px; cursor: nwse-resize; }
+.win-resizer.top-right    { top: -5px; right: -5px; width: 14px; height: 14px; cursor: nesw-resize; }
+.win-resizer.bottom-left  { bottom: -5px; left: -5px; width: 14px; height: 14px; cursor: nesw-resize; }
+.win-resizer.bottom-right { bottom: -5px; right: -5px; width: 14px; height: 14px; cursor: nwse-resize; }
+
 
 .Window1{
     top: 50%;
@@ -65,8 +88,6 @@ body{
     filter: drop-shadow(0 5px 10px black);
 }
 
-
-
 .desktop-icon {
     height: 5rem;
     cursor: pointer;
@@ -102,7 +123,7 @@ body{
     z-index: 1;
 }
 
-/* IronBook - basic layout, style on top of this */
+/* IronBook Layout Styles */
 .window-header {
     display: flex;
     justify-content: space-between;
@@ -228,7 +249,7 @@ body{
     min-width: 340px;
     min-height: 480px;
     max-width: calc(100vw - 2rem);
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .Calculator::before{
@@ -269,13 +290,6 @@ body{
     word-break: break-all;
 }
 
-.calc-mode{
-    font-size: 0.7rem;
-    color: #e53935;
-    margin-top: 0.3rem;
-    text-align: left;
-}
-
 .calc-keypad{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -298,20 +312,10 @@ body{
     transform: scale(0.93);
 }
 
-.calc-btn:focus-visible{
-    outline: 2px solid #ffd600;
-    outline-offset: 2px;
-}
-
 .calc-btn.num{
     background: #1a1a1a;
     color: #ffd600;
     border: 1px solid #333;
-}
-
-.calc-btn.num:hover{
-    background: #252525;
-    box-shadow: 0 0 10px rgba(255,214,0,0.35);
 }
 
 .calc-btn.op{
@@ -319,28 +323,9 @@ body{
     color: #fff;
 }
 
-.calc-btn.op:hover{
-    box-shadow: 0 0 14px rgba(229,57,53,0.7);
-}
-
-.calc-btn.fn{
-    background: #111;
-    color: #e53935;
-    border: 1px solid #ffd600;
-}
-
-.calc-btn.fn:hover{
-    background: #1a1a1a;
-    box-shadow: 0 0 10px rgba(255,214,0,0.4);
-}
-
 .calc-btn.special{
     background: linear-gradient(135deg, #ffd600, #e6c200);
     color: #000;
-}
-
-.calc-btn.special:hover{
-    box-shadow: 0 0 14px rgba(255,214,0,0.7);
 }
 
 .calc-btn.wide{
@@ -351,8 +336,8 @@ body{
     grid-row: span 3;
 }
 
-/* Jarvis Terminal CSS Styling */
-.Javis_Termi {
+/* Javis_Terminal - Stark Tech Terminal Theme */
+.Javis_Terminal {
     top: 30%;
     left: 32%;
     width: 580px;
@@ -363,10 +348,10 @@ body{
     box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
     font-family: 'Orbitron', monospace;
     color: #ffd600;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
-.Javis_Termi::before {
+.Javis_Terminal::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -381,7 +366,7 @@ body{
     z-index: 0;
 }
 
-.Javis_Termi > * {
+.Javis_Terminal > * {
     position: relative;
     z-index: 1;
 }
