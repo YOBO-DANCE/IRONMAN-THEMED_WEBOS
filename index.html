@@ -12,14 +12,36 @@
       <p id="Current_Time"></p>
     </div>
     <div class="StartIcons">
-        <img src="../assets/5579832.png" alt="Welcome_Icon" class="desktop-icon" id="WelcomeOpen">
-        <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="desktop-icon" id="OpenA1">
-        <img src="../assets/IronCalc.png" alt="IronCalc" class="desktop-icon" id="CalcOpen" style="border-radius: 1rem;">
-        <img src="../assets/Jarv_Termi.png" alt="Javis_Terminal" class="desktop-icon" id="TermOpen" style="border-radius: 1rem;">
+      <img
+        src="../assets/5579832.png"
+        alt="Welcome_Icon"
+        class="desktop-icon"
+        id="WelcomeOpen"
+      />
+      <img
+        src="../assets/iron-man-removebg-preview.png"
+        alt="IronBook_Icon"
+        class="desktop-icon"
+        id="OpenA1"
+      />
+      <img
+        src="../assets/IronCalc.png"
+        alt="IronCalc"
+        class="desktop-icon"
+        id="CalcOpen"
+        style="border-radius: 1rem"
+      />
+      <img
+        src="../assets/Jarv_Termi.png"
+        alt="Javis_Terminal"
+        class="desktop-icon"
+        id="TermOpen"
+        style="border-radius: 1rem"
+      />
     </div>
 
     <!-- Welcome Window -->
-    <div class="window Window1" id="WelcomeWindow" style="display: none;">
+    <div class="window Window1" id="WelcomeWindow" style="display: none">
       <h1>Hi, and Welcome!</h1>
       <p>
         I am Tanmay Hathile! A 13 year old whose <br />
@@ -27,9 +49,9 @@
       </p>
       <p id="closeWindow">Close</p>
     </div>
-     
+
     <!-- IronBook Window -->
-    <div class="window Window2" id="IronPad" style="display: none;">
+    <div class="window Window2" id="IronPad" style="display: none">
       <header class="window-header" id="IronPadheader">
         <h1>IronBook</h1>
         <button class="close-btn" id="closeIronPad">×</button>
@@ -53,7 +75,7 @@
     </div>
 
     <!-- IronCalc Window -->
-    <div class="window Calculator" id="IronCalc" style="display: none;">
+    <div class="window Calculator" id="IronCalc" style="display: none">
       <header class="window-header">
         <h1>IronCalc</h1>
         <button class="close-btn" id="closeIronCalc">×</button>
@@ -68,32 +90,106 @@
     </div>
 
     <!-- Javis_Terminal Window -->
-    <div class="window Javis_Terminal" id="Javis_Terminal" style="display: none;">
+    <div
+      class="window Javis_Terminal"
+      id="Javis_Terminal"
+      style="display: none"
+    >
       <header class="window-header" id="Javis_Terminalheader">
         <h1>Javis_Terminal</h1>
-        <button class="close-btn" id="closeJavis_Terminal" style="color: white;">×</button>
+        <button class="close-btn" id="closeJavis_Terminal" style="color: white">
+          ×
+        </button>
       </header>
       <div class="terminal-body">
         <div class="terminal-output" id="terminalOutput">
           <p class="system-welcome">IRONMAN_OS Secure Terminal v1.0.0</p>
-          <p class="system-welcome" style="color: green;">JARVIS Status: READY </p>
-          <p class="system-welcome">Type <span class="terminal-highlight">'help'</span> for a list of available commands.</p>
+          <p class="system-welcome" style="color: green">
+            JARVIS Status: READY
+          </p>
+          <p class="system-welcome">
+            Type <span class="terminal-highlight">'help'</span> for a list of
+            available commands.
+          </p>
         </div>
         <div class="terminal-input-line">
           <span class="terminal-prompt">iron@jarvis:~$</span>
-          <input type="text" id="terminalInput" autocomplete="off" spellcheck="false">
+          <input
+            type="text"
+            id="terminalInput"
+            autocomplete="off"
+            spellcheck="false"
+          />
         </div>
       </div>
     </div>
 
     <!-- MUSIC PLAYER -->
-    <div class="Iron_Player window" id="Iron_Player" style="display: none;">
-      <header class="window-header" id="Iron_Player_Header">
-        <h1>Iron_Player</h1>
-        <button class="close-btn" id="closeIron_Player" style="color: white;">×</button>
+    <div class="window IronPlayer" id="IronPlayer" style="display: none">
+      <header class="window-header" id="IronPlayerheader">
+        <h1>IronPlayer</h1>
+        <button class="close-btn" id="closeIronPlayer">×</button>
       </header>
-    </div>
+      <div class="player-body">
+        <!-- Track Info & Visuals -->
+        <div class="track-display">
+          <div class="track-visualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="track-info">
+            <div class="track-title" id="trackTitle">No Track Loaded</div>
+            <div class="track-artist" id="trackArtist">JARVIS Audio Suite</div>
+          </div>
+        </div>
 
+        <!-- Controls -->
+        <div class="player-controls">
+          <button class="control-action-btn" id="prevTrackBtn">⏮</button>
+          <button class="control-action-btn primary" id="playPauseBtn">
+            ▶
+          </button>
+          <button class="control-action-btn" id="nextTrackBtn">⏭</button>
+        </div>
+
+        <!-- Progress Scrub Bar -->
+        <div class="progress-section">
+          <input
+            type="range"
+            id="trackProgress"
+            value="0"
+            min="0"
+            max="100"
+            step="1"
+          />
+        </div>
+
+        <!-- Playlist & Volume -->
+        <div class="player-footer">
+          <div class="playlist-selector">
+            <select id="trackSelect">
+              <option value="" disabled selected>Select Track...</option>
+            </select>
+          </div>
+          <div class="volume-control">
+            <span>🔊</span>
+            <input
+              type="range"
+              id="volumeSlider"
+              value="70"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+
+        <!-- Hidden Audio Engine -->
+        <audio id="audioEngine"></audio>
+      </div>
+    </div>
+    
   </body>
   <script src="./script.js"></script>
 </html>
