@@ -1,591 +1,708 @@
-@import url('https://fonts.googleapis.com/css2?family=Caacupe+One&family=Orbitron:wght@400;700&display=swap');
-*{
-    margin: 0;
-    padding: 0;
+@import url("https://fonts.googleapis.com/css2?family=Caacupe+One&family=Orbitron:wght@400;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
 }
 
-body{
-    background: url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif);
-    color: #fff;
-    background-size: cover;
+body {
+  background: url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif);
+  color: #fff;
+  background-size: cover;
 }
 
 /* Shared window base */
-.window{
-    position: absolute;
-    color: #000;
-    border: 2px solid #e53935;
-    border-radius: 1rem;
-    padding: 10px;
-    background-color: aquamarine;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    min-width: 250px;
-    min-height: 150px;
+.window {
+  position: absolute;
+  color: #000;
+  border: 2px solid #e53935;
+  border-radius: 1rem;
+  padding: 10px;
+  background-color: aquamarine;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 250px;
+  min-height: 150px;
 }
 
-.win-resizer{
-    position: absolute !important;
-    box-sizing: border-box;
-    z-index: 9999;
-    /* background: rgba(255, 0, 0, 0.2); */  /* If you want to see the handlers comment out those line */
+.win-resizer {
+  position: absolute !important;
+  box-sizing: border-box;
+  z-index: 9999;
+  /* background: rgba(255, 0, 0, 0.2); */ /* If you want to see the handlers comment out those line */
 }
 
 /* Edge Handles (6px thick clickable zone) */
-.win-resizer.top    { top: -4px; left: 12px; right: 12px; height: 6px; cursor: n-resize; }
-.win-resizer.right  { top: 12px; bottom: 12px; right: -4px; width: 6px; cursor: e-resize; }
-.win-resizer.bottom { bottom: -4px; left: 12px; right: 12px; height: 6px; cursor: s-resize; }
-.win-resizer.left   { top: 12px; bottom: 12px; left: -4px; width: 6px; cursor: w-resize; }
-
-/* Corner Handles (Larger 14px boxes to account for your rounded 1rem corners) */
-.win-resizer.top-left     { top: -5px; left: -5px; width: 14px; height: 14px; cursor: nwse-resize; }
-.win-resizer.top-right    { top: -5px; right: -5px; width: 14px; height: 14px; cursor: nesw-resize; }
-.win-resizer.bottom-left  { bottom: -5px; left: -5px; width: 14px; height: 14px; cursor: nesw-resize; }
-.win-resizer.bottom-right { bottom: -5px; right: -5px; width: 14px; height: 14px; cursor: nwse-resize; }
-
-
-.Window1{
-    top: 50%;
-    left: 22%;
-    transform: translate(-50%, -50%);
+.win-resizer.top {
+  top: -4px;
+  left: 12px;
+  right: 12px;
+  height: 6px;
+  cursor: n-resize;
+}
+.win-resizer.right {
+  top: 12px;
+  bottom: 12px;
+  right: -4px;
+  width: 6px;
+  cursor: e-resize;
+}
+.win-resizer.bottom {
+  bottom: -4px;
+  left: 12px;
+  right: 12px;
+  height: 6px;
+  cursor: s-resize;
+}
+.win-resizer.left {
+  top: 12px;
+  bottom: 12px;
+  left: -4px;
+  width: 6px;
+  cursor: w-resize;
 }
 
-.TopBar{
-    display: flex;
-    padding: 1rem;
-    justify-content: space-between;
-    border: 2px solid #e53935;
-    border-radius: 12%;
+/* Corner Handles (Larger 14px boxes to account for rounded 1rem corners) */
+.win-resizer.top-left {
+  top: -5px;
+  left: -5px;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+}
+.win-resizer.top-right {
+  top: -5px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  cursor: nesw-resize;
+}
+.win-resizer.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  width: 14px;
+  height: 14px;
+  cursor: nesw-resize;
+}
+.win-resizer.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
 }
 
-.TopBar p {
-    border: 2px solid #ffd600;
-    border-radius: 10px;
-    padding: 10px;
-    backdrop-filter: blur(20px);
-    background-color: rgba(0, 0, 0, 0.25);
+.Window1 {
+  top: 50%;
+  left: 22%;
+  transform: translate(-50%, -50%);
+}
+
+.TopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 14px;
+  background: radial-gradient(
+    circle,
+    rgb(82, 82, 0) 0%,
+    rgba(189, 175, 53, 1) 36%,
+    rgba(146, 148, 35, 1) 100%
+  );
+  margin: 10px;
+  border-radius: 32px;
+  box-shadow: 0 0 10px crimson;
+  corner-shape: squircle;
+}
+
+.TopBar .system-metrics {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Orbitron', monospace;
+  user-select: none;
+}
+
+.TopBar .hud-metric {
+  font-size: 0.6rem;
+  padding: 3px 6px;
+  line-height: 1;
+  background: rgba(229, 57, 53, 0.1);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.TopBar .metric-label {
+  color: #ffd600;
+  font-weight: 700;
+  margin-right: 3px;
+  font-size: 0.58rem;
+}
+
+.TopBar .metric-val {
+  color: #00f3ff;
+  font-weight: 700;
+  font-size: 0.6rem;
+  text-shadow: 0 0 4px rgba(0, 243, 255, 0.6);
+}
+
+.TopBar .Time_TopBar {
+  border: 2px solid #e53935;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-family: 'Orbitron', monospace;
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.Iron_OS_logo {
+  /* width: 50%; */
+  height: 42px;
 }
 
 #closeWindow {
-    display: flex;
-    justify-content: center;
-    border: 2px solid #ffd600;
-    border-radius: 10px;
-    font-family: "Caacupe One", sans-serif;
-    font-weight: 900;
-    font-size: 1rem;
-    letter-spacing: 10px;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  border: 2px solid #ffd600;
+  border-radius: 10px;
+  font-family: "Caacupe One", sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 10px;
+  cursor: pointer;
 }
 
-.StartIcons{
-    margin: 2rem;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: flex-start;
-    gap: 15px;
-    filter: drop-shadow(0 5px 10px black);
+.StartIcons {
+  margin: 2rem;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+  gap: 15px;
+  filter: drop-shadow(0 5px 10px black);
 }
 
 .desktop-icon {
-    height: 5rem;
-    cursor: pointer;
+  height: 5rem;
+  cursor: pointer;
 }
 
-.selected{
-    border: 2px solid #ffd600;
+.selected {
+  border: 2px solid #ffd600;
 }
 
-.Window2{
-    top: 20%;
-    left: 8%;
-    min-width: 500px;
-    min-height: 400px;
-    max-width: calc(100vw - 2rem);
-    overflow: hidden;
+.Window2 {
+  top: 20%;
+  left: 8%;
+  min-width: 500px;
+  min-height: 400px;
+  max-width: calc(100vw - 2rem);
+  overflow: hidden;
 }
 
 /* Chibi Iron Man overlay inside IronBook only */
-.Window2::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp) no-repeat center center;
-    background-size: contain;
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
+.Window2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp)
+    no-repeat center center;
+  background-size: contain;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.Window2 > *{
-    position: relative;
-    z-index: 1;
+.Window2 > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* IronBook Layout Styles */
 .window-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #e53935;
-    cursor: grab;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e53935;
+  cursor: grab;
 }
 
 .window-header h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .ironbook-layout {
-    display: flex;
-    min-height: 300px;
+  display: flex;
+  min-height: 300px;
 }
 
 .sidebar {
-    width: 180px;
-    border-right: 1px solid #e53935;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
+  width: 180px;
+  border-right: 1px solid #e53935;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #notesList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex: 1;
-    overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
 }
 
 #notesList li {
-    padding: 0.5rem;
-    cursor: pointer;
-    border-radius: 4px;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 #notesList li:hover {
-    background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 #notesList li.active {
-    background: rgba(0,0,0,0.2);
-    font-weight: bold;
-    border-left: 3px solid #e53935;
+  background: rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  border-left: 3px solid #e53935;
 }
 
 #newNoteBtn {
-    margin-top: 0.5rem;
-    width: 100%;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .editor-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
 }
 
 #noteTitle {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    caret-color: #ffd600;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  caret-color: #ffd600;
 }
 
 #noteContent {
-    flex: 1;
-    min-height: 150px;
-    padding: 0.5rem;
-    resize: vertical;
-    font-family: inherit;
-    caret-color: #e53935;
+  flex: 1;
+  min-height: 150px;
+  padding: 0.5rem;
+  resize: vertical;
+  font-family: inherit;
+  caret-color: #e53935;
 }
 
 .editor-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .editor-actions button,
 #newNoteBtn {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    background: linear-gradient(135deg, #e53935, #c62828);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    transition: transform 0.1s, box-shadow 0.2s;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #e53935, #c62828);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s;
 }
 
 .editor-actions button:hover,
 #newNoteBtn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
 }
 
 .editor-actions button:active,
 #newNoteBtn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 /* IronCalc - Stark tech theme */
-.Calculator{
-    top: 15%;
-    left: 58%;
-    min-width: 340px;
-    min-height: 480px;
-    max-width: calc(100vw - 2rem);
-    /* overflow: hidden; */
+.Calculator {
+  top: 15%;
+  left: 58%;
+  min-width: 340px;
+  min-height: 480px;
+  max-width: calc(100vw - 2rem);
+  /* overflow: hidden; */
 }
 
-.Calculator::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 15%, rgba(229,57,53,0.08), transparent 60%);
-    pointer-events: none;
-    z-index: 0;
+.Calculator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 15%,
+    rgba(229, 57, 53, 0.08),
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
-.Calculator > *{
-    position: relative;
-    z-index: 1;
+.Calculator > * {
+  position: relative;
+  z-index: 1;
 }
 
-.calc-display{
-    background: radial-gradient(ellipse at center, rgba(229,57,53,0.15), transparent 70%), #0d0d0d;
-    border: 2px solid #e53935;
-    border-radius: 8px;
-    padding: 1rem;
-    color: #ffd600;
-    font-family: 'Orbitron', monospace;
-    text-align: right;
+.calc-display {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(229, 57, 53, 0.15),
+      transparent 70%
+    ),
+    #0d0d0d;
+  border: 2px solid #e53935;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #ffd600;
+  font-family: "Orbitron", monospace;
+  text-align: right;
 }
 
-.calc-expression{
-    font-size: 0.85rem;
-    opacity: 0.5;
-    min-height: 1.2em;
-    word-break: break-all;
+.calc-expression {
+  font-size: 0.85rem;
+  opacity: 0.5;
+  min-height: 1.2em;
+  word-break: break-all;
 }
 
-.calc-result{
-    font-size: 2.2rem;
-    font-weight: 700;
-    min-height: 2.8rem;
-    word-break: break-all;
+.calc-result {
+  font-size: 2.2rem;
+  font-weight: 700;
+  min-height: 2.8rem;
+  word-break: break-all;
 }
 
-.calc-keypad{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    padding: 0.75rem;
+.calc-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 0.75rem;
 }
 
-.calc-btn{
-    border: none;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.08s;
-    font-family: 'Orbitron', monospace;
-    padding: 0.75rem 0;
+.calc-btn {
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.08s;
+  font-family: "Orbitron", monospace;
+  padding: 0.75rem 0;
 }
 
-.calc-btn:active{
-    transform: scale(0.93);
+.calc-btn:active {
+  transform: scale(0.93);
 }
 
-.calc-btn.num{
-    background: #1a1a1a;
-    color: #ffd600;
-    border: 1px solid #333;
+.calc-btn.num {
+  background: #1a1a1a;
+  color: #ffd600;
+  border: 1px solid #333;
 }
 
-.calc-btn.op{
-    background: linear-gradient(135deg, #e53935, #b71c1c);
-    color: #fff;
+.calc-btn.op {
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  color: #fff;
 }
 
-.calc-btn.special{
-    background: linear-gradient(135deg, #ffd600, #e6c200);
-    color: #000;
+.calc-btn.special {
+  background: linear-gradient(135deg, #ffd600, #e6c200);
+  color: #000;
 }
 
-.calc-btn.wide{
-    grid-column: span 2;
+.calc-btn.wide {
+  grid-column: span 2;
 }
 
-.calc-btn.tall{
-    grid-row: span 3;
+.calc-btn.tall {
+  grid-row: span 3;
 }
 
 /* Javis_Terminal - Stark Tech Terminal Theme */
 .Javis_Terminal {
-    top: 30%;
-    left: 32%;
-    width: 580px;
-    height: 360px;
-    background-color: rgba(10, 10, 15, 0.92);
-    backdrop-filter: blur(12px);
-    border: 2px solid #e53935;
-    box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
-    font-family: 'Orbitron', monospace;
-    color: #ffd600;
-    /* overflow: hidden; */
+  top: 30%;
+  left: 32%;
+  width: 580px;
+  height: 360px;
+  background-color: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(12px);
+  border: 2px solid #e53935;
+  box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+  font-family: "Orbitron", monospace;
+  color: #ffd600;
+  /* overflow: hidden; */
 }
 
 .Javis_Terminal::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-    pointer-events: none;
-    z-index: 0;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .Javis_Terminal > * {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .terminal-body {
-    flex: 1;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    overflow: hidden;
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  overflow: hidden;
 }
 
 .terminal-output {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .terminal-output::-webkit-scrollbar {
-    width: 4px;
+  width: 4px;
 }
 
 .terminal-output::-webkit-scrollbar-thumb {
-    background: #e53935;
-    border-radius: 2px;
+  background: #e53935;
+  border-radius: 2px;
 }
 
 .system-welcome {
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .terminal-highlight {
-    color: #e53935;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
+  color: #e53935;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
 }
 
 .terminal-input-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(229, 57, 53, 0.4);
-    padding: 6px 10px;
-    border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 .terminal-prompt {
-    color: #ffd600;
-    font-weight: 700;
-    white-space: nowrap;
+  color: #ffd600;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 #terminalInput {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #ffd600;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.8rem;
-    caret-color: #e53935;
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffd600;
+  font-family: "Orbitron", monospace;
+  font-size: 0.8rem;
+  caret-color: #e53935;
 }
 
 /* IronPlayer */
 .IronPlayer {
-    top: 22%;
-    left: 42%;
-    width: 360px;
-    background-color: rgba(10, 10, 15, 0.92);
-    backdrop-filter: blur(12px);
-    border: 2px solid #e53935;
-    box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
-    font-family: 'Orbitron', monospace;
-    color: #ffd600;
-    overflow: hidden;
+  top: 22%;
+  left: 42%;
+  width: 360px;
+  background-color: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(12px);
+  border: 2px solid #e53935;
+  box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+  font-family: "Orbitron", monospace;
+  color: #ffd600;
+  overflow: hidden;
 }
 
 .IronPlayer .player-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .track-display {
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(229, 57, 53, 0.4);
-    border-radius: 8px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .track-visualizer {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 25px;
-    width: 30px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 25px;
+  width: 30px;
 }
 
 .track-visualizer .bar {
-    flex: 1;
-    background-color: #e53935;
-    animation: pulseBar 1s infinite alternate ease-in-out;
+  flex: 1;
+  background-color: #e53935;
+  animation: pulseBar 1s infinite alternate ease-in-out;
 }
 
 .track-visualizer .bar:nth-child(2) {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .track-visualizer .bar:nth-child(3) {
-    animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
 .track-visualizer .bar:nth-child(4) {
-    animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
 @keyframes pulseBar {
-    0% { height: 20%; }
-    100% { height: 100%; }
+  0% {
+    height: 20%;
+  }
+  100% {
+    height: 100%;
+  }
 }
 
 .track-info {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .track-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #ffd600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffd600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .track-artist {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 2px;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
 }
 
 .player-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
 .control-action-btn {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    color: #ffd600;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    transition: all 0.1s;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ffd600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "Orbitron", monospace;
+  font-size: 1rem;
+  transition: all 0.1s;
 }
 
 .control-action-btn:hover {
-    background: #252525;
-    box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+  background: #252525;
+  box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
 }
 
 .control-action-btn.primary {
-    background: linear-gradient(135deg, #e53935, #b71c1c);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
 }
 
 .control-action-btn.primary:hover {
-    box-shadow: 0 0 14px rgba(229, 57, 53, 0.7);
+  box-shadow: 0 0 14px rgba(229, 57, 53, 0.7);
 }
 
 .progress-section input[type="range"],
 .volume-control input[type="range"] {
-    width: 100%;
-    accent-color: #e53935;
-    cursor: pointer;
+  width: 100%;
+  accent-color: #e53935;
+  cursor: pointer;
 }
 
 .player-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .playlist-selector select {
-    background: #111;
-    color: #ffd600;
-    border: 1px solid rgba(229, 57, 53, 0.4);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.7rem;
-    outline: none;
-    max-width: 160px;
+  background: #111;
+  color: #ffd600;
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: "Orbitron", monospace;
+  font-size: 0.7rem;
+  outline: none;
+  max-width: 160px;
 }
 
 .volume-control {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
 }
 
 .volume-control input[type="range"] {
-    width: 70px;
+  width: 70px;
 }
