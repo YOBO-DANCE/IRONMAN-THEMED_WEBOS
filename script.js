@@ -581,7 +581,7 @@ document.querySelector("#closeIronCalc").addEventListener("click", function () {
 IronCalc.init();
 
 // Javis_Terminal
-var IronTerm = {
+var Javis_Terminal = {
   history: [],
   historyIndex: -1,
   isJarvisActive: false,
@@ -620,7 +620,7 @@ var IronTerm = {
       }
     });
 
-    var termWin = document.querySelector("#IronTerm");
+    var termWin = document.querySelector("#Javis_Terminal");
     if (termWin) {
       termWin.addEventListener("click", () => {
         this.inputEl.focus();
