@@ -193,6 +193,11 @@ body {
   cursor: pointer;
 }
 
+.canva-designed{
+  border-radius: 5rem;
+  corner-shape: squircle;
+}
+
 .selected {
   border: 2px solid #ffd600;
 }
@@ -449,7 +454,7 @@ body {
   grid-row: span 3;
 }
 
-/* Javis_Terminal - Stark Tech Terminal Theme */
+/* Javis_Terminal */
 .Javis_Terminal {
   top: 30%;
   left: 32%;

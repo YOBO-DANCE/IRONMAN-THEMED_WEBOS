@@ -43,30 +43,87 @@ ___
 
 - Time and Workstation Info on top of your screen.
 
+- Iron PC metrics at the top
+
+- A Music Player so you can listen to all  the Iron favourites
+
+- A Terminal so, all the "BTW, I use arch" people can navigate the OS
+
 - Thats it!
 
 ___
 
 # HOW IT WORKS
 
-Static site - no framework, no build. `index.html` = desktop, `style.css` = theme, `script.js` = OS.
+Static site i.e. no framework, no build. `index.html` = desktop, `style.css` = theme, `script.js` = OS.
 
 ```mermaid
-graph TD
-    A[index.html] --> B[TopBar<br/>Clock #Current_Time]
-    A --> C[StartIcons<br/>3 icons]
-    C --> D[WelcomeWindow #WelcomeWindow]
-    C --> E[IronBook #IronPad]
-    C --> F[IronCalc #IronCalc]
-    B -.-> G[script.js:2<br/>setInterval]
-    D & E & F -.-> H[script.js:7<br/>makeDraggable]
-    D & E & F -.-> I[script.js:34<br/>open/closeWindow<br/>setupIcon]
-    E -.-> J[script.js:63<br/>IronBook<br/>localStorage ironbook-notes]
-    F -.-> K[script.js:150<br/>IronCalc<br/>disp/code + DEG/RAD]
-    A -.-> L[style.css:14 .window base]
-    F -.-> M[style.css:224<br/>Calculator Stark theme]
-    J --> N[(localStorage)]
-    K --> N
+flowchart TD
+
+subgraph group_desktop["Desktop"]
+  node_desktop_ui["Desktop UI<br/>[index.html]"]
+  node_theme["Desktop Theme<br/>[style.css]"]
+  node_clock["Clock<br/>[script.js]"]
+  node_metrics["System Metrics<br/>[script.js]"]
+end
+
+subgraph group_windows["Window System"]
+  node_window_controls["Window Controls<br/>[script.js]"]
+  node_welcome["Welcome Window<br/>[index.html]"]
+end
+
+subgraph group_apps["Built-in Apps"]
+  node_ironbook["IronBook Notes<br/>[script.js]"]
+  node_ironcalc["IronCalc<br/>[script.js]"]
+  node_terminal["Jarvis Terminal<br/>[script.js]"]
+  node_music["Music Player<br/>[script.js]"]
+end
+
+subgraph group_runtime["Browser Runtime"]
+  node_audio_tracks["Audio Tracks"]
+  node_browser_storage[("Local Storage")]
+  node_browser["Web Browser"]
+end
+
+node_user(("User"))
+
+node_user -->|"opens"| node_desktop_ui
+node_desktop_ui -.->|"shows"| node_clock
+node_desktop_ui -.->|"shows"| node_metrics
+node_desktop_ui -->|"provides window"| node_welcome
+node_desktop_ui -->|"launches"| node_ironbook
+node_desktop_ui -->|"launches"| node_ironcalc
+node_desktop_ui -.->|"launches"| node_terminal
+node_desktop_ui -.->|"launches"| node_music
+node_desktop_ui -->|"styled by"| node_theme
+node_desktop_ui -.->|"uses"| node_window_controls
+node_ironbook -->|"reads and writes notes"| node_browser_storage
+node_music -->|"loads tracks"| node_audio_tracks
+node_browser -->|"renders"| node_desktop_ui
+
+click node_desktop_ui "https://github.com/yobo-dance/ironman-themed_webos/blob/main/index.html"
+click node_theme "https://github.com/yobo-dance/ironman-themed_webos/blob/main/style.css"
+click node_clock "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_metrics "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_window_controls "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_welcome "https://github.com/yobo-dance/ironman-themed_webos/blob/main/index.html"
+click node_ironbook "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_ironcalc "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_terminal "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_music "https://github.com/yobo-dance/ironman-themed_webos/blob/main/script.js"
+click node_audio_tracks "https://github.com/yobo-dance/ironman-themed_webos/tree/main/Test_playlist"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_desktop_ui,node_theme,node_clock,node_metrics,node_user toneBlue
+class node_window_controls,node_welcome toneAmber
+class node_ironbook,node_ironcalc,node_terminal,node_music toneMint
+class node_audio_tracks,node_browser_storage,node_browser toneRose
 ```
 
 # HALL OF ARMOR — CREDITS
@@ -74,8 +131,8 @@ graph TD
 | Suit Part | Credit |
 |---|---|
 | Theme | Iron Man / Stark Industries (Marvel) |
-| Fonts | `Orbitron` + `Caacupe One` via Google Fonts (`style.css:1`) |
-| Art | `assets/` wallpapers, icons, chibi overlay (`style.css:88` — pngtree, rest artist-unknown) |
+| Fonts | `Orbitron` + `Caacupe One` via Google Fonts|
+| Art | `assets/` wallpapers, icons, chibi overlay, Most made by me except that chibi overlay and the wallpaper|
 | Stack | Vanilla HTML/CSS/JS, zero deps — Vercel deploy, Mermaid diagram |
 
 # Badges

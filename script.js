@@ -31,14 +31,14 @@ var SystemMetrics = {
   },
 };
 
-// Initialize metrics when page loads
+// init metrics when page loads
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => SystemMetrics.init());
 } else {
   SystemMetrics.init();
 }
 
-// Simple drag: drag window by its header
+// Simple drag by which you can drag window by its header
 let zTop = 10;
 function bringToFront(el) {
   if (el) el.style.zIndex = ++zTop;
@@ -71,7 +71,7 @@ function makeDraggable(element) {
 makeDraggable(document.querySelector("#WelcomeWindow"));
 makeDraggable(document.querySelector("#IronPad"));
 
-// Windows: show / hide by id
+// Windows so they show / hide by id
 function openWindow(id) {
   var el = document.getElementById(id);
   el.style.display = "flex";
@@ -82,7 +82,7 @@ function closeWindow(id) {
   document.getElementById(id).style.display = "none";
 }
 
-// Close buttons binding
+// Close buttons
 document.querySelector("#closeIronPad").addEventListener("click", function () {
   closeWindow("IronPad");
 });
@@ -90,7 +90,7 @@ document.querySelector("#closeWindow").addEventListener("click", function () {
   closeWindow("WelcomeWindow");
 });
 
-// Icons setup: first click selects, second click opens. Simple toggle.
+// Icons setup i.e. first click selects, second click opens. Simple toggle.
 function setupIcon(iconId, windowId) {
   var icon = document.querySelector(iconId);
   icon.addEventListener("click", function () {
@@ -123,18 +123,18 @@ function setupWindowResizing() {
   const windows = document.querySelectorAll(".window");
 
   windows.forEach((win) => {
-    // 1. Inject the 8 resizer handles into each window
+    
     directions.forEach((dir) => {
       const resizer = document.createElement("div");
       resizer.className = `win-resizer ${dir}`;
       win.appendChild(resizer);
 
-      // 2. Attach dragging mechanics
+      
       resizer.addEventListener("mousedown", (e) => {
         e.preventDefault();
-        e.stopPropagation(); // Stops click event propagation down to background panels
+        e.stopPropagation();
 
-        // Get live geometric bounds
+        
         let originalWidth = win.offsetWidth;
         let originalHeight = win.offsetHeight;
         let originalX = win.offsetLeft;
@@ -155,7 +155,7 @@ function setupWindowResizing() {
           const isLeft = dir.includes("left");
           const isRight = dir.includes("right");
 
-          // Horizontal management
+          // horizontal management
           if (isRight) {
             const width = originalWidth + widthDiff;
             if (width > minWidth) win.style.width = `${width}px`;
@@ -167,7 +167,7 @@ function setupWindowResizing() {
             }
           }
 
-          // Vertical management
+          // vertical management
           if (isBottom) {
             const height = originalHeight + heightDiff;
             if (height > minHeight) win.style.height = `${height}px`;
