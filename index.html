@@ -10,9 +10,24 @@
 
 <body>
   <div class="TopBar">
-    <p>IronMan OS</p>
-    <p id="Current_Time"></p>
+    <img src="../README_ASSETS/Cool Text - Iron OS 516058731425365.png" alt="IRON_OS" class="Iron_OS_logo">
+    <div class="system-metrics">
+      <div class="hud-metric">
+        <span class="metric-label">CORE:</span>
+        <span class="metric-val" id="coreVal">98.5%</span>
+      </div>
+      <div class="hud-metric">
+        <span class="metric-label">TEMP:</span>
+        <span class="metric-val" id="tempVal">34°C</span>
+      </div>
+      <div class="hud-metric">
+        <span class="metric-label">RAM:</span>
+        <span class="metric-val" id="ramVal">4.2 GB</span>
+      </div>
+    </div>
+    <p id="Current_Time" class="Time_TopBar"></p>
   </div>
+
   <div class="StartIcons">
     <img src="../assets/5579832.png" alt="Welcome_Icon" class="desktop-icon" id="WelcomeOpen" />
     <img src="../assets/iron-man-removebg-preview.png" alt="IronBook_Icon" class="desktop-icon" id="OpenA1" />
@@ -82,9 +97,6 @@
     <div class="terminal-body">
       <div class="terminal-output" id="terminalOutput">
         <p class="system-welcome">IRONMAN_OS Secure Terminal v1.0.0</p>
-        <p class="system-welcome" style="color: green">
-          JARVIS Status: READY
-        </p>
         <p class="system-welcome">
           Type <span class="terminal-highlight">'help'</span> for a list of
           available commands.

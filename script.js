@@ -4,6 +4,40 @@ setInterval(function () {
     new Date().toLocaleString();
 }, 500);
 
+// System Metrics
+var SystemMetrics = {
+  init: function () {
+    this.coreEl = document.querySelector("#coreVal");
+    this.tempEl = document.querySelector("#tempVal");
+    this.ramEl = document.querySelector("#ramVal");
+
+    this.updateMetrics();
+    setInterval(() => this.updateMetrics(), 2000);
+  },
+
+  updateMetrics: function () {
+    if (this.coreEl) {
+      var core = (95 + Math.random() * 4.9).toFixed(1);
+      this.coreEl.textContent = core + "%";
+    }
+    if (this.tempEl) {
+      var temp = Math.floor(32 + Math.random() * 5);
+      this.tempEl.textContent = temp + "°C";
+    }
+    if (this.ramEl) {
+      var ram = (3.8 + Math.random() * 0.8).toFixed(1);
+      this.ramEl.textContent = ram + " GB";
+    }
+  },
+};
+
+// Initialize metrics when page loads
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => SystemMetrics.init());
+} else {
+  SystemMetrics.init();
+}
+
 // Simple drag: drag window by its header
 let zTop = 10;
 function bringToFront(el) {
@@ -628,7 +662,6 @@ var Jarvis_Terminal = {
       }
     });
 
-    // Ensure clicking anywhere in terminal body focuses the input cursor
     var termBody = document.querySelector(".terminal-body");
     if (termBody) {
       termBody.addEventListener("click", () => {
@@ -720,7 +753,6 @@ var Jarvis_Terminal = {
   },
 };
 
-// Ensure init executes after DOM renders
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => Jarvis_Terminal.init());
 } else {
