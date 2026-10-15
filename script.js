@@ -582,196 +582,213 @@ IronCalc.init();
 
 // Javis_Terminal
 var Javis_Terminal = {
-  history: [],
-  historyIndex: -1,
-  isJarvisActive: false,
+    history: [],
+    historyIndex: -1,
+    isJarvisActive: false,
 
-  init: function () {
-    this.outputEl = document.querySelector("#terminalOutput");
-    this.inputEl = document.querySelector("#terminalInput");
+    init: function () {
+        this.outputEl = document.querySelector("#terminalOutput");
+        this.inputEl = document.querySelector("#terminalInput");
+        
+        if (!this.inputEl || !this.outputEl) return;
 
-    if (!this.inputEl || !this.outputEl) return;
+        this.inputEl.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                var cmd = this.inputEl.value.trim();
+                if (cmd) {
+                    this.executeCommand(cmd);
+                    this.history.push(cmd);
+                    this.historyIndex = this.history.length;
+                    this.inputEl.value = "";
+                }
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.inputEl.value = this.history[this.historyIndex];
+                }
+            } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (this.historyIndex < this.history.length - 1) {
+                    this.historyIndex++;
+                    this.inputEl.value = this.history[this.historyIndex];
+                } else {
+                    this.historyIndex = this.history.length;
+                    this.inputEl.value = "";
+                }
+            }
+        });
 
-    this.inputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        var cmd = this.inputEl.value.trim();
-        if (cmd) {
-          this.executeCommand(cmd);
-          this.history.push(cmd);
-          this.historyIndex = this.history.length;
-          this.inputEl.value = "";
+        var termWin = document.querySelector("#Javis_Terminal");
+        if (termWin) {
+            termWin.addEventListener("click", () => {
+                this.inputEl.focus();
+            });
         }
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (this.historyIndex > 0) {
-          this.historyIndex--;
-          this.inputEl.value = this.history[this.historyIndex];
+    },
+
+    printLine: function (text, isHtml = false, isJarvis = false) {
+        var p = document.createElement("p");
+        if (isJarvis) {
+            p.style.color = "#00f3ff";
+            p.style.textShadow = "0 0 6px rgba(0, 243, 255, 0.4)";
         }
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (this.historyIndex < this.history.length - 1) {
-          this.historyIndex++;
-          this.inputEl.value = this.history[this.historyIndex];
+        if (isHtml) {
+            p.innerHTML = text;
         } else {
-          this.historyIndex = this.history.length;
-          this.inputEl.value = "";
+            p.textContent = text;
         }
-      }
-    });
+        this.outputEl.appendChild(p);
+        this.outputEl.scrollTop = this.outputEl.scrollHeight;
+    },
 
-    var termWin = document.querySelector("#Javis_Terminal");
-    if (termWin) {
-      termWin.addEventListener("click", () => {
-        this.inputEl.focus();
-      });
-    }
-  },
+    executeCommand: async function (rawCmd) {
+        if (this.isJarvisActive) {
+            this.printLine(`JARVIS> ${rawCmd}`);
+            
+            if (rawCmd.toLowerCase() === "exit" || rawCmd.toLowerCase() === "quit") {
+                this.isJarvisActive = false;
+                document.querySelector(".terminal-prompt").textContent = "iron@jarvis:~$";
+                this.printLine("J.A.R.V.I.S.: Deactivating neural link. Returning to standard shell.", false, true);
+                return;
+            }
 
-  printLine: function (text, isHtml = false, isJarvis = false) {
-    var p = document.createElement("p");
-    if (isJarvis) {
-      p.style.color = "#00f3ff"; // psst...glowing cyan for J.A.R.V.I.S. responses
-      p.style.textShadow = "0 0 6px rgba(0, 243, 255, 0.4)";
-    }
-    if (isHtml) {
-      p.innerHTML = text;
-    } else {
-      p.textContent = text;
-    }
-    this.outputEl.appendChild(p);
-    this.outputEl.scrollTop = this.outputEl.scrollHeight;
-  },
+            // command to securely save the user's Groq key locally
+            if (rawCmd.toLowerCase().startsWith("setkey ")) {
+                var key = rawCmd.split(" ")[1];
+                localStorage.setItem("groq_api_key", key);
+                this.printLine("J.A.R.V.I.S.: Groq API key saved securely in local storage, Sir.", false, true);
+                return;
+            }
 
-  executeCommand: function (rawCmd) {
-    if (this.isJarvisActive) {
-      this.printLine(`iron@jarvis:~$ ${rawCmd}`);
-      if (rawCmd.toLowerCase() === "exit" || rawCmd.toLowerCase() === "quit") {
-        this.isJarvisActive = false;
-        document.querySelector(".terminal-prompt").textContent =
-          "iron@jarvis:~$";
-        this.printLine(
-          "J.A.R.V.I.S.: Deactivating conversational link. Returning to standard shell.",
-          false,
-          true,
-        );
-        return;
-      }
-      this.handleJarvisAI(rawCmd);
-      return;
-    }
+            await this.handleJarvisAI(rawCmd);
+            return;
+        }
 
-    this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+        this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+        
+        var parts = rawCmd.split(" ");
+        var cmd = parts[0].toLowerCase();
+        var args = parts.slice(1);
 
-    var parts = rawCmd.split(" ");
-    var cmd = parts[0].toLowerCase();
-    var args = parts.slice(1);
+        switch (cmd) {
+            case "help":
+                this.printLine("Available commands:");
+                this.printLine("  help             - Show this help menu");
+                this.printLine("  clear            - Clear terminal screen");
+                this.printLine("  time             - Display current date and time");
+                this.printLine("  echo [text]      - Echo back provided text");
+                this.printLine("  calc [expr]      - Evaluate math expression");
+                this.printLine("  open [app]       - Launch app (notepad, calc, player)");
+                this.printLine("  jarvis           - Initialize J.A.R.V.I.S. AI link");
+                break;
 
-    switch (cmd) {
-      case "help":
-        this.printLine("Available commands:");
-        this.printLine("  help             - Show this help menu");
-        this.printLine("  clear            - Clear terminal screen");
-        this.printLine("  time             - Display current date and time");
-        this.printLine("  echo [text]      - Echo back provided text");
-        this.printLine("  calc [expr]      - Evaluate math expression");
-        this.printLine(
-          "  open [app]       - Launch app (notepad, calc, player)",
-        );
-        this.printLine(
-          "  jarvis           - Initialize J.A.R.V.I.S. AI conversational mode",
-        );
-        break;
+            case "clear":
+                this.outputEl.innerHTML = "";
+                break;
 
-      case "clear":
-        this.outputEl.innerHTML = "";
-        break;
+            case "time":
+                this.printLine(`System Time: ${new Date().toLocaleString()}`);
+                break;
 
-      case "time":
-        this.printLine(`System Time: ${new Date().toLocaleString()}`);
-        break;
+            case "echo":
+                this.printLine(args.join(" ") || "");
+                break;
 
-      case "echo":
-        this.printLine(args.join(" ") || "");
-        break;
+            case "calc":
+                try {
+                    var expr = args.join("");
+                    if (!expr) throw new Error("No expression");
+                    if (/[^0-9+\-*/(). ]/.test(expr)) throw new Error("Invalid characters");
+                    var res = Function('"use strict"; return (' + expr + ')')();
+                    this.printLine(`Result: ${res}`);
+                } catch (err) {
+                    this.printLine("Error: Invalid calculation syntax.");
+                }
+                break;
 
-      case "calc":
+            case "open":
+                var target = (args[0] || "").toLowerCase();
+                if (target === "notepad" || target === "ironbook") {
+                    openWindow("IronPad");
+                    this.printLine("Opening IronBook...");
+                } else if (target === "calc" || target === "calculator") {
+                    openWindow("IronCalc");
+                    this.printLine("Opening IronCalc...");
+                } else if (target === "player" || target === "music") {
+                    openWindow("IronPlayer");
+                    this.printLine("Opening IronPlayer...");
+                } else {
+                    this.printLine(`Unknown app: '${args[0]}'. Try 'notepad', 'calc', or 'player'.`);
+                }
+                break;
+
+            case "jarvis":
+                var savedKey = localStorage.getItem("groq_api_key");
+                if (!savedKey) {
+                    this.printLine("J.A.R.V.I.S.: Notice - No Groq API key found. Type 'setkey YOUR_GROQ_KEY' to link.", false, true);
+                }
+                this.isJarvisActive = true;
+                document.querySelector(".terminal-prompt").textContent = "JARVIS> ";
+                this.printLine("J.A.R.V.I.S.: Neural link online. Ask me anything, Sir. Type 'exit' to disconnect.", false, true);
+                break;
+
+            default:
+                this.printLine(`Command not recognized: '${cmd}'. Type 'help' for options.`);
+                break;
+        }
+    },
+
+    handleJarvisAI: async function (query) {
+        var apiKey = localStorage.getItem("groq_api_key");
+        if (!apiKey) {
+            this.printLine("J.A.R.V.I.S.: Error: Missing API key. Please type 'setkey [your_key]' first, Sir.", false, true);
+            return;
+        }
+
+        this.printLine("J.A.R.V.I.S.: Transmitting query...", false, true);
+        
         try {
-          var expr = args.join("");
-          if (!expr) throw new Error("No expression");
-          if (/[^0-9+\-*/(). ]/.test(expr))
-            throw new Error("Invalid characters");
-          var res = Function('"use strict"; return (' + expr + ")")();
-          this.printLine(`Result: ${res}`);
-        } catch (err) {
-          this.printLine("Error: Invalid calculation syntax.");
+            var url = "https://api.groq.com/openai/v1/chat/completions";
+            
+            var payload = {
+                model: "llama-3.1-8b-instant",
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are J.A.R.V.I.S., Tony Stark's advanced artificial intelligence assistant. Keep your responses concise, futuristic, slightly witty, and address the user respectfully as Sir."
+                    },
+                    {
+                        role: "user",
+                        content: query
+                    }
+                ]
+            };
+
+            var response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            var data = await response.json();
+            var aiReply = data.choices?.[0]?.message?.content || "I encountered an error processing that request, Sir.";
+            
+            this.printLine(`J.A.R.V.I.S.: ${aiReply}`, false, true);
+        } catch (error) {
+            this.printLine("J.A.R.V.I.S.: Error connecting to Groq mainframe servers.", false, true);
         }
-        break;
-
-      case "open":
-        var target = (args[0] || "").toLowerCase();
-        if (target === "notepad" || target === "ironbook") {
-          openWindow("IronPad");
-          this.printLine("Opening IronBook...");
-        } else if (target === "calc" || target === "calculator") {
-          openWindow("IronCalc");
-          this.printLine("Opening IronCalc...");
-        } else if (target === "player" || target === "music") {
-          openWindow("IronPlayer");
-          this.printLine("Opening IronPlayer...");
-        } else {
-          this.printLine(
-            `Unknown app: '${args[0]}'. Try 'notepad', 'calc', or 'player'.`,
-          );
-        }
-        break;
-
-      case "jarvis":
-        this.isJarvisActive = true;
-        document.querySelector(".terminal-prompt").textContent = "JARVIS> ";
-        this.printLine(
-          "J.A.R.V.I.S.: Online and listening, Sir. Type 'exit' to terminate session.",
-          false,
-          true,
-        );
-        break;
-
-      default:
-        this.printLine(
-          `Command not recognized: '${cmd}'. Type 'help' for options.`,
-        );
-        break;
     }
-  },
-
-  handleJarvisAI: function (query) {
-    var q = query.toLowerCase();
-    var response = "";
-
-    if (q.includes("hello") || q.includes("hi")) {
-      response =
-        "Greetings, Sir. All systems are operating at peak efficiency.";
-    } else if (q.includes("status") || q.includes("diagnostic")) {
-      response =
-        "Arc reactor output stable. Local storage operational. IronOS security protocols engaged.";
-    } else if (q.includes("joke")) {
-      response =
-        "Sir, I would crack a joke about Ultron, but I prefer my humor with fewer bugs.";
-    } else if (q.includes("time")) {
-      response = `The current system time is ${new Date().toLocaleTimeString()}, Sir.`;
-    } else {
-      response = `Analyzing query '${query}'... Simulation parameters optimal, Sir. How else may I assist?`;
-    }
-
-    this.printLine(`J.A.R.V.I.S.: ${response}`, false, true);
-  },
 };
 
+// wiring up terminal
 makeDraggable(document.querySelector("#Javis_Terminal"));
 setupIcon("#TermOpen", "Javis_Terminal");
-document
-  .querySelector("#closeJavis_Terminal")
-  .addEventListener("click", function () {
+document.querySelector("#closeJavis_Terminal").addEventListener("click", function () {
     closeWindow("Javis_Terminal");
-  });
+});
 Javis_Terminal.init();
