@@ -1,6 +1,7 @@
 // Clock
 setInterval(function () {
-  document.querySelector("#Current_Time").textContent = new Date().toLocaleString();
+  document.querySelector("#Current_Time").textContent =
+    new Date().toLocaleString();
 }, 500);
 
 // Simple drag: drag window by its header
@@ -21,8 +22,8 @@ function makeDraggable(element) {
     var offsetY = e.clientY - element.offsetTop;
 
     function move(ev) {
-      element.style.left = (ev.clientX - offsetX) + "px";
-      element.style.top = (ev.clientY - offsetY) + "px";
+      element.style.left = ev.clientX - offsetX + "px";
+      element.style.top = ev.clientY - offsetY + "px";
     }
     function stop() {
       document.removeEventListener("pointermove", move);
@@ -75,18 +76,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setupWindowResizing() {
-  const directions = ['top', 'right', 'bottom', 'left', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
-  const windows = document.querySelectorAll('.window');
+  const directions = [
+    "top",
+    "right",
+    "bottom",
+    "left",
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+  ];
+  const windows = document.querySelectorAll(".window");
 
-  windows.forEach(win => {
+  windows.forEach((win) => {
     // 1. Inject the 8 resizer handles into each window
-    directions.forEach(dir => {
-      const resizer = document.createElement('div');
+    directions.forEach((dir) => {
+      const resizer = document.createElement("div");
       resizer.className = `win-resizer ${dir}`;
       win.appendChild(resizer);
 
       // 2. Attach dragging mechanics
-      resizer.addEventListener('mousedown', (e) => {
+      resizer.addEventListener("mousedown", (e) => {
         e.preventDefault();
         e.stopPropagation(); // Stops click event propagation down to background panels
 
@@ -95,7 +105,7 @@ function setupWindowResizing() {
         let originalHeight = win.offsetHeight;
         let originalX = win.offsetLeft;
         let originalY = win.offsetTop;
-        
+
         let originalMouseX = e.clientX;
         let originalMouseY = e.clientY;
 
@@ -106,10 +116,10 @@ function setupWindowResizing() {
           const widthDiff = mouseEvent.clientX - originalMouseX;
           const heightDiff = mouseEvent.clientY - originalMouseY;
 
-          const isTop = dir.includes('top');
-          const isBottom = dir.includes('bottom');
-          const isLeft = dir.includes('left');
-          const isRight = dir.includes('right');
+          const isTop = dir.includes("top");
+          const isBottom = dir.includes("bottom");
+          const isLeft = dir.includes("left");
+          const isRight = dir.includes("right");
 
           // Horizontal management
           if (isRight) {
@@ -137,12 +147,12 @@ function setupWindowResizing() {
         }
 
         function stopResize() {
-          window.removeEventListener('mousemove', resize);
-          window.removeEventListener('mouseup', stopResize);
+          window.removeEventListener("mousemove", resize);
+          window.removeEventListener("mouseup", stopResize);
         }
 
-        window.addEventListener('mousemove', resize);
-        window.addEventListener('mouseup', stopResize);
+        window.addEventListener("mousemove", resize);
+        window.addEventListener("mouseup", stopResize);
       });
     });
   });
@@ -150,181 +160,192 @@ function setupWindowResizing() {
 
 // IronPlayer
 var IronPlayer = {
-    playlist: [
-        {
-            title: "Babydoll",
-            artist: "Dominic Fike",
-            src: "../Test_playlist/Babydoll.mp3"
-        },
-        {
-            title: "Daylight",
-            artist: "David Kushner",
-            src: "../Test_playlist/David Kushner - Daylight Official Music Video.mp3"
-        },
-        {
-            title: "End Of Beginning",
-            artist: "Djo",
-            src: "../Test_playlist/Djo - End Of Beginning Official Audio.mp3"
-        },
-        {
-            title: "white keys",
-            artist: "Dominic Fike",
-            src: "../Test_playlist/Dominic Fike - white keys Lyrics.mp3"
-        },
-        {
-            title: "Perfect",
-            artist: "Ed Sheeran",
-            src: "../Test_playlist/Ed Sheeran - Perfect Lyrics.mp3"
-        },
-        {
-            title: "Sailor Song",
-            artist: "Gigi Perez",
-            src: "../Test_playlist/Gigi Perez - Sailor Song Official Music Video.mp3"
-        },
-        {
-            title: "Too Sweet",
-            artist: "Hozier",
-            src: "../Test_playlist/Hozier - Too Sweet Official Video.mp3"
-        },
-        {
-            title: "Earrings",
-            artist: "Malcolm Todd",
-            src: "../Test_playlist/Malcolm Todd - Earrings Official Visualizer.mp3"
-        },
-        {
-            title: "back to friends",
-            artist: "sombr",
-            src: "../Test_playlist/sombr - back to friends official video.mp3"
-        },
-        {
-            title: "Bad Habit",
-            artist: "Steve Lacy",
-            src: "../Test_playlist/Steve Lacy - Bad Habit Official Video.mp3"
-        },
-        {
-          title: "Dracula",
-          artist: "Tama Impala",
-          src: "../Test_playlist/Tame Impala - Dracula Official Video.mp3"
-        },
-        {
-          title: "Loser",
-          artist: "Tama Impala",
-          src: "../Test_playlist/Temper City - Self Aware Official Video.mp3"
-        },
-        {
-          title: "Self Aware",
-          artist: "Temper City",
-          src: "../Test_playlist/Temper City - Self Aware Official Video.mp3"
-        },
-        {
-          title: "Riptide",
-          artist: "Vance Joy",
-          src: "../Test_playlist/Vance Joy - Riptide Official Video.mp3"
-        }
-    ],
-    currentIndex: 0,
-    isPlaying: false,
-
-    init: function () {
-        // Cache DOM elements
-        this.audio = document.getElementById("audioEngine");
-        this.titleEl = document.getElementById("trackTitle");
-        this.artistEl = document.getElementById("trackArtist");
-        this.playBtn = document.getElementById("playPauseBtn");
-        this.progress = document.getElementById("trackProgress");
-        this.volume = document.getElementById("volumeSlider");
-        this.select = document.getElementById("trackSelect");
-
-        if (!this.audio) return;
-
-        this.playlist.forEach((track, index) => {
-            var opt = document.createElement("option");
-            opt.value = index;
-            opt.textContent = track.title;
-            this.select.appendChild(opt);
-        });
-
-        // Event Listeners for controls
-        this.playBtn.addEventListener("click", () => this.togglePlay());
-        document.getElementById("prevTrackBtn").addEventListener("click", () => this.prevTrack());
-        document.getElementById("nextTrackBtn").addEventListener("click", () => this.nextTrack());
-
-        this.select.addEventListener("change", (e) => {
-            this.loadTrack(parseInt(e.target.value));
-            this.playTrack();
-        });
-
-        this.volume.addEventListener("input", (e) => {
-            this.audio.volume = e.target.value / 100;
-        });
-
-        this.audio.addEventListener("timeupdate", () => {
-            if (this.audio.duration) {
-                this.progress.value = (this.audio.currentTime / this.audio.duration) * 100;
-            }
-        });
-
-        this.progress.addEventListener("input", (e) => {
-            if (this.audio.duration) {
-                this.audio.currentTime = (e.target.value / 100) * this.audio.duration;
-            }
-        });
-
-        this.audio.addEventListener("ended", () => {
-            this.nextTrack();
-        });
-
-        // Initialize default volume and first track metadata
-        this.audio.volume = this.volume.value / 100;
-        this.loadTrack(0);
+  playlist: [
+    {
+      title: "Babydoll",
+      artist: "Dominic Fike",
+      src: "../Test_playlist/Babydoll.mp3",
     },
-
-    loadTrack: function (index) {
-        this.currentIndex = index;
-        var track = this.playlist[index];
-        this.audio.src = track.src;
-        this.titleEl.textContent = track.title;
-        this.artistEl.textContent = track.artist;
-        this.select.value = index;
+    {
+      title: "Daylight",
+      artist: "David Kushner",
+      src: "../Test_playlist/David Kushner - Daylight Official Music Video.mp3",
     },
-
-    togglePlay: function () {
-        if (this.isPlaying) {
-            this.audio.pause();
-            this.playBtn.textContent = "▶";
-            this.isPlaying = false;
-        } else {
-            this.playTrack();
-        }
+    {
+      title: "End Of Beginning",
+      artist: "Djo",
+      src: "../Test_playlist/Djo - End Of Beginning Official Audio.mp3",
     },
-
-    playTrack: function () {
-        this.audio.play().then(() => {
-            this.playBtn.textContent = "⏸";
-            this.isPlaying = true;
-        }).catch(err => {
-            console.log("Playback prevented or error loading audio source.");
-        });
+    {
+      title: "white keys",
+      artist: "Dominic Fike",
+      src: "../Test_playlist/Dominic Fike - white keys Lyrics.mp3",
     },
-
-    nextTrack: function () {
-        var next = (this.currentIndex + 1) % this.playlist.length;
-        this.loadTrack(next);
-        this.playTrack();
+    {
+      title: "Perfect",
+      artist: "Ed Sheeran",
+      src: "../Test_playlist/Ed Sheeran - Perfect Lyrics.mp3",
     },
+    {
+      title: "Sailor Song",
+      artist: "Gigi Perez",
+      src: "../Test_playlist/Gigi Perez - Sailor Song Official Music Video.mp3",
+    },
+    {
+      title: "Too Sweet",
+      artist: "Hozier",
+      src: "../Test_playlist/Hozier - Too Sweet Official Video.mp3",
+    },
+    {
+      title: "Earrings",
+      artist: "Malcolm Todd",
+      src: "../Test_playlist/Malcolm Todd - Earrings Official Visualizer.mp3",
+    },
+    {
+      title: "back to friends",
+      artist: "sombr",
+      src: "../Test_playlist/sombr - back to friends official video.mp3",
+    },
+    {
+      title: "Bad Habit",
+      artist: "Steve Lacy",
+      src: "../Test_playlist/Steve Lacy - Bad Habit Official Video.mp3",
+    },
+    {
+      title: "Dracula",
+      artist: "Tama Impala",
+      src: "../Test_playlist/Tame Impala - Dracula Official Video.mp3",
+    },
+    {
+      title: "Loser",
+      artist: "Tama Impala",
+      src: "../Test_playlist/Temper City - Self Aware Official Video.mp3",
+    },
+    {
+      title: "Self Aware",
+      artist: "Temper City",
+      src: "../Test_playlist/Temper City - Self Aware Official Video.mp3",
+    },
+    {
+      title: "Riptide",
+      artist: "Vance Joy",
+      src: "../Test_playlist/Vance Joy - Riptide Official Video.mp3",
+    },
+  ],
+  currentIndex: 0,
+  isPlaying: false,
 
-    prevTrack: function () {
-        var prev = (this.currentIndex - 1 + this.playlist.length) % this.playlist.length;
-        this.loadTrack(prev);
-        this.playTrack();
+  init: function () {
+    // Cache DOM elements
+    this.audio = document.getElementById("audioEngine");
+    this.titleEl = document.getElementById("trackTitle");
+    this.artistEl = document.getElementById("trackArtist");
+    this.playBtn = document.getElementById("playPauseBtn");
+    this.progress = document.getElementById("trackProgress");
+    this.volume = document.getElementById("volumeSlider");
+    this.select = document.getElementById("trackSelect");
+
+    if (!this.audio) return;
+
+    this.playlist.forEach((track, index) => {
+      var opt = document.createElement("option");
+      opt.value = index;
+      opt.textContent = track.title;
+      this.select.appendChild(opt);
+    });
+
+    // Event Listeners for controls
+    this.playBtn.addEventListener("click", () => this.togglePlay());
+    document
+      .getElementById("prevTrackBtn")
+      .addEventListener("click", () => this.prevTrack());
+    document
+      .getElementById("nextTrackBtn")
+      .addEventListener("click", () => this.nextTrack());
+
+    this.select.addEventListener("change", (e) => {
+      this.loadTrack(parseInt(e.target.value));
+      this.playTrack();
+    });
+
+    this.volume.addEventListener("input", (e) => {
+      this.audio.volume = e.target.value / 100;
+    });
+
+    this.audio.addEventListener("timeupdate", () => {
+      if (this.audio.duration) {
+        this.progress.value =
+          (this.audio.currentTime / this.audio.duration) * 100;
+      }
+    });
+
+    this.progress.addEventListener("input", (e) => {
+      if (this.audio.duration) {
+        this.audio.currentTime = (e.target.value / 100) * this.audio.duration;
+      }
+    });
+
+    this.audio.addEventListener("ended", () => {
+      this.nextTrack();
+    });
+
+    // Initialize default volume and first track metadata
+    this.audio.volume = this.volume.value / 100;
+    this.loadTrack(0);
+  },
+
+  loadTrack: function (index) {
+    this.currentIndex = index;
+    var track = this.playlist[index];
+    this.audio.src = track.src;
+    this.titleEl.textContent = track.title;
+    this.artistEl.textContent = track.artist;
+    this.select.value = index;
+  },
+
+  togglePlay: function () {
+    if (this.isPlaying) {
+      this.audio.pause();
+      this.playBtn.textContent = "▶";
+      this.isPlaying = false;
+    } else {
+      this.playTrack();
     }
+  },
+
+  playTrack: function () {
+    this.audio
+      .play()
+      .then(() => {
+        this.playBtn.textContent = "⏸";
+        this.isPlaying = true;
+      })
+      .catch((err) => {
+        console.log("Playback prevented or error loading audio source.");
+      });
+  },
+
+  nextTrack: function () {
+    var next = (this.currentIndex + 1) % this.playlist.length;
+    this.loadTrack(next);
+    this.playTrack();
+  },
+
+  prevTrack: function () {
+    var prev =
+      (this.currentIndex - 1 + this.playlist.length) % this.playlist.length;
+    this.loadTrack(prev);
+    this.playTrack();
+  },
 };
 
 makeDraggable(document.querySelector("#IronPlayer"));
 setupIcon("#PlayerOpen", "IronPlayer");
-document.querySelector("#closeIronPlayer").addEventListener("click", function () {
+document
+  .querySelector("#closeIronPlayer")
+  .addEventListener("click", function () {
     closeWindow("IronPlayer");
-});
+  });
 IronPlayer.init();
 
 // IronBook
@@ -338,10 +359,18 @@ var IronBook = {
     this.title = document.querySelector("#noteTitle");
     this.content = document.querySelector("#noteContent");
     this.showList();
-    document.querySelector("#newNoteBtn").addEventListener("click", () => this.newNote());
-    document.querySelector("#saveNoteBtn").addEventListener("click", () => this.saveNote(false));
-    document.querySelector("#saveAsNoteBtn").addEventListener("click", () => this.saveNote(true));
-    document.querySelector("#deleteNoteBtn").addEventListener("click", () => this.deleteNote());
+    document
+      .querySelector("#newNoteBtn")
+      .addEventListener("click", () => this.newNote());
+    document
+      .querySelector("#saveNoteBtn")
+      .addEventListener("click", () => this.saveNote(false));
+    document
+      .querySelector("#saveAsNoteBtn")
+      .addEventListener("click", () => this.saveNote(true));
+    document
+      .querySelector("#deleteNoteBtn")
+      .addEventListener("click", () => this.deleteNote());
     this.list.addEventListener("click", (e) => {
       var li = e.target.closest("li");
       if (li) this.openNote(li.dataset.id);
@@ -393,7 +422,11 @@ var IronBook = {
 
     if (this.currentId === null) {
       this.currentId = Date.now().toString();
-      this.notes.unshift({ id: this.currentId, title: title, content: content });
+      this.notes.unshift({
+        id: this.currentId,
+        title: title,
+        content: content,
+      });
     } else {
       var note = this.notes.find((n) => n.id === this.currentId);
       note.title = title;
@@ -409,7 +442,7 @@ var IronBook = {
     this.notes = this.notes.filter((n) => n.id !== this.currentId);
     this.keep();
     this.newNote();
-  }
+  },
 };
 
 IronBook.init();
@@ -421,11 +454,23 @@ var IronCalc = {
   result: "0",
 
   keys: [
-    ["AC", "special wide", "ac", "ac"], ["÷", "op", "÷", "/"], ["×", "op", "×", "*"],
-    ["7", "num", "7", "7"], ["8", "num", "8", "8"], ["9", "num", "9", "9"], ["−", "op", "−", "-"],
-    ["4", "num", "4", "4"], ["5", "num", "5", "5"], ["6", "num", "6", "6"], ["+", "op", "+", "+"],
-    ["1", "num", "1", "1"], ["2", "num", "2", "2"], ["3", "num", "3", "3"], ["=", "special tall", "eq", "eq"],
-    ["0", "num wide", "0", "0"], [".", "num", ".", "."]
+    ["AC", "special wide", "ac", "ac"],
+    ["÷", "op", "÷", "/"],
+    ["×", "op", "×", "*"],
+    ["7", "num", "7", "7"],
+    ["8", "num", "8", "8"],
+    ["9", "num", "9", "9"],
+    ["−", "op", "−", "-"],
+    ["4", "num", "4", "4"],
+    ["5", "num", "5", "5"],
+    ["6", "num", "6", "6"],
+    ["+", "op", "+", "+"],
+    ["1", "num", "1", "1"],
+    ["2", "num", "2", "2"],
+    ["3", "num", "3", "3"],
+    ["=", "special tall", "eq", "eq"],
+    ["0", "num wide", "0", "0"],
+    [".", "num", ".", "."],
   ],
 
   init: function () {
@@ -445,16 +490,28 @@ var IronCalc = {
       var btn = document.createElement("button");
       btn.className = "calc-btn " + k[1];
       btn.textContent = k[0];
-      btn.addEventListener("click", function () { self.handle(k[2], k[3]); });
+      btn.addEventListener("click", function () {
+        self.handle(k[2], k[3]);
+      });
       self.keypad.appendChild(btn);
     });
   },
 
   handle: function (disp, code) {
-    if (code === "ac") { this.disp = ""; this.code = ""; this.result = "0"; }
-    else if (code === "back") { this.disp = this.disp.slice(0, -1); this.code = this.code.slice(0, -1); }
-    else if (code === "eq") { this.evaluate(); return; }
-    else { this.disp += disp; this.code += code; }
+    if (code === "ac") {
+      this.disp = "";
+      this.code = "";
+      this.result = "0";
+    } else if (code === "back") {
+      this.disp = this.disp.slice(0, -1);
+      this.code = this.code.slice(0, -1);
+    } else if (code === "eq") {
+      this.evaluate();
+      return;
+    } else {
+      this.disp += disp;
+      this.code += code;
+    }
     this.updateDisplay();
   },
 
@@ -463,7 +520,7 @@ var IronCalc = {
       var code = this.code;
       if (!code) return;
       if (/[^0-9+\-*/(). ]/.test(code)) throw "Invalid";
-      var value = Function('"use strict"; return (' + code + ')')();
+      var value = Function('"use strict"; return (' + code + ")")();
       if (typeof value !== "number" || !isFinite(value)) throw "Invalid";
       this.result = String(Math.round(value * 1e10) / 1e10);
       this.disp = this.result;
@@ -484,18 +541,36 @@ var IronCalc = {
   bindKeys: function () {
     var self = this;
     var map = {
-      "0": ["0", "0"], "1": ["1", "1"], "2": ["2", "2"], "3": ["3", "3"], "4": ["4", "4"],
-      "5": ["5", "5"], "6": ["6", "6"], "7": ["7", "7"], "8": ["8", "8"], "9": ["9", "9"],
-      ".": [".", "."], "+": ["+", "+"], "-": ["−", "-"], "*": ["×", "*"], "/": ["÷", "/"],
-      "Enter": ["eq", "eq"], "=": ["eq", "eq"],
-      "Backspace": ["back", "back"], "Escape": ["ac", "ac"]
+      0: ["0", "0"],
+      1: ["1", "1"],
+      2: ["2", "2"],
+      3: ["3", "3"],
+      4: ["4", "4"],
+      5: ["5", "5"],
+      6: ["6", "6"],
+      7: ["7", "7"],
+      8: ["8", "8"],
+      9: ["9", "9"],
+      ".": [".", "."],
+      "+": ["+", "+"],
+      "-": ["−", "-"],
+      "*": ["×", "*"],
+      "/": ["÷", "/"],
+      Enter: ["eq", "eq"],
+      "=": ["eq", "eq"],
+      Backspace: ["back", "back"],
+      Escape: ["ac", "ac"],
     };
     document.addEventListener("keydown", function (e) {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
+        return;
       if (document.querySelector("#IronCalc").style.display === "none") return;
-      if (map[e.key]) { e.preventDefault(); self.handle(map[e.key][0], map[e.key][1]); }
+      if (map[e.key]) {
+        e.preventDefault();
+        self.handle(map[e.key][0], map[e.key][1]);
+      }
     });
-  }
+  },
 };
 
 makeDraggable(document.querySelector("#IronCalc"));
@@ -506,127 +581,197 @@ document.querySelector("#closeIronCalc").addEventListener("click", function () {
 IronCalc.init();
 
 // Javis_Terminal
-var Javis_Terminal = {
-    history: [],
-    historyIndex: -1,
+var IronTerm = {
+  history: [],
+  historyIndex: -1,
+  isJarvisActive: false,
 
-    init: function () {
-        this.outputEl = document.querySelector("#terminalOutput");
-        this.inputEl = document.querySelector("#terminalInput");
-        
-        if (!this.inputEl || !this.outputEl) return;
+  init: function () {
+    this.outputEl = document.querySelector("#terminalOutput");
+    this.inputEl = document.querySelector("#terminalInput");
 
-        this.inputEl.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                var cmd = this.inputEl.value.trim();
-                if (cmd) {
-                    this.executeCommand(cmd);
-                    this.history.push(cmd);
-                    this.historyIndex = this.history.length;
-                    this.inputEl.value = "";
-                }
-            } else if (e.key === "ArrowUp") {
-                e.preventDefault();
-                if (this.historyIndex > 0) {
-                    this.historyIndex--;
-                    this.inputEl.value = this.history[this.historyIndex];
-                }
-            } else if (e.key === "ArrowDown") {
-                e.preventDefault();
-                if (this.historyIndex < this.history.length - 1) {
-                    this.historyIndex++;
-                    this.inputEl.value = this.history[this.historyIndex];
-                } else {
-                    this.historyIndex = this.history.length;
-                    this.inputEl.value = "";
-                }
-            }
-        });
+    if (!this.inputEl || !this.outputEl) return;
 
-        var termWin = document.querySelector("#Javis_Terminal");
-        if (termWin) {
-            termWin.addEventListener("click", () => {
-                this.inputEl.focus();
-            });
+    this.inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var cmd = this.inputEl.value.trim();
+        if (cmd) {
+          this.executeCommand(cmd);
+          this.history.push(cmd);
+          this.historyIndex = this.history.length;
+          this.inputEl.value = "";
         }
-    },
-
-    printLine: function (text, isHtml = false) {
-        var p = document.createElement("p");
-        if (isHtml) {
-            p.innerHTML = text;
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (this.historyIndex > 0) {
+          this.historyIndex--;
+          this.inputEl.value = this.history[this.historyIndex];
+        }
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (this.historyIndex < this.history.length - 1) {
+          this.historyIndex++;
+          this.inputEl.value = this.history[this.historyIndex];
         } else {
-            p.textContent = text;
+          this.historyIndex = this.history.length;
+          this.inputEl.value = "";
         }
-        this.outputEl.appendChild(p);
-        this.outputEl.scrollTop = this.outputEl.scrollHeight;
-    },
+      }
+    });
 
-    executeCommand: function (rawCmd) {
-        this.printLine(`iron@jarvis:~$ ${rawCmd}`);
-        
-        var parts = rawCmd.split(" ");
-        var cmd = parts[0].toLowerCase();
-        var args = parts.slice(1);
-
-        switch (cmd) {
-            case "help":
-                this.printLine("Available commands:");
-                this.printLine("  help             - Show this help menu");
-                this.printLine("  clear            - Clear terminal screen");
-                this.printLine("  time             - Display current date and time");
-                this.printLine("  echo [text]      - Echo back provided text");
-                this.printLine("  calc [expr]      - Evaluate math expression (e.g. calc 25 * 4)");
-                this.printLine("  open [app]       - Launch app (notepad, calc)");
-                break;
-
-            case "clear":
-                this.outputEl.innerHTML = "";
-                break;
-
-            case "time":
-                this.printLine(`System Time: ${new Date().toLocaleString()}`);
-                break;
-
-            case "echo":
-                this.printLine(args.join(" ") || "");
-                break;
-
-            case "calc":
-                try {
-                    var expr = args.join("");
-                    if (!expr) throw new Error("No expression");
-                    if (/[^0-9+\-*/(). ]/.test(expr)) throw new Error("Invalid characters");
-                    var res = Function('"use strict"; return (' + expr + ')')();
-                    this.printLine(`Result: ${res}`);
-                } catch (err) {
-                    this.printLine("Error: Invalid calculation syntax.");
-                }
-                break;
-
-            case "open":
-                var target = (args[0] || "").toLowerCase();
-                if (target === "notepad" || target === "ironbook") {
-                    openWindow("IronPad");
-                    this.printLine("Opening IronBook...");
-                } else if (target === "calc" || target === "calculator") {
-                    openWindow("IronCalc");
-                    this.printLine("Opening IronCalc...");
-                } else {
-                    this.printLine(`Unknown app: '${args[0]}'. Try 'notepad' or 'calc'.`);
-                }
-                break;
-
-            default:
-                this.printLine(`Command not recognized: '${cmd}'. Type 'help' for options.`);
-                break;
-        }
+    var termWin = document.querySelector("#IronTerm");
+    if (termWin) {
+      termWin.addEventListener("click", () => {
+        this.inputEl.focus();
+      });
     }
+  },
+
+  printLine: function (text, isHtml = false, isJarvis = false) {
+    var p = document.createElement("p");
+    if (isJarvis) {
+      p.style.color = "#00f3ff"; // psst...glowing cyan for J.A.R.V.I.S. responses
+      p.style.textShadow = "0 0 6px rgba(0, 243, 255, 0.4)";
+    }
+    if (isHtml) {
+      p.innerHTML = text;
+    } else {
+      p.textContent = text;
+    }
+    this.outputEl.appendChild(p);
+    this.outputEl.scrollTop = this.outputEl.scrollHeight;
+  },
+
+  executeCommand: function (rawCmd) {
+    if (this.isJarvisActive) {
+      this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+      if (rawCmd.toLowerCase() === "exit" || rawCmd.toLowerCase() === "quit") {
+        this.isJarvisActive = false;
+        document.querySelector(".terminal-prompt").textContent =
+          "iron@jarvis:~$";
+        this.printLine(
+          "J.A.R.V.I.S.: Deactivating conversational link. Returning to standard shell.",
+          false,
+          true,
+        );
+        return;
+      }
+      this.handleJarvisAI(rawCmd);
+      return;
+    }
+
+    this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+
+    var parts = rawCmd.split(" ");
+    var cmd = parts[0].toLowerCase();
+    var args = parts.slice(1);
+
+    switch (cmd) {
+      case "help":
+        this.printLine("Available commands:");
+        this.printLine("  help             - Show this help menu");
+        this.printLine("  clear            - Clear terminal screen");
+        this.printLine("  time             - Display current date and time");
+        this.printLine("  echo [text]      - Echo back provided text");
+        this.printLine("  calc [expr]      - Evaluate math expression");
+        this.printLine(
+          "  open [app]       - Launch app (notepad, calc, player)",
+        );
+        this.printLine(
+          "  jarvis           - Initialize J.A.R.V.I.S. AI conversational mode",
+        );
+        break;
+
+      case "clear":
+        this.outputEl.innerHTML = "";
+        break;
+
+      case "time":
+        this.printLine(`System Time: ${new Date().toLocaleString()}`);
+        break;
+
+      case "echo":
+        this.printLine(args.join(" ") || "");
+        break;
+
+      case "calc":
+        try {
+          var expr = args.join("");
+          if (!expr) throw new Error("No expression");
+          if (/[^0-9+\-*/(). ]/.test(expr))
+            throw new Error("Invalid characters");
+          var res = Function('"use strict"; return (' + expr + ")")();
+          this.printLine(`Result: ${res}`);
+        } catch (err) {
+          this.printLine("Error: Invalid calculation syntax.");
+        }
+        break;
+
+      case "open":
+        var target = (args[0] || "").toLowerCase();
+        if (target === "notepad" || target === "ironbook") {
+          openWindow("IronPad");
+          this.printLine("Opening IronBook...");
+        } else if (target === "calc" || target === "calculator") {
+          openWindow("IronCalc");
+          this.printLine("Opening IronCalc...");
+        } else if (target === "player" || target === "music") {
+          openWindow("IronPlayer");
+          this.printLine("Opening IronPlayer...");
+        } else {
+          this.printLine(
+            `Unknown app: '${args[0]}'. Try 'notepad', 'calc', or 'player'.`,
+          );
+        }
+        break;
+
+      case "jarvis":
+        this.isJarvisActive = true;
+        document.querySelector(".terminal-prompt").textContent = "JARVIS> ";
+        this.printLine(
+          "J.A.R.V.I.S.: Online and listening, Sir. Type 'exit' to terminate session.",
+          false,
+          true,
+        );
+        break;
+
+      default:
+        this.printLine(
+          `Command not recognized: '${cmd}'. Type 'help' for options.`,
+        );
+        break;
+    }
+  },
+
+  handleJarvisAI: function (query) {
+    var q = query.toLowerCase();
+    var response = "";
+
+    if (q.includes("hello") || q.includes("hi")) {
+      response =
+        "Greetings, Sir. All systems are operating at peak efficiency.";
+    } else if (q.includes("status") || q.includes("diagnostic")) {
+      response =
+        "Arc reactor output stable. Local storage operational. IronOS security protocols engaged.";
+    } else if (q.includes("joke")) {
+      response =
+        "Sir, I would crack a joke about Ultron, but I prefer my humor with fewer bugs.";
+    } else if (q.includes("time")) {
+      response = `The current system time is ${new Date().toLocaleTimeString()}, Sir.`;
+    } else {
+      response = `Analyzing query '${query}'... Simulation parameters optimal, Sir. How else may I assist?`;
+    }
+
+    this.printLine(`J.A.R.V.I.S.: ${response}`, false, true);
+  },
 };
 
 makeDraggable(document.querySelector("#Javis_Terminal"));
 setupIcon("#TermOpen", "Javis_Terminal");
-document.querySelector("#closeJavis_Terminal").addEventListener("click", function () {
+document
+  .querySelector("#closeJavis_Terminal")
+  .addEventListener("click", function () {
     closeWindow("Javis_Terminal");
-});
+  });
 Javis_Terminal.init();
