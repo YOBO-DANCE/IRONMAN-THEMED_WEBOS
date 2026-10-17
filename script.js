@@ -1,4 +1,4 @@
-// Clock
+// Clock (Thanks for the jam)
 setInterval(function () {
   document.querySelector("#Current_Time").textContent =
     new Date().toLocaleString();
@@ -38,7 +38,7 @@ if (document.readyState === "loading") {
   SystemMetrics.init();
 }
 
-// Simple drag by which you can drag window by its header
+// Simple dragging system by which you can drag window by its header
 let zTop = 10;
 function bringToFront(el) {
   if (el) el.style.zIndex = ++zTop;
@@ -82,12 +82,13 @@ function closeWindow(id) {
   document.getElementById(id).style.display = "none";
 }
 
-// Close buttons
-document.querySelector("#closeIronPad").addEventListener("click", function () {
-  closeWindow("IronPad");
-});
-document.querySelector("#closeWindow").addEventListener("click", function () {
+// close wiring to existing windows
+document.querySelector("#closeWelcomeWindow").addEventListener("click", () => {
   closeWindow("WelcomeWindow");
+});
+
+document.querySelector("#closeIronPad").addEventListener("click", () => {
+  closeWindow("IronPad");
 });
 
 // Icons setup i.e. first click selects, second click opens. Simple toggle.
@@ -196,6 +197,11 @@ function setupWindowResizing() {
 var IronPlayer = {
   playlist: [
     {
+      title: "Iron Man",
+      artist: "Black Sabbath",
+      src: "../Test_playlist/black sabbath - Iron Man.mp3",
+    },
+    {
       title: "Babydoll",
       artist: "Dominic Fike",
       src: "../Test_playlist/Babydoll.mp3",
@@ -270,7 +276,6 @@ var IronPlayer = {
   isPlaying: false,
 
   init: function () {
-    // Cache DOM elements
     this.audio = document.getElementById("audioEngine");
     this.titleEl = document.getElementById("trackTitle");
     this.artistEl = document.getElementById("trackArtist");
@@ -288,7 +293,7 @@ var IronPlayer = {
       this.select.appendChild(opt);
     });
 
-    // Event Listeners for controls
+    // event Listeners for controls >.<
     this.playBtn.addEventListener("click", () => this.togglePlay());
     document
       .getElementById("prevTrackBtn")
@@ -323,7 +328,7 @@ var IronPlayer = {
       this.nextTrack();
     });
 
-    // Initialize default volume and first track metadata
+    // Init default volume and first track
     this.audio.volume = this.volume.value / 100;
     this.loadTrack(0);
   },
@@ -373,6 +378,7 @@ var IronPlayer = {
   },
 };
 
+// Iron Player Wiring
 makeDraggable(document.querySelector("#IronPlayer"));
 setupIcon("#PlayerOpen", "IronPlayer");
 document

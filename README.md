@@ -47,7 +47,11 @@ ___
 
 - A Music Player so you can listen to all  the Iron favourites
 
+- Background playback like spotify in Iron Player
+
 - A Terminal so, all the "BTW, I use arch" people can navigate the OS
+
+- Resizable Windows
 
 - Thats it!
 
