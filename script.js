@@ -1,63 +1,61 @@
 // Clock (Thanks for the jam)
 setInterval(function () {
-  document.querySelector("#Current_Time").textContent =
+  document.querySelector("#current_time").textContent =
     new Date().toLocaleString();
 }, 500);
 
-// System Metrics
-var SystemMetrics = {
+// Iron PC Info
+var ironpc_info = {
   init: function () {
-    this.coreEl = document.querySelector("#coreVal");
-    this.tempEl = document.querySelector("#tempVal");
-    this.ramEl = document.querySelector("#ramVal");
+    this.core_el = document.querySelector("#processor_value");
+    this.temp_el = document.querySelector("#temp_value");
+    this.ram_el = document.querySelector("#ram_value");
 
-    this.updateMetrics();
-    setInterval(() => this.updateMetrics(), 2000);
+    this.update_metrics();
+    setInterval(() => this.update_metrics(), 2000);
   },
 
-  updateMetrics: function () {
-    if (this.coreEl) {
-      var core = (95 + Math.random() * 4.9).toFixed(1);
-      this.coreEl.textContent = core + "%";
+  update_metrics: function () {
+    if (this.core_el) {
+      var core = (12.6 + Math.random() * 4.9).toFixed(1);
+      this.core_el.textContent = core + "%";
     }
-    if (this.tempEl) {
-      var temp = Math.floor(32 + Math.random() * 5);
-      this.tempEl.textContent = temp + "°C";
+    if (this.temp_el) {
+      var temp = Math.floor(24 + Math.random() * 5);
+      this.temp_el.textContent = temp + "°C";
     }
-    if (this.ramEl) {
-      var ram = (3.8 + Math.random() * 0.8).toFixed(1);
-      this.ramEl.textContent = ram + " GB";
+    if (this.ram_el) {
+      var ram = (89.8 + Math.random() * 0.8).toFixed(1);
+      this.ram_el.textContent = ram + " GB";
     }
   },
 };
 
-// init metrics when page loads
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => SystemMetrics.init());
+  document.addEventListener("DOMContentLoaded", () => ironpc_info.init());
 } else {
-  SystemMetrics.init();
+  ironpc_info.init();
 }
 
-// Simple dragging system by which you can drag window by its header
-let zTop = 10;
-function bringToFront(el) {
-  if (el) el.style.zIndex = ++zTop;
+let z_top = 10;
+function bring_to_front(el) {
+  if (el) el.style.zIndex = ++z_top;
 }
 
-function makeDraggable(element) {
+function make_draggable(element) {
   if (!element) return;
-  var header = element.querySelector(".window-header") || element;
+  var header = element.querySelector(".window_header") || element;
 
   header.addEventListener("pointerdown", function (e) {
-    bringToFront(element);
+    bring_to_front(element);
     if (e.target.closest("button, input, textarea")) return;
     e.preventDefault();
-    var offsetX = e.clientX - element.offsetLeft;
-    var offsetY = e.clientY - element.offsetTop;
+    var offset_x = e.clientX - element.offsetLeft;
+    var offset_y = e.clientY - element.offsetTop;
 
     function move(ev) {
-      element.style.left = ev.clientX - offsetX + "px";
-      element.style.top = ev.clientY - offsetY + "px";
+      element.style.left = ev.clientX - offset_x + "px";
+      element.style.top = ev.clientY - offset_y + "px";
     }
     function stop() {
       document.removeEventListener("pointermove", move);
@@ -68,133 +66,171 @@ function makeDraggable(element) {
   });
 }
 
-makeDraggable(document.querySelector("#WelcomeWindow"));
-makeDraggable(document.querySelector("#IronPad"));
+make_draggable(document.querySelector("#welcome_window"));
+make_draggable(document.querySelector("#iron_pad"));
 
-// Windows so they show / hide by id
-function openWindow(id) {
+function open_window(id) {
   var el = document.getElementById(id);
   el.style.display = "flex";
-  bringToFront(el);
+  bring_to_front(el);
 }
 
-function closeWindow(id) {
+function close_window(id) {
   document.getElementById(id).style.display = "none";
 }
 
-// close wiring to existing windows
-document.querySelector("#closeWelcomeWindow").addEventListener("click", () => {
-  closeWindow("WelcomeWindow");
+function evaluate_math_expression(expr) {
+  if (typeof expr !== "string") return null;
+
+  const normalized = expr
+    .replace(/×/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/−/g, "-")
+    .replace(/π/g, "pi")
+    .replace(/\s+/g, "");
+
+  if (!normalized) return null;
+
+  const with_implicit_multiplication = normalized.replace(
+    /(\d|\))(?=\()/g,
+    "$1*",
+  );
+
+  if (
+    typeof window !== "undefined" &&
+    window.math &&
+    typeof window.math.evaluate === "function"
+  ) {
+    try {
+      const value = window.math.evaluate(with_implicit_multiplication);
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      if (value && typeof value.valueOf === "function") {
+        const raw_value = value.valueOf();
+        if (typeof raw_value === "number" && Number.isFinite(raw_value)) {
+          return raw_value;
+        }
+      }
+    } catch (error) {
+      // If the custom check fails, use the default native evaluator instead.
+    }
+  }
+
+  try {
+    const value = Function('"use strict"; return (' + with_implicit_multiplication + ")")();
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+  } catch (error) {
+    return null;
+  }
+
+  return null;
+}
+
+document
+  .querySelector("#close_welcome_window")
+  .addEventListener("click", () => {
+    close_window("welcome_window");
+  });
+
+document.querySelector("#close_iron_pad").addEventListener("click", () => {
+  close_window("iron_pad");
 });
 
-document.querySelector("#closeIronPad").addEventListener("click", () => {
-  closeWindow("IronPad");
-});
-
-// Icons setup i.e. first click selects, second click opens. Simple toggle.
-function setupIcon(iconId, windowId) {
-  var icon = document.querySelector(iconId);
+function setup_icon(icon_id, window_id) {
+  var icon = document.querySelector(icon_id);
   icon.addEventListener("click", function () {
-    var isOpen = icon.classList.toggle("selected");
-    var win = document.getElementById(windowId);
-    win.style.display = isOpen ? "flex" : "none";
-    if (isOpen) bringToFront(win);
+    var is_open = icon.classList.toggle("selected");
+    var win = document.getElementById(window_id);
+    win.style.display = is_open ? "flex" : "none";
+    if (is_open) bring_to_front(win);
   });
 }
 
-setupIcon("#WelcomeOpen", "WelcomeWindow");
-setupIcon("#OpenA1", "IronPad");
+setup_icon("#welcome_open", "welcome_window");
+setup_icon("#iron_book_open", "iron_pad");
 
-// Resizable Windows
 document.addEventListener("DOMContentLoaded", () => {
-  setupWindowResizing();
+  setup_window_resizing();
 });
 
-function setupWindowResizing() {
+function setup_window_resizing() {
   const directions = [
     "top",
     "right",
     "bottom",
     "left",
-    "top-left",
-    "top-right",
-    "bottom-left",
-    "bottom-right",
+    "top_left",
+    "top_right",
+    "bottom_left",
+    "bottom_right",
   ];
   const windows = document.querySelectorAll(".window");
 
   windows.forEach((win) => {
-    
     directions.forEach((dir) => {
       const resizer = document.createElement("div");
-      resizer.className = `win-resizer ${dir}`;
+      resizer.className = `win_resizer ${dir}`;
       win.appendChild(resizer);
 
-      
       resizer.addEventListener("mousedown", (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        
-        let originalWidth = win.offsetWidth;
-        let originalHeight = win.offsetHeight;
-        let originalX = win.offsetLeft;
-        let originalY = win.offsetTop;
+        let original_width = win.offsetWidth;
+        let original_height = win.offsetHeight;
+        let original_x = win.offsetLeft;
+        let original_y = win.offsetTop;
 
-        let originalMouseX = e.clientX;
-        let originalMouseY = e.clientY;
+        let original_mouse_x = e.clientX;
+        let original_mouse_y = e.clientY;
 
-        const minWidth = 250;
-        const minHeight = 150;
+        const min_width = 250;
+        const min_height = 150;
 
-        function resize(mouseEvent) {
-          const widthDiff = mouseEvent.clientX - originalMouseX;
-          const heightDiff = mouseEvent.clientY - originalMouseY;
+        function resize(mouse_event) {
+          const width_diff = mouse_event.clientX - original_mouse_x;
+          const height_diff = mouse_event.clientY - original_mouse_y;
 
-          const isTop = dir.includes("top");
-          const isBottom = dir.includes("bottom");
-          const isLeft = dir.includes("left");
-          const isRight = dir.includes("right");
+          const is_top = dir.includes("top");
+          const is_bottom = dir.includes("bottom");
+          const is_left = dir.includes("left");
+          const is_right = dir.includes("right");
 
-          // horizontal management
-          if (isRight) {
-            const width = originalWidth + widthDiff;
-            if (width > minWidth) win.style.width = `${width}px`;
-          } else if (isLeft) {
-            const width = originalWidth - widthDiff;
-            if (width > minWidth) {
+          if (is_right) {
+            const width = original_width + width_diff;
+            if (width > min_width) win.style.width = `${width}px`;
+          } else if (is_left) {
+            const width = original_width - width_diff;
+            if (width > min_width) {
               win.style.width = `${width}px`;
-              win.style.left = `${originalX + widthDiff}px`;
+              win.style.left = `${original_x + width_diff}px`;
             }
           }
 
-          // vertical management
-          if (isBottom) {
-            const height = originalHeight + heightDiff;
-            if (height > minHeight) win.style.height = `${height}px`;
-          } else if (isTop) {
-            const height = originalHeight - heightDiff;
-            if (height > minHeight) {
+          if (is_bottom) {
+            const height = original_height + height_diff;
+            if (height > min_height) win.style.height = `${height}px`;
+          } else if (is_top) {
+            const height = original_height - height_diff;
+            if (height > min_height) {
               win.style.height = `${height}px`;
-              win.style.top = `${originalY + heightDiff}px`;
+              win.style.top = `${original_y + height_diff}px`;
             }
           }
         }
 
-        function stopResize() {
+        function stop_resize() {
           window.removeEventListener("mousemove", resize);
-          window.removeEventListener("mouseup", stopResize);
+          window.removeEventListener("mouseup", stop_resize);
         }
 
         window.addEventListener("mousemove", resize);
-        window.addEventListener("mouseup", stopResize);
+        window.addEventListener("mouseup", stop_resize);
       });
     });
   });
 }
 
-// IronPlayer
-var IronPlayer = {
+var iron_player = {
   playlist: [
     {
       title: "Iron Man",
@@ -253,7 +289,7 @@ var IronPlayer = {
     },
     {
       title: "Dracula",
-      artist: "Tama Impala",
+      artist: "Tame Impala",
       src: "../Test_playlist/Tame Impala - Dracula Official Video.mp3",
     },
     {
@@ -272,17 +308,17 @@ var IronPlayer = {
       src: "../Test_playlist/Vance Joy - Riptide Official Video.mp3",
     },
   ],
-  currentIndex: 0,
-  isPlaying: false,
+  current_index: 0,
+  is_playing: false,
 
   init: function () {
-    this.audio = document.getElementById("audioEngine");
-    this.titleEl = document.getElementById("trackTitle");
-    this.artistEl = document.getElementById("trackArtist");
-    this.playBtn = document.getElementById("playPauseBtn");
-    this.progress = document.getElementById("trackProgress");
-    this.volume = document.getElementById("volumeSlider");
-    this.select = document.getElementById("trackSelect");
+    this.audio = document.getElementById("audio_engine");
+    this.title_el = document.getElementById("track_title");
+    this.artist_el = document.getElementById("track_artist");
+    this.play = document.getElementById("play_pause");
+    this.progress = document.getElementById("track_progress");
+    this.volume = document.getElementById("volume_slider");
+    this.select = document.getElementById("track_select");
 
     if (!this.audio) return;
 
@@ -293,18 +329,17 @@ var IronPlayer = {
       this.select.appendChild(opt);
     });
 
-    // event Listeners for controls >.<
-    this.playBtn.addEventListener("click", () => this.togglePlay());
+    this.play.addEventListener("click", () => this.toggle_play());
     document
-      .getElementById("prevTrackBtn")
-      .addEventListener("click", () => this.prevTrack());
+      .getElementById("prev_track")
+      .addEventListener("click", () => this.prev_track());
     document
-      .getElementById("nextTrackBtn")
-      .addEventListener("click", () => this.nextTrack());
+      .getElementById("next_track")
+      .addEventListener("click", () => this.next_track());
 
     this.select.addEventListener("change", (e) => {
-      this.loadTrack(parseInt(e.target.value));
-      this.playTrack();
+      this.load_track(parseInt(e.target.value));
+      this.play_track();
     });
 
     this.volume.addEventListener("input", (e) => {
@@ -325,170 +360,166 @@ var IronPlayer = {
     });
 
     this.audio.addEventListener("ended", () => {
-      this.nextTrack();
+      this.next_track();
     });
 
-    // Init default volume and first track
     this.audio.volume = this.volume.value / 100;
-    this.loadTrack(0);
+    this.load_track(0);
   },
 
-  loadTrack: function (index) {
-    this.currentIndex = index;
+  load_track: function (index) {
+    this.current_index = index;
     var track = this.playlist[index];
     this.audio.src = track.src;
-    this.titleEl.textContent = track.title;
-    this.artistEl.textContent = track.artist;
+    this.title_el.textContent = track.title;
+    this.artist_el.textContent = track.artist;
     this.select.value = index;
   },
 
-  togglePlay: function () {
-    if (this.isPlaying) {
+  toggle_play: function () {
+    if (this.is_playing) {
       this.audio.pause();
-      this.playBtn.textContent = "▶";
-      this.isPlaying = false;
+      this.play.textContent = "▶";
+      this.is_playing = false;
     } else {
-      this.playTrack();
+      this.play_track();
     }
   },
 
-  playTrack: function () {
+  play_track: function () {
     this.audio
       .play()
       .then(() => {
-        this.playBtn.textContent = "⏸";
-        this.isPlaying = true;
+        this.play.textContent = "⏸";
+        this.is_playing = true;
       })
-      .catch((err) => {
+      .catch(() => {
         console.log("Playback prevented or error loading audio source.");
       });
   },
 
-  nextTrack: function () {
-    var next = (this.currentIndex + 1) % this.playlist.length;
-    this.loadTrack(next);
-    this.playTrack();
+  next_track: function () {
+    var next = (this.current_index + 1) % this.playlist.length;
+    this.load_track(next);
+    this.play_track();
   },
 
-  prevTrack: function () {
+  prev_track: function () {
     var prev =
-      (this.currentIndex - 1 + this.playlist.length) % this.playlist.length;
-    this.loadTrack(prev);
-    this.playTrack();
+      (this.current_index - 1 + this.playlist.length) % this.playlist.length;
+    this.load_track(prev);
+    this.play_track();
   },
 };
 
-// Iron Player Wiring
-makeDraggable(document.querySelector("#IronPlayer"));
-setupIcon("#PlayerOpen", "IronPlayer");
+make_draggable(document.querySelector("#iron_player"));
+setup_icon("#player_open", "iron_player");
 document
-  .querySelector("#closeIronPlayer")
+  .querySelector("#close_iron_player")
   .addEventListener("click", function () {
-    closeWindow("IronPlayer");
+    close_window("iron_player");
   });
-IronPlayer.init();
+iron_player.init();
 
-// IronBook
-var IronBook = {
+var iron_book = {
   notes: [],
-  currentId: null,
+  current_id: null,
 
   init: function () {
-    this.notes = JSON.parse(localStorage.getItem("ironbook-notes")) || [];
-    this.list = document.querySelector("#notesList");
-    this.title = document.querySelector("#noteTitle");
-    this.content = document.querySelector("#noteContent");
-    this.showList();
+    this.notes = JSON.parse(localStorage.getItem("iron_book_notes")) || [];
+    this.list = document.querySelector("#notes_list");
+    this.title = document.querySelector("#note_title");
+    this.content = document.querySelector("#note_content");
+    this.show_list();
     document
-      .querySelector("#newNoteBtn")
-      .addEventListener("click", () => this.newNote());
+      .querySelector("#new_note")
+      .addEventListener("click", () => this.new_note());
     document
-      .querySelector("#saveNoteBtn")
-      .addEventListener("click", () => this.saveNote(false));
+      .querySelector("#save_note")
+      .addEventListener("click", () => this.save_note(false));
     document
-      .querySelector("#saveAsNoteBtn")
-      .addEventListener("click", () => this.saveNote(true));
+      .querySelector("#save_as_note")
+      .addEventListener("click", () => this.save_note(true));
     document
-      .querySelector("#deleteNoteBtn")
-      .addEventListener("click", () => this.deleteNote());
+      .querySelector("#delete_note")
+      .addEventListener("click", () => this.delete_note());
     this.list.addEventListener("click", (e) => {
       var li = e.target.closest("li");
-      if (li) this.openNote(li.dataset.id);
+      if (li) this.open_note(li.dataset.id);
     });
   },
 
   keep: function () {
-    localStorage.setItem("ironbook-notes", JSON.stringify(this.notes));
+    localStorage.setItem("iron_book_notes", JSON.stringify(this.notes));
   },
 
-  showList: function () {
+  show_list: function () {
     this.list.innerHTML = "";
     this.notes.forEach((note) => {
       var li = document.createElement("li");
       li.textContent = note.title || "Untitled";
       li.dataset.id = note.id;
-      if (note.id === this.currentId) li.classList.add("active");
+      if (note.id === this.current_id) li.classList.add("active");
       this.list.appendChild(li);
     });
   },
 
-  newNote: function () {
-    this.currentId = null;
+  new_note: function () {
+    this.current_id = null;
     this.title.value = "";
     this.content.value = "";
-    this.showList();
+    this.show_list();
   },
 
-  openNote: function (id) {
+  open_note: function (id) {
     var note = this.notes.find((n) => n.id === id);
     if (!note) return;
-    this.currentId = id;
+    this.current_id = id;
     this.title.value = note.title;
     this.content.value = note.content;
-    this.showList();
+    this.show_list();
   },
 
-  saveNote: function (saveAs) {
+  save_note: function (save_as) {
     var title = this.title.value.trim() || "Untitled";
     var content = this.content.value;
 
-    if (saveAs) {
+    if (save_as) {
       var name = prompt("Save as:", title);
       if (name === null) return;
       title = name.trim() || "Untitled";
       this.title.value = title;
-      this.currentId = null;
+      this.current_id = null;
     }
 
-    if (this.currentId === null) {
-      this.currentId = Date.now().toString();
+    if (this.current_id === null) {
+      this.current_id = Date.now().toString();
       this.notes.unshift({
-        id: this.currentId,
+        id: this.current_id,
         title: title,
         content: content,
       });
     } else {
-      var note = this.notes.find((n) => n.id === this.currentId);
+      var note = this.notes.find((n) => n.id === this.current_id);
       note.title = title;
       note.content = content;
     }
     this.keep();
-    this.showList();
+    this.show_list();
   },
 
-  deleteNote: function () {
-    if (this.currentId === null) return;
+  delete_note: function () {
+    if (this.current_id === null) return;
     if (!confirm("Delete this note?")) return;
-    this.notes = this.notes.filter((n) => n.id !== this.currentId);
+    this.notes = this.notes.filter((n) => n.id !== this.current_id);
     this.keep();
-    this.newNote();
+    this.new_note();
   },
 };
 
-IronBook.init();
+iron_book.init();
 
-// IronCalc
-var IronCalc = {
+var iron_calc = {
   disp: "",
   code: "",
   result: "0",
@@ -514,24 +545,24 @@ var IronCalc = {
   ],
 
   init: function () {
-    this.exprEl = document.querySelector("#calcExpr");
-    this.resEl = document.querySelector("#calcResult");
-    this.keypad = document.querySelector("#calcKeypad");
-    localStorage.removeItem("ironcalc-angle");
-    this.renderKeypad();
-    this.updateDisplay();
-    this.bindKeys();
+    this.expr_el = document.querySelector("#calc_expr");
+    this.res_el = document.querySelector("#calc_result");
+    this.keypad = document.querySelector("#calc_keypad");
+    localStorage.removeItem("iron_calc_angle");
+    this.render_keypad();
+    this.update_display();
+    this.bind_keys();
   },
 
-  renderKeypad: function () {
+  render_keypad: function () {
     var self = this;
     this.keypad.innerHTML = "";
-    this.keys.forEach(function (k) {
+    this.keys.forEach(function (key) {
       var btn = document.createElement("button");
-      btn.className = "calc-btn " + k[1];
-      btn.textContent = k[0];
+      btn.className = "calc " + key[1];
+      btn.textContent = key[0];
       btn.addEventListener("click", function () {
-        self.handle(k[2], k[3]);
+        self.handle(key[2], key[3]);
       });
       self.keypad.appendChild(btn);
     });
@@ -552,16 +583,16 @@ var IronCalc = {
       this.disp += disp;
       this.code += code;
     }
-    this.updateDisplay();
+    this.update_display();
   },
 
   evaluate: function () {
     try {
       var code = this.code;
       if (!code) return;
-      if (/[^0-9+\-*/(). ]/.test(code)) throw "Invalid";
-      var value = Function('"use strict"; return (' + code + ")")();
-      if (typeof value !== "number" || !isFinite(value)) throw "Invalid";
+      var value = evaluate_math_expression(code);
+      if (value === null || typeof value !== "number" || !isFinite(value))
+        throw "Invalid";
       this.result = String(Math.round(value * 1e10) / 1e10);
       this.disp = this.result;
       this.code = this.result;
@@ -570,15 +601,15 @@ var IronCalc = {
       this.disp = "";
       this.code = "";
     }
-    this.updateDisplay();
+    this.update_display();
   },
 
-  updateDisplay: function () {
-    this.exprEl.textContent = this.disp;
-    this.resEl.textContent = this.result;
+  update_display: function () {
+    this.expr_el.textContent = this.disp;
+    this.res_el.textContent = this.result;
   },
 
-  bindKeys: function () {
+  bind_keys: function () {
     var self = this;
     var map = {
       0: ["0", "0"],
@@ -604,7 +635,7 @@ var IronCalc = {
     document.addEventListener("keydown", function (e) {
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
         return;
-      if (document.querySelector("#IronCalc").style.display === "none") return;
+      if (document.querySelector("#iron_calc").style.display === "none") return;
       if (map[e.key]) {
         e.preventDefault();
         self.handle(map[e.key][0], map[e.key][1]);
@@ -613,145 +644,144 @@ var IronCalc = {
   },
 };
 
-makeDraggable(document.querySelector("#IronCalc"));
-setupIcon("#CalcOpen", "IronCalc");
-document.querySelector("#closeIronCalc").addEventListener("click", function () {
-  closeWindow("IronCalc");
-});
-IronCalc.init();
+make_draggable(document.querySelector("#iron_calc"));
+setup_icon("#calc_open", "iron_calc");
+document
+  .querySelector("#close_iron_calc")
+  .addEventListener("click", function () {
+    close_window("iron_calc");
+  });
+iron_calc.init();
 
-// Javis_Terminal
-// Jarvis_Terminal: Fixed Input Handling
-var Jarvis_Terminal = {
+var jarvis_terminal = {
   history: [],
-  historyIndex: -1,
+  history_index: -1,
 
   init: function () {
-    this.outputEl = document.querySelector("#terminalOutput");
-    this.inputEl = document.querySelector("#terminalInput");
+    this.output_el = document.querySelector("#terminal_output");
+    this.input_el = document.querySelector("#terminal_input");
 
-    if (!this.inputEl || !this.outputEl) {
+    if (!this.input_el || !this.output_el) {
       console.error("Jarvis_Terminal elements missing from DOM!");
       return;
     }
 
-    // Attach listener directly to the input box
-    this.inputEl.addEventListener("keydown", (e) => {
-      // Check for Enter key across all browsers
+    this.input_el.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.code === "Enter" || e.keyCode === 13) {
-        e.preventDefault(); // Stop default form submit / refresh
+        e.preventDefault();
         e.stopPropagation();
 
-        var cmd = this.inputEl.value.trim();
+        var cmd = this.input_el.value.trim();
 
         if (cmd !== "") {
-          this.executeCommand(cmd);
+          this.execute_command(cmd);
           this.history.push(cmd);
-          this.historyIndex = this.history.length;
-          this.inputEl.value = ""; // Clear line after execution
+          this.history_index = this.history.length;
+          this.input_el.value = "";
         }
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (this.historyIndex > 0) {
-          this.historyIndex--;
-          this.inputEl.value = this.history[this.historyIndex];
+        if (this.history_index > 0) {
+          this.history_index--;
+          this.input_el.value = this.history[this.history_index];
         }
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (this.historyIndex < this.history.length - 1) {
-          this.historyIndex++;
-          this.inputEl.value = this.history[this.historyIndex];
+        if (this.history_index < this.history.length - 1) {
+          this.history_index++;
+          this.input_el.value = this.history[this.history_index];
         } else {
-          this.historyIndex = this.history.length;
-          this.inputEl.value = "";
+          this.history_index = this.history.length;
+          this.input_el.value = "";
         }
       }
     });
 
-    var termBody = document.querySelector(".terminal-body");
-    if (termBody) {
-      termBody.addEventListener("click", () => {
-        this.inputEl.focus();
+    var term_body = document.querySelector(".terminal_body");
+    if (term_body) {
+      term_body.addEventListener("click", () => {
+        this.input_el.focus();
       });
     }
   },
 
-  printLine: function (text, isHtml = false) {
+  print_line: function (text, is_html = false) {
     var p = document.createElement("p");
-    if (isHtml) {
+    if (is_html) {
       p.innerHTML = text;
     } else {
       p.textContent = text;
     }
-    this.outputEl.appendChild(p);
-    this.outputEl.scrollTop = this.outputEl.scrollHeight;
+    this.output_el.appendChild(p);
+    this.output_el.scrollTop = this.output_el.scrollHeight;
   },
 
-  executeCommand: function (rawCmd) {
-    this.printLine(`iron@jarvis:~$ ${rawCmd}`);
+  execute_command: function (raw_cmd) {
+    this.print_line(`iron@jarvis:~$ ${raw_cmd}`);
 
-    var parts = rawCmd.split(" ");
+    var parts = raw_cmd.split(" ");
     var cmd = parts[0].toLowerCase();
     var args = parts.slice(1);
 
     switch (cmd) {
       case "help":
-        this.printLine("Available commands:");
-        this.printLine("  help             - Show this help menu");
-        this.printLine("  clear            - Clear terminal screen");
-        this.printLine("  time             - Display current system time");
-        this.printLine("  echo [text]      - Echo back text");
-        this.printLine("  calc [expr]      - Evaluate math expression");
-        this.printLine(
+        this.print_line("Available commands:");
+        this.print_line("  help             - Show this help menu");
+        this.print_line("  clear            - Clear terminal screen");
+        this.print_line("  time             - Display current system time");
+        this.print_line("  echo [text]      - Echo back text");
+        this.print_line("  calc [expr]      - Evaluate math expression");
+        this.print_line(
           "  open [app]       - Launch app (notepad, calc, player)",
         );
         break;
 
       case "clear":
-        this.outputEl.innerHTML = "";
+        this.output_el.innerHTML = "";
         break;
 
       case "time":
-        this.printLine(`System Time: ${new Date().toLocaleString()}`);
+        this.print_line(`System Time: ${new Date().toLocaleString()}`);
         break;
 
       case "echo":
-        this.printLine(args.join(" ") || "");
+        this.print_line(args.join(" ") || "");
         break;
 
       case "calc":
         try {
           var expr = args.join("");
           if (!expr) throw new Error("No expression");
-          if (/[^0-9+\-*/(). ]/.test(expr))
+          var res = evaluate_math_expression(expr);
+          if (res === null || typeof res !== "number" || !isFinite(res)) {
             throw new Error("Invalid characters");
-          var res = Function('"use strict"; return (' + expr + ")")();
-          this.printLine(`Result: ${res}`);
+          }
+          this.print_line(`Result: ${res}`);
         } catch (err) {
-          this.printLine("Error: Invalid calculation syntax.");
+          this.print_line("Error: Invalid calculation syntax.");
         }
         break;
 
       case "open":
         var target = (args[0] || "").toLowerCase();
         if (target === "notepad" || target === "ironbook") {
-          if (typeof openWindow === "function") openWindow("IronPad");
-          this.printLine("Opening IronBook...");
+          if (typeof open_window === "function") open_window("iron_pad");
+          this.print_line("Opening IronBook...");
         } else if (target === "calc" || target === "calculator") {
-          if (typeof openWindow === "function") openWindow("IronCalc");
-          this.printLine("Opening IronCalc...");
+          if (typeof open_window === "function") open_window("iron_calc");
+          this.print_line("Opening IronCalc...");
         } else if (target === "player" || target === "music") {
-          if (typeof openWindow === "function") openWindow("IronPlayer");
-          this.printLine("Opening IronPlayer...");
+          if (typeof open_window === "function") open_window("iron_player");
+          this.print_line("Opening IronPlayer...");
         } else {
-          this.printLine(
+          this.print_line(
             `Unknown app: '${args[0]}'. Try 'notepad', 'calc', or 'player'.`,
           );
         }
         break;
 
       default:
-        this.printLine(
+        this.print_line(
           `Command not recognized: '${cmd}'. Type 'help' for options.`,
         );
         break;
@@ -760,17 +790,16 @@ var Jarvis_Terminal = {
 };
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => Jarvis_Terminal.init());
+  document.addEventListener("DOMContentLoaded", () => jarvis_terminal.init());
 } else {
-  Jarvis_Terminal.init();
+  jarvis_terminal.init();
 }
 
-// wiring up terminal
-makeDraggable(document.querySelector("#Javis_Terminal"));
-setupIcon("#TermOpen", "Javis_Terminal");
+make_draggable(document.querySelector("#jarvis_terminal"));
+setup_icon("#term_open", "jarvis_terminal");
 document
-  .querySelector("#closeJavis_Terminal")
+  .querySelector("#close_jarvis_terminal")
   .addEventListener("click", function () {
-    closeWindow("Javis_Terminal");
+    close_window("jarvis_terminal");
   });
-Javis_Terminal.init();
+jarvis_terminal.init();
