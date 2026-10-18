@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Caacupe+One&family=Orbitron:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -8,6 +10,8 @@ body {
   background: url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif);
   color: #fff;
   background-size: cover;
+  font-weight: 900;
+  letter-spacing: 0.08em;
 }
 
 /* Shared window base */
@@ -17,47 +21,48 @@ body {
   border: 2px solid #e53935;
   border-radius: 1rem;
   padding: 10px;
-  background-color: rgba(10, 10, 15, 0.92);;
+  background-color: rgba(10, 10, 15, 0.92);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   min-width: 250px;
   min-height: 150px;
   color: #ffd600;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
 }
 
-.win-resizer {
+.win_resizer {
   position: absolute !important;
   box-sizing: border-box;
   z-index: 9999;
-  /* background: rgba(255, 0, 0, 0.2); */ /* If you want to see the handlers comment out those line */
 }
 
-/* Edge Handles (6px thick clickable zone) */
-.win-resizer.top {
+.win_resizer.top {
   top: -4px;
   left: 12px;
   right: 12px;
   height: 6px;
   cursor: n-resize;
 }
-.win-resizer.right {
+
+.win_resizer.right {
   top: 12px;
   bottom: 12px;
   right: -4px;
   width: 6px;
   cursor: e-resize;
 }
-.win-resizer.bottom {
+
+.win_resizer.bottom {
   bottom: -4px;
   left: 12px;
   right: 12px;
   height: 6px;
   cursor: s-resize;
 }
-.win-resizer.left {
+
+.win_resizer.left {
   top: 12px;
   bottom: 12px;
   left: -4px;
@@ -65,29 +70,31 @@ body {
   cursor: w-resize;
 }
 
-/* Corner Handles (Larger 14px boxes to account for rounded 1rem corners) */
-.win-resizer.top-left {
+.win_resizer.top_left {
   top: -5px;
   left: -5px;
   width: 14px;
   height: 14px;
   cursor: nwse-resize;
 }
-.win-resizer.top-right {
+
+.win_resizer.top_right {
   top: -5px;
   right: -5px;
   width: 14px;
   height: 14px;
   cursor: nesw-resize;
 }
-.win-resizer.bottom-left {
+
+.win_resizer.bottom_left {
   bottom: -5px;
   left: -5px;
   width: 14px;
   height: 14px;
   cursor: nesw-resize;
 }
-.win-resizer.bottom-right {
+
+.win_resizer.bottom_right {
   bottom: -5px;
   right: -5px;
   width: 14px;
@@ -95,7 +102,7 @@ body {
   cursor: nwse-resize;
 }
 
-.Window1 {
+.window_1 {
   top: 50%;
   left: 22%;
   transform: translate(-50%, -50%);
@@ -105,63 +112,64 @@ body {
   padding: 10px;
 }
 
-.TopBar {
+.top_bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 6px 14px;
-  background: radial-gradient(
-    circle,
-    rgb(82, 82, 0) 0%,
-    rgba(189, 175, 53, 1) 36%,
-    rgba(146, 148, 35, 1) 100%
-  );
+  background: radial-gradient(circle,
+      rgb(82, 82, 0) 0%,
+      rgba(189, 175, 53, 1) 36%,
+      rgba(146, 148, 35, 1) 100%);
   margin: 10px;
   border-radius: 32px;
   box-shadow: 0 0 10px crimson;
+  font-family: 'Eurostile', sans-serif;
+  font-weight: 900;
+  font-size: 50px;
   corner-shape: squircle;
 }
 
-.TopBar .system-metrics {
+.top_bar .ironpc_info {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Orbitron', monospace;
+  font-family: 'Eurostile', sans-serif;
   user-select: none;
 }
 
-.TopBar .hud-metric {
+.top_bar .hud_info {
   font-size: 0.6rem;
   padding: 3px 6px;
   line-height: 1;
   background: rgba(229, 57, 53, 0.1);
-  border: 1px solid rgba(229, 57, 53, 0.4);
+  /* border: 1px solid rgba(229, 57, 53, 0.4); */
   border-radius: 4px;
   display: flex;
   align-items: center;
   white-space: nowrap;
 }
 
-.TopBar .metric-label {
-  color: #ffd600;
+.top_bar .iron_label {
+  color: #8B0000;
   font-weight: 700;
   margin-right: 3px;
-  font-size: 0.58rem;
+  font-size: 0.98rem;
 }
 
-.TopBar .metric-val {
-  color: #00f3ff;
+.top_bar .iron_value {
+  color: #000000;
   font-weight: 700;
-  font-size: 0.6rem;
-  text-shadow: 0 0 4px rgba(0, 243, 255, 0.6);
+  font-size: 0.96rem;
+  /* text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); */
 }
 
-.TopBar .Time_TopBar {
-  border: 2px solid #e53935;
+.top_bar .time_top_bar {
+  border: 2px solid #8B0000;
   border-radius: 20px;
   padding: 4px 10px;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-family: 'Orbitron', monospace;
   backdrop-filter: blur(20px);
   background-color: rgba(0, 0, 0, 0.25);
@@ -169,12 +177,11 @@ body {
   white-space: nowrap;
 }
 
-.Iron_OS_logo {
-  /* width: 50%; */
+.iron_os_logo {
   height: 42px;
 }
 
-#closeWindow {
+#close_window {
   display: flex;
   justify-content: center;
   border: 2px solid #ffd600;
@@ -186,7 +193,7 @@ body {
   cursor: pointer;
 }
 
-.StartIcons {
+.start_icons {
   margin: 2rem;
   display: flex;
   flex-flow: column wrap;
@@ -195,12 +202,12 @@ body {
   filter: drop-shadow(0 5px 10px black);
 }
 
-.desktop-icon {
+.desktop_icon {
   height: 5rem;
   cursor: pointer;
 }
 
-.canva-designed{
+.canva_designed {
   border-radius: 5rem;
   corner-shape: squircle;
 }
@@ -209,7 +216,7 @@ body {
   border: 2px solid #ffd600;
 }
 
-.Window2 {
+.window_2 {
   top: 20%;
   left: 8%;
   min-width: 500px;
@@ -218,26 +225,23 @@ body {
   overflow: hidden;
 }
 
-/* Chibi Iron Man overlay inside IronBook only */
-.Window2::before {
+.window_2::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp)
-    no-repeat center center;
+  background: url(../assets/pngtree-kawaii-chibi-iron-man-vector-with-soft-glowing-eyes-png-image_19290394.webp) no-repeat center center;
   background-size: contain;
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
 }
 
-.Window2 > * {
+.window_2>* {
   position: relative;
   z-index: 1;
 }
 
-/* IronBook Layout Styles */
-.window-header {
+.window_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -246,13 +250,13 @@ body {
   cursor: grab;
 }
 
-.window-header h1 {
+.window_header h1 {
   margin: 0;
   padding: 0;
   font-size: 1.2rem;
 }
 
-.close-btn {
+.close {
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -260,7 +264,7 @@ body {
   color: white;
 }
 
-.ironbook-layout {
+.ironbook_layout {
   display: flex;
   min-height: 300px;
 }
@@ -277,7 +281,7 @@ body {
   margin-top: 0;
 }
 
-#notesList {
+#notes_list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -285,41 +289,41 @@ body {
   overflow-y: auto;
 }
 
-#notesList li {
+#notes_list li {
   padding: 0.5rem;
   cursor: pointer;
   border-radius: 4px;
 }
 
-#notesList li:hover {
+#notes_list li:hover {
   background: rgba(0, 0, 0, 0.1);
 }
 
-#notesList li.active {
+#notes_list li.active {
   background: rgba(0, 0, 0, 0.2);
   font-weight: bold;
   border-left: 3px solid #e53935;
 }
 
-#newNoteBtn {
+#new_note {
   margin-top: 0.5rem;
   width: 100%;
 }
 
-.editor-area {
+.editor_area {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
 }
 
-#noteTitle {
+#note_title {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   caret-color: #ffd600;
 }
 
-#noteContent {
+#note_content {
   flex: 1;
   min-height: 150px;
   padding: 0.5rem;
@@ -328,14 +332,14 @@ body {
   caret-color: #e53935;
 }
 
-.editor-actions {
+.editor_actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.editor-actions button,
-#newNoteBtn {
+.editor_actions button,
+#new_note {
   padding: 0.5rem 1rem;
   cursor: pointer;
   background: linear-gradient(135deg, #e53935, #c62828);
@@ -347,123 +351,116 @@ body {
     box-shadow 0.2s;
 }
 
-.editor-actions button:hover,
-#newNoteBtn:hover {
+.editor_actions button:hover,
+#new_note:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
 }
 
-.editor-actions button:active,
-#newNoteBtn:active {
+.editor_actions button:active,
+#new_note:active {
   transform: translateY(0);
 }
 
-/* IronCalc - Stark tech theme */
-.Calculator {
+.calculator {
   top: 15%;
   left: 58%;
   min-width: 340px;
   min-height: 480px;
   max-width: calc(100vw - 2rem);
-  /* overflow: hidden; */
 }
 
-.Calculator::before {
+.calculator::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at 50% 15%,
-    rgba(229, 57, 53, 0.08),
-    transparent 60%
-  );
+  background: radial-gradient(circle at 50% 15%,
+      rgba(229, 57, 53, 0.08),
+      transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
 
-.Calculator > * {
+.calculator>* {
   position: relative;
   z-index: 1;
 }
 
-.calc-display {
+.calc_display {
   background:
-    radial-gradient(
-      ellipse at center,
+    radial-gradient(ellipse at center,
       rgba(229, 57, 53, 0.15),
-      transparent 70%
-    ),
+      transparent 70%),
     #0d0d0d;
   border: 2px solid #e53935;
   border-radius: 8px;
   padding: 1rem;
   color: #ffd600;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   text-align: right;
 }
 
-.calc-expression {
+.calc_expression {
   font-size: 0.85rem;
   opacity: 0.5;
   min-height: 1.2em;
   word-break: break-all;
 }
 
-.calc-result {
+.calc_result {
   font-size: 2.2rem;
   font-weight: 700;
   min-height: 2.8rem;
   word-break: break-all;
 }
 
-.calc-keypad {
+.calc_keypad {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   padding: 0.75rem;
 }
 
-.calc-btn {
+.calc {
   border: none;
   border-radius: 6px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.08s;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   padding: 0.75rem 0;
 }
 
-.calc-btn:active {
+.calc:active {
   transform: scale(0.93);
 }
 
-.calc-btn.num {
+.calc.num {
   background: #1a1a1a;
   color: #ffd600;
   border: 1px solid #333;
 }
 
-.calc-btn.op {
+.calc.op {
   background: linear-gradient(135deg, #e53935, #b71c1c);
   color: #fff;
 }
 
-.calc-btn.special {
+.calc.special {
   background: linear-gradient(135deg, #ffd600, #e6c200);
   color: #000;
 }
 
-.calc-btn.wide {
+.calc.wide {
   grid-column: span 2;
 }
 
-.calc-btn.tall {
+.calc.tall {
   grid-row: span 3;
 }
 
-/* Javis_Terminal */
-.Javis_Terminal {
+.jarvis_terminal {
   top: 30%;
   left: 32%;
   width: 580px;
@@ -472,32 +469,30 @@ body {
   backdrop-filter: blur(12px);
   border: 2px solid #e53935;
   box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
-  font-family: "Orbitron", monospace;
+  font-family: "Share Tech Mono", monospace;
+  font-weight: 700;
   color: #ffd600;
-  /* overflow: hidden; */
 }
 
-.Javis_Terminal::before {
+.jarvis_terminal::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background: repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px);
   pointer-events: none;
   z-index: 0;
 }
 
-.Javis_Terminal > * {
+.jarvis_terminal>* {
   position: relative;
   z-index: 1;
 }
 
-.terminal-body {
+.terminal_body {
   flex: 1;
   padding: 10px;
   display: flex;
@@ -507,7 +502,7 @@ body {
   overflow: hidden;
 }
 
-.terminal-output {
+.terminal_output {
   flex: 1;
   overflow-y: auto;
   margin-bottom: 8px;
@@ -516,26 +511,26 @@ body {
   gap: 4px;
 }
 
-.terminal-output::-webkit-scrollbar {
+.terminal_output::-webkit-scrollbar {
   width: 4px;
 }
 
-.terminal-output::-webkit-scrollbar-thumb {
+.terminal_output::-webkit-scrollbar-thumb {
   background: #e53935;
   border-radius: 2px;
 }
 
-.system-welcome {
+.system_welcome {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.terminal-highlight {
+.terminal_highlight {
   color: #e53935;
   font-weight: 700;
   text-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
 }
 
-.terminal-input-line {
+.terminal_input_line {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -545,25 +540,24 @@ body {
   border-radius: 6px;
 }
 
-.terminal-prompt {
+.terminal_prompt {
   color: #ffd600;
   font-weight: 700;
   white-space: nowrap;
 }
 
-#terminalInput {
+#terminal_input {
   flex: 1;
   background: transparent;
   border: none;
   outline: none;
   color: #ffd600;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   font-size: 0.8rem;
   caret-color: #e53935;
 }
 
-/* IronPlayer */
-.IronPlayer {
+.iron_player {
   top: 22%;
   left: 42%;
   width: 360px;
@@ -571,19 +565,19 @@ body {
   backdrop-filter: blur(12px);
   border: 2px solid #e53935;
   box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   color: #ffd600;
   overflow: hidden;
 }
 
-.IronPlayer .player-body {
+.iron_player .player_body {
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.track-display {
+.track_display {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(229, 57, 53, 0.4);
   border-radius: 8px;
@@ -593,7 +587,7 @@ body {
   gap: 12px;
 }
 
-.track-visualizer {
+.track_visualizer {
   display: flex;
   align-items: flex-end;
   gap: 3px;
@@ -601,38 +595,39 @@ body {
   width: 30px;
 }
 
-.track-visualizer .bar {
+.track_visualizer .bar {
   flex: 1;
   background-color: #e53935;
-  animation: pulseBar 1s infinite alternate ease-in-out;
+  animation: pulse_bar 1s infinite alternate ease-in-out;
 }
 
-.track-visualizer .bar:nth-child(2) {
+.track_visualizer .bar:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-.track-visualizer .bar:nth-child(3) {
+.track_visualizer .bar:nth-child(3) {
   animation-delay: 0.4s;
 }
 
-.track-visualizer .bar:nth-child(4) {
+.track_visualizer .bar:nth-child(4) {
   animation-delay: 0.1s;
 }
 
-@keyframes pulseBar {
+@keyframes pulse_bar {
   0% {
     height: 20%;
   }
+
   100% {
     height: 100%;
   }
 }
 
-.track-info {
+.track_info {
   overflow: hidden;
 }
 
-.track-title {
+.track_title {
   font-size: 0.85rem;
   font-weight: 700;
   color: #ffd600;
@@ -641,55 +636,55 @@ body {
   text-overflow: ellipsis;
 }
 
-.track-artist {
+.track_artist {
   font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.6);
   margin-top: 2px;
 }
 
-.player-controls {
+.player_controls {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
 }
 
-.control-action-btn {
+.control_action {
   background: #1a1a1a;
   border: 1px solid #333;
   color: #ffd600;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   font-size: 1rem;
   transition: all 0.1s;
 }
 
-.control-action-btn:hover {
+.control_action:hover {
   background: #252525;
   box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
 }
 
-.control-action-btn.primary {
+.control_action.primary {
   background: linear-gradient(135deg, #e53935, #b71c1c);
   color: #fff;
   border: none;
   padding: 10px 20px;
 }
 
-.control-action-btn.primary:hover {
+.control_action.primary:hover {
   box-shadow: 0 0 14px rgba(229, 57, 53, 0.7);
 }
 
-.progress-section input[type="range"],
-.volume-control input[type="range"] {
+.progress_section input[type="range"],
+.volume_control input[type="range"] {
   width: 100%;
   accent-color: #e53935;
   cursor: pointer;
 }
 
-.player-footer {
+.player_footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -697,25 +692,25 @@ body {
   margin-top: 4px;
 }
 
-.playlist-selector select {
+.playlist_selector select {
   background: #111;
   color: #ffd600;
   border: 1px solid rgba(229, 57, 53, 0.4);
   padding: 4px 8px;
   border-radius: 4px;
-  font-family: "Orbitron", monospace;
+  font-family: 'Eurostile', sans-serif;
   font-size: 0.7rem;
   outline: none;
   max-width: 160px;
 }
 
-.volume-control {
+.volume_control {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 0.75rem;
 }
 
-.volume-control input[type="range"] {
+.volume_control input[type="range"] {
   width: 70px;
 }
