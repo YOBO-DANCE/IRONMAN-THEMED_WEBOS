@@ -2,7 +2,7 @@
 
 ## An Web based OS with the tech of *Stark* and Power of *IRON*
 
-![Hero picture](README_ASSETS/Screenshot 2026-10-15 163357.png)
+[Hero picture](README_ASSETS/Screenshot 2026-10-15 163357.png)
 
 # Live Demo
 
