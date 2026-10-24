@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Outer Shield Faceplate (Iron Man Red) -->
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#B71C1C" stroke-width="2.5" fill="#B71C1C" fill-opacity="0.1"></path>
+  
+  <!-- Sleek Internal Face Panel (Tony Stark Gold) -->
+  <path d="M12 5l5 2v4c0 3.5-5 6-5 6s-5-2.5-5-6V7l5-2z" stroke="#FFD700" stroke-width="1.5" fill="none"></path>
+  
+  <!-- Glowing Hexagonal Core / Eyes (Tony Stark Blue) -->
+  <polygon points="12 8 15 10 15 13 12 15 9 13 9 10" stroke="#00E5FF" stroke-width="1.5" fill="#00E5FF" fill-opacity="0.3"></polygon>
+</svg>

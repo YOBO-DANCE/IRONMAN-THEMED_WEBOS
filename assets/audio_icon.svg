@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Armor Plated Speaker Body (Iron Man Red) -->
+  <path d="M11 5L6 9H2v6h4l5 4V5z" stroke="#B71C1C" stroke-width="2" fill="#B71C1C" fill-opacity="0.15"/>
+  
+  <!-- Sonic Repulsor Core Node (Glowing Cyan Blue) -->
+  <circle cx="6" cy="12" r="1.5" stroke="#00E5FF" stroke-width="1" fill="#00E5FF"/>
+
+  <!-- First Energy Audio Wave (Tony Stark Gold) -->
+  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- Max Power Sonic Wave / Outer Blast Ripple (Tony Stark Gold) -->
+  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="#FFD700" stroke-width="2"/>
+</svg>

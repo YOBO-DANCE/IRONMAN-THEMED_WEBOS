@@ -1046,7 +1046,7 @@ var iron_explorer = {
       div.className = "explorer_item";
       div.dataset.name = file.name;
 
-      div.innerHTML = '<div class="file_icon_wrap"><img src="' + file.icon + '" alt="file icon" class="file_svg_img" /></div><span class="file_name">' + file.name + '</span>';
+      div.innerHTML = '<div class="file_icon_wrap"><img src="' + file.icon + '" alt="file icon" class="explorer_svg_img" /></div><span class="explorer_name">' + file.name + '</span>';
       
       this.grid_el.appendChild(div);
     }
