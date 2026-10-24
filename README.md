@@ -1,8 +1,8 @@
-<img align=center src="README_ASSETS/Cool Text - Iron OS 516058731425365.png" alt="IRON OS"></img>
+<img align=center src="README_ASSETS/Cool Text - Iron OS 516058731425365.png" alt="IRON OS" />
 
 ## An Web based OS with the tech of *Stark* and Power of *IRON*
 
-![Hero picture](<README_ASSETS/Screenshot 2026-09-06 180519.png>)
+<img src="README_ASSETS/Screenshot 2026-10-15 163357.png" alt="Hero Picture"/>
 
 # Live Demo
 
