@@ -738,8 +738,120 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  word-break: break-all;
 }
 
 .explorer_sidebar h3 {
   font-size: 0.85rem;
+  color: #ffd600;
+  margin-bottom: 4px;
+}
+
+#dir_list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dir_item {
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.1s;
+}
+
+.dir_item:hover{
+  background: rgba(229, 57, 53 0.15);
+  color: #ffd600;
+}
+
+.dir_item.active {
+  background: rgba(229, 57, 53 0.3);
+  color: #ffd600;
+  border-left: 3px solid #e53935;
+  font-weight: bold;
+}
+
+.explorer_main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.explorer_toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(299, 57, 53, 0.3);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#new_file_btn {
+  padding: 4px 10px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #e53935, #c62828);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: "Eurostile", sans-serif;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+#new_file_btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+}
+
+.explorer_grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+  padding: 10px 0;
+  align-content: start;
+}
+
+.explorer_item {
+  background: rgba(20, 20, 25, 0.6);
+  border: 1px solid rgba(229, 57, 53, 0.3);
+  border-radius: 6px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.explorer_item:hover {
+  background: rgba(229, 57, 53, 0.2);
+  border: #ffd600;
+  transform: translateY(-2px);
+}
+
+.explorer_icon {
+  font: 1.8rem;
+}
+
+.explorer_name {
+  font: 0.7rem;
+  color: #ffd600;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

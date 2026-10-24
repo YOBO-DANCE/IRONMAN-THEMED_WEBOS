@@ -803,3 +803,13 @@ document
     close_window("jarvis_terminal");
   });
 jarvis_terminal.init();
+
+// Iron Explorer
+var iron_explorer = {
+  curent_path: "/System",
+  file_system: {
+    "/System": [
+      {name: "core_kernel.sys", type: "file", icon: "../assets/settings_icon.webp"}
+    ]
+  }
+}
