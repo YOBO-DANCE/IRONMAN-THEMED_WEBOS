@@ -53,8 +53,14 @@ ___
 
 - Resizable Windows
 
+- A file explorer i.e. Iron_Explorer for tony's vibe coding arc
+
 - Thats it!
 
+### NOTE:
+- All the images are converted either to webp or svg.
+
+- All the icons even ones in the iron_explorer are made completely by me.
 ___
 
 # HOW IT WORKS
@@ -137,7 +143,7 @@ class node_audio_tracks,node_browser_storage,node_browser toneRose
 | Theme | Iron Man / Stark Industries (Marvel) |
 | Fonts | `Orbitron` + `Caacupe One` via Google Fonts|
 | Art | `assets/` wallpapers, icons, chibi overlay, Most made by me except that chibi overlay and the wallpaper|
-| Stack | Vanilla HTML/CSS/JS, zero deps — Vercel deploy, Mermaid diagram |
+| Stack | Vanilla HTML/CSS/JS, Vercel deploy, Mermaid diagram |
 
 # Badges
 
