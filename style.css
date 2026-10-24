@@ -733,7 +733,7 @@ body {
 
 .explorer_sidebar {
   width: 150px;
-  border-right: 1px solid #e53935;
+  border-right: none;
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -764,12 +764,12 @@ body {
 }
 
 .dir_item:hover{
-  background: rgba(229, 57, 53 0.15);
+  background: rgba(229, 57, 53, 0.15);
   color: #ffd600;
 }
 
 .dir_item.active {
-  background: rgba(229, 57, 53 0.3);
+  background: rgba(229, 57, 53, 0.3);
   color: #ffd600;
   border-left: 3px solid #e53935;
   font-weight: bold;
@@ -832,28 +832,31 @@ body {
   cursor: pointer;
   text-align: center;
   transition: all 0.15s;
+  overflow: hidden;
 }
 
 .explorer_item:hover {
   background: rgba(229, 57, 53, 0.2);
-  border: #ffd600;
+  border: 1px solid #ffd600;
   transform: translateY(-2px);
 }
 
 .explorer_icon {
-  font: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .explorer_name {
-  font: 0.7rem;
+  font-size: 0.65rem;
   color: #ffd600;
+  width: 100%;
   word-break: break-all;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
+  line-height: 1.2;
 }
 
 .explorer_icon_wrap {
@@ -877,4 +880,20 @@ body {
 .explorer_item:hover .explorer_icon_wrap {
   border-color: #ffd600;
   box-shadow: 0 0 8px rgba(255, 214, 0, 0.3);
+}
+
+.explorer_grid::-webkit-scrollbar,
+.explorer_sidebar::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+.explorer_grid::-webkit-scrollbar-track,
+.explorer_sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.explorer_grid::-webkit-scrollbar-thumb,
+.explorer_sidebar::-webkit-scrollbar-thumb {
+  background: #e53935;
 }
