@@ -53,7 +53,7 @@ ___
 
 - Resizable Windows
 
-- A file explorer i.e. Iron_Explorer for tony's vibe coding arc
+- A file explorer i.e. Iron_Explorer for Tony's vibe coding arc
 
 - Thats it!
 
@@ -61,6 +61,8 @@ ___
 - All the images are converted either to webp or svg.
 
 - All the icons even ones in the iron_explorer are made completely by me.
+
+- Also the header is the only area for dragging. I want to give a little headache to Tony so I did that LOL ≧ᗜ≦
 ___
 
 # HOW IT WORKS
