@@ -1,203 +1,264 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IRON_OS</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/FavICON.svg"
+      type="image/x-icon"
+    />
+    <link href="https://fonts.cdnfonts.com/css/eurostile" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IRON_OS</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="shortcut icon" href="../assets/FavICON.svg" type="image/x-icon" />
-  <link href="https://fonts.cdnfonts.com/css/eurostile" rel="stylesheet">
-</head>
-
-<body>
-  <div class="top_bar">
-    <img src="../assets/Cool Text - Iron OS 516058731425365.webp" alt="iron_os" class="iron_os_logo" />
-    <div class="ironpc_info">
-      <div class="hud_info">
-        <span class="iron_label">CORE:</span>
-        <span class="iron_value" id="processor_value">12.6</span>
-      </div>
-      <div class="hud_info">
-        <span class="iron_label">TEMP:</span>
-        <span class="iron_value" id="temp_value">24°C</span>
-      </div>
-      <div class="hud_info">
-        <span class="iron_label">RAM:</span>
-        <span class="iron_value" id="ram_value">89.8 GB</span>
-      </div>
-    </div>
-    <p id="current_time" class="time_top_bar"></p>
-  </div>
-
-  <div class="start_icons">
-    <img src="../assets/5579832.webp" alt="welcome_icon" class="desktop_icon" id="welcome_open" />
-    <img src="../assets/iron-man-removebg-preview.webp" alt="iron_book_icon" class="desktop_icon" id="iron_book_open" />
-    <img src="../assets/IronCalc.webp" alt="iron_calc" class="desktop_icon canva_designed" id="calc_open" />
-    <img src="../assets/Jarv_Termi.webp" alt="jarvis_terminal" class="desktop_icon canva_designed" id="term_open" />
-    <img src="../assets/IRON_PLAYER.webp" alt="iron_player" class="desktop_icon canva_designed" id="player_open" />
-    <img src="../assets/Iron_explorer.webp" alt="Iron_explorer" class="desktop_icon canva_designed" id="explorer_open">
-  </div>
-
-  <!-- Welcome Window -->
-  <div class="window window_1" id="welcome_window" style="display: flex">
-    <header class="window_header" id="welcome_window_header">
-      <h1>Hi, and Welcome!</h1>
-      <button class="close" id="close_welcome_window">×</button>
-    </header>
-    <p class="welcome_stuff">
-      I am Tanmay Hathile! A 13 year old whose <br />
-      mind constantly finds new ways to find trouble hehe. <br />
-      So enjoy this beautiful OS, before <strong>stark</strong> becomes the
-      doom!
-    </p>
-  </div>
-
-  <!-- IronBook Window -->
-  <div class="window window_2" id="iron_pad" style="display: none">
-    <header class="window_header" id="iron_pad_header">
-      <h1>IronBook</h1>
-      <button class="close" id="close_iron_pad">×</button>
-    </header>
-    <div class="ironbook_layout">
-      <aside class="sidebar">
-        <h3>Notes</h3>
-        <ul id="notes_list"></ul>
-        <button id="new_note">+ New Note</button>
-      </aside>
-      <main class="editor_area">
-        <input type="text" id="note_title" placeholder="Untitled" />
-        <textarea id="note_content" placeholder="Start writing..."></textarea>
-        <div class="editor_actions">
-          <button id="save_note">Save</button>
-          <button id="save_as_note">Save As...</button>
-          <button id="delete_note">Delete</button>
+  <body>
+    <div class="top_bar">
+      <img
+        src="../assets/Cool Text - Iron OS 516058731425365.webp"
+        alt="iron_os"
+        class="iron_os_logo"
+      />
+      <div class="ironpc_info">
+        <div class="hud_info">
+          <span class="iron_label">CORE:</span>
+          <span class="iron_value" id="processor_value">12.6</span>
         </div>
-      </main>
-    </div>
-  </div>
-
-  <!-- IronCalc Window -->
-  <div class="window calculator" id="iron_calc" style="display: none">
-    <header class="window_header" style="border-bottom: 0px;">
-      <h1>IronCalc</h1>
-      <button class="close" id="close_iron_calc">×</button>
-    </header>
-    <div class="calc_layout">
-      <div class="calc_display">
-        <div class="calc_expression" id="calc_expr"></div>
-        <div class="calc_result" id="calc_result">0</div>
-      </div>
-      <div class="calc_keypad" id="calc_keypad"></div>
-    </div>
-  </div>
-
-  <!-- Jarvis Terminal Window -->
-  <div class="window jarvis_terminal" id="jarvis_terminal" style="display: none" style="letter-spacing: 0px;">
-    <header class="window_header" id="jarvis_terminal_header">
-      <h1>Javis_Terminal</h1>
-      <button class="close" id="close_jarvis_terminal" style="color: white">
-        ×
-      </button>
-    </header>
-    <div class="terminal_body">
-      <div class="terminal_output" id="terminal_output">
-        <p class="system_welcome">IRONMAN_OS Secure Terminal v1.0.0</p>
-        <p class="system_welcome">
-          Type <span class="terminal_highlight">'help'</span> for a list of
-          available commands.
-        </p>
-      </div>
-      <div class="terminal_input_line">
-        <span class="terminal_prompt">iron@jarvis:~$</span>
-        <input type="text" id="terminal_input" autocomplete="off" spellcheck="false" />
-      </div>
-    </div>
-  </div>
-
-  <!-- MUSIC PLAYER -->
-  <div class="window iron_player" id="iron_player" style="display: flex">
-    <header class="window_header" id="iron_player_header">
-      <h1>IronPlayer</h1>
-      <button class="close" id="close_iron_player" style="color: white">
-        ×
-      </button>
-    </header>
-    <div class="player_body">
-      <!-- Cool Audio BARS!!!! -->
-      <div class="track_display">
-        <div class="track_visualizer">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
+        <div class="hud_info">
+          <span class="iron_label">TEMP:</span>
+          <span class="iron_value" id="temp_value">24°C</span>
         </div>
-        <div class="track_info">
-          <div class="track_title" id="track_title">No Track Loaded</div>
-          <div class="track_artist" id="track_artist">JARVIS Audio Suite</div>
+        <div class="hud_info">
+          <span class="iron_label">RAM:</span>
+          <span class="iron_value" id="ram_value">89.8 GB</span>
         </div>
       </div>
-
-      <div class="player_controls">
-        <button class="control_action" id="prev_track">⏮</button>
-        <button class="control_action primary" id="play_pause">▶</button>
-        <button class="control_action" id="next_track">⏭</button>
-      </div>
-
-      <div class="progress_section">
-        <input type="range" id="track_progress" value="0" min="0" max="100" step="1" />
-      </div>
-
-      <div class="player_footer">
-        <div class="playlist_selector">
-          <select id="track_select">
-            <option value="" disabled selected>Select Track...</option>
-          </select>
-        </div>
-        <div class="volume_control">
-          <span>🔊</span>
-          <input type="range" id="volume_slider" value="70" min="0" max="100" />
-        </div>
-      </div>
-
-      <!-- Hidden Audio Engine -->
-      <audio id="audio_engine"></audio>
+      <p id="current_time" class="time_top_bar"></p>
     </div>
-  </div>
 
-  <!-- Iron_Explorer -->
-  <div class="window iron_explorer" id="iron_explorer" style="display: flex;">
-    <header class="window_header" id="iron_explorer_header">
-      <h1>Iron Explorer</h1>
-      <button class="close" id="close_iron_explorer" style="color: white">
-        ×
-      </button>
-    </header>
+    <div class="start_icons">
+      <img
+        src="../assets/5579832.webp"
+        alt="welcome_icon"
+        class="desktop_icon"
+        id="welcome_open"
+      />
+      <img
+        src="../assets/iron-man-removebg-preview.webp"
+        alt="iron_book_icon"
+        class="desktop_icon"
+        id="iron_book_open"
+      />
+      <img
+        src="../assets/IronCalc.webp"
+        alt="iron_calc"
+        class="desktop_icon canva_designed"
+        id="calc_open"
+      />
+      <img
+        src="../assets/Jarv_Termi.webp"
+        alt="jarvis_terminal"
+        class="desktop_icon canva_designed"
+        id="term_open"
+      />
+      <img
+        src="../assets/IRON_PLAYER.webp"
+        alt="iron_player"
+        class="desktop_icon canva_designed"
+        id="player_open"
+      />
+      <img
+        src="../assets/Iron_explorer.webp"
+        alt="Iron_explorer"
+        class="desktop_icon canva_designed"
+        id="explorer_open"
+      />
+    </div>
 
-    <div class="explorer_layout">
-      <aside class="explorer_sidebar">
-        <h3>Directories</h3>
-        <ul id="dir_list">
-          <li class="dir_item active" data-path="/System">/System</li>
-          <li class="dir_item" data-path="/Documents">/Documents</li>
-          <li class="dir_item" data-path="/Music">/Music</li>
-          <li class="dir_item" data-path="/Hidden_from_fury">/Hidden_from_fury(Secret_Files)</li>
-        </ul>
-      </aside>
-      <div class="explorer_splitter" id="explorer_splitter"></div>
+    <!-- Welcome Window -->
+    <div class="window window_1" id="welcome_window" style="display: flex">
+      <header class="window_header" id="welcome_window_header">
+        <h1>Hi, and Welcome!</h1>
+        <button class="close" id="close_welcome_window">×</button>
+      </header>
+      <p class="welcome_stuff">
+        I am Tanmay Hathile! A 13 year old whose <br />
+        mind constantly finds new ways to find trouble hehe. <br />
+        So enjoy this beautiful OS, before <strong>stark</strong> becomes the
+        doom!
+      </p>
+    </div>
 
-      <main class="explorer_main">
-        <div class="explorer_toolbar">
-          <span id="current_path_display">Location: /System</span>
-          <button id="new_file_btn">+ New File</button>
+    <!-- IronBook Window -->
+    <div class="window window_2" id="iron_pad" style="display: none">
+      <header class="window_header" id="iron_pad_header">
+        <h1>IronBook</h1>
+        <button class="close" id="close_iron_pad">×</button>
+      </header>
+      <div class="ironbook_layout">
+        <aside class="sidebar">
+          <h3>Notes</h3>
+          <ul id="notes_list"></ul>
+          <button id="new_note">+ New Note</button>
+        </aside>
+        <main class="editor_area">
+          <input type="text" id="note_title" placeholder="Untitled" />
+          <textarea id="note_content" placeholder="Start writing..."></textarea>
+          <div class="editor_actions">
+            <button id="save_note">Save</button>
+            <button id="save_as_note">Save As...</button>
+            <button id="delete_note">Delete</button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- IronCalc Window -->
+    <div class="window calculator" id="iron_calc" style="display: none">
+      <header class="window_header" style="border-bottom: 0px">
+        <h1>IronCalc</h1>
+        <button class="close" id="close_iron_calc">×</button>
+      </header>
+      <div class="calc_layout">
+        <div class="calc_display">
+          <div class="calc_expression" id="calc_expr"></div>
+          <div class="calc_result" id="calc_result">0</div>
+        </div>
+        <div class="calc_keypad" id="calc_keypad"></div>
+      </div>
+    </div>
+
+    <!-- Jarvis Terminal Window -->
+    <div
+      class="window jarvis_terminal"
+      id="jarvis_terminal"
+      style="display: none"
+      style="letter-spacing: 0px"
+    >
+      <header class="window_header" id="jarvis_terminal_header">
+        <h1>Javis_Terminal</h1>
+        <button class="close" id="close_jarvis_terminal" style="color: white">
+          ×
+        </button>
+      </header>
+      <div class="terminal_body">
+        <div class="terminal_output" id="terminal_output">
+          <p class="system_welcome">IRONMAN_OS Secure Terminal v1.0.0</p>
+          <p class="system_welcome">
+            Type <span class="terminal_highlight">'help'</span> for a list of
+            available commands.
+          </p>
+        </div>
+        <div class="terminal_input_line">
+          <span class="terminal_prompt">iron@jarvis:~$</span>
+          <input
+            type="text"
+            id="terminal_input"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- MUSIC PLAYER -->
+    <div class="window iron_player" id="iron_player" style="display: flex">
+      <header class="window_header" id="iron_player_header">
+        <h1>IronPlayer</h1>
+        <button class="close" id="close_iron_player" style="color: white">
+          ×
+        </button>
+      </header>
+      <div class="player_body">
+        <!-- Cool Audio BARS!!!! -->
+        <div class="track_display">
+          <div class="track_visualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="track_info">
+            <div class="track_title" id="track_title">No Track Loaded</div>
+            <div class="track_artist" id="track_artist">JARVIS Audio Suite</div>
+          </div>
         </div>
 
-        <div class="explorer_grid" id="explorer_grid"></div>
-      </main>
-    </div>
-  </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
-<script src="./script.js"></script>
+        <div class="player_controls">
+          <button class="control_action" id="prev_track">⏮</button>
+          <button class="control_action primary" id="play_pause">▶</button>
+          <button class="control_action" id="next_track">⏭</button>
+        </div>
 
+        <div class="progress_section">
+          <input
+            type="range"
+            id="track_progress"
+            value="0"
+            min="0"
+            max="100"
+            step="1"
+          />
+        </div>
+
+        <div class="player_footer">
+          <div class="playlist_selector">
+            <select id="track_select">
+              <option value="" disabled selected>Select Track...</option>
+            </select>
+          </div>
+          <div class="volume_control">
+            <span>🔊</span>
+            <input
+              type="range"
+              id="volume_slider"
+              value="70"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+
+        <!-- Hidden Audio Engine -->
+        <audio id="audio_engine"></audio>
+      </div>
+    </div>
+
+    <!-- Iron_Explorer -->
+    <div class="window iron_explorer" id="iron_explorer" style="display: none">
+      <header class="window_header" id="iron_explorer_header">
+        <h1>Iron Explorer</h1>
+        <button class="close" id="close_iron_explorer" style="color: white">
+          ×
+        </button>
+      </header>
+
+      <div class="explorer_layout">
+        <aside class="explorer_sidebar">
+          <h3>Directories</h3>
+          <ul id="dir_list">
+            <li class="dir_item active" data-path="/System">/System</li>
+            <li class="dir_item" data-path="/Documents">/Documents</li>
+            <li class="dir_item" data-path="/Music">/Music</li>
+            <li class="dir_item" data-path="/Hidden_from_fury">
+              /Hidden_from_fury(Secret_Files)
+            </li>
+          </ul>
+        </aside>
+        <div class="explorer_splitter" id="explorer_splitter"></div>
+
+        <main class="explorer_main">
+          <div class="explorer_toolbar">
+            <span id="current_path_display">Location: /System</span>
+            <button id="new_file_btn">+ New File</button>
+          </div>
+
+          <div class="explorer_grid" id="explorer_grid"></div>
+        </main>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+  <script src="./script.js"></script>
 </html>
