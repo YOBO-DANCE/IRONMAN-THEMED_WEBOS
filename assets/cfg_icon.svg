@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Outer Gear Ring / Reactor Housing (Iron Man Red) -->
+  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="#B71C1C" stroke-width="2" fill="#B71C1C" fill-opacity="0.1"/>
+  
+  <!-- Outer Config Ring Notches (Mechanical Gear Teeth) -->
+  <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5" stroke="#B71C1C" stroke-width="2"/>
+
+  <!-- Golden Ring Segments / Internal Reactor Vents (Tony Stark Gold) -->
+  <circle cx="12" cy="12" r="6" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- Core Vibranium Energy Cell / Center Config Hole (Glowing Cyan Blue) -->
+  <circle cx="12" cy="12" r="2.5" stroke="#00E5FF" stroke-width="1.5" fill="#00E5FF" fill-opacity="0.4"/>
+</svg>

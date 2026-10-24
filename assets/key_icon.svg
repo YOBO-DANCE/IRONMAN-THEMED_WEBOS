@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Key Head / Mini Arc Reactor Housing (Iron Man Red) -->
+  <circle cx="7" cy="12" r="5" stroke="#B71C1C" stroke-width="2.5" fill="#B71C1C" fill-opacity="0.1"/>
+  
+  <!-- Glowing Unibeam Core / Power Cell (Jarvis Cyan Blue) -->
+  <circle cx="7" cy="12" r="2" stroke="#00E5FF" stroke-width="1.5" fill="#00E5FF" fill-opacity="0.4"/>
+  
+  <!-- Reactor Vent Segmentation Accents -->
+  <path d="M7 7v1M7 15v1M3 12h1M10 12h1" stroke="#00E5FF" stroke-width="1"/>
+
+  <!-- Reinforced Key Shaft (Iron Man Red) -->
+  <line x1="12" y1="12" x2="22" y2="12" stroke="#B71C1C" stroke-width="2.5"/>
+  
+  <!-- Holographic Nano-Teeth / Laser Matrix (Tony Stark Gold) -->
+  <path d="M16 12v3M19 12v3M21 12v2" stroke="#FFD700" stroke-width="2"/>
+</svg>
