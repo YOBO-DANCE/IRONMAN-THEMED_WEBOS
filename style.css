@@ -714,3 +714,17 @@ body {
 .volume_control input[type="range"] {
   width: 70px;
 }
+
+/* Iron_Explorer */
+.iron_explorer {
+  top: 18% !important;
+  left: 25% !important;
+  width: 560px;
+  height: 400px;
+  min-width: 450px;
+  min-height: 320px;
+}
+
+.explorer_layout {
+  
+}
