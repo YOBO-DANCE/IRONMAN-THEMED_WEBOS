@@ -726,5 +726,20 @@ body {
 }
 
 .explorer_layout {
-  
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.explorer_sidebar {
+  width: 150px;
+  border-right: 1px solid #e53935;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.explorer_sidebar h3 {
+  font-size: 0.85rem;
 }
