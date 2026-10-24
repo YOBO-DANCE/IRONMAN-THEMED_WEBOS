@@ -806,7 +806,7 @@ jarvis_terminal.init();
 
 // Iron Explorer
 var iron_explorer = {
-  curent_path: "/System",
+  current_path: "/System",
   file_system: {
    "/System": [
       { name: "core_kernel.sys", type: "file", icon: "../assets/sys_icon.svg", content: "IRON_OS KERNEL v4.8 - STABLE ARCHITECTURE" },
@@ -840,5 +840,192 @@ var iron_explorer = {
     ]
   },
 
+  init: function () {
+    this.grid_el = document.querySelector("#explorer_grid");
+    this.path_el = document.querySelector("#current_path_display");
+    this.dir_list_el = document.querySelector("#dir_list");
+    this.new_file_btn = document.querySelector("#new_file_btn");
 
+    if (!this.grid_el) return;
+
+    var saved_fs = localStorage.getItem("iron_files_system");
+    if (saved_fs) {
+      try {
+        this.file_system = JSON.parse(saved_fs);
+      } catch (err) {
+        console.log("oops, couldn't parse saved file system, using default instead");
+      }
+    }
+
+    this.dir_list_el.addEventListener("click", (e) => {
+      var li = e.target.closest(".dir_item");
+      if (!li) return;
+
+      // remove active class from everyone first, a bit redundant but works fine
+      var all_dirs = document.querySelectorAll(".dir_item");
+      for(var i=0; i < all_dirs.length; i++) {
+        all_dirs[i].classList.remove("active");
+      }
+
+      li.classList.add("active");
+      this.current_path = li.dataset.path;
+      this.render_directory();
+    });
+
+    // button to make a new file
+    this.new_file_btn.addEventListener("click", () => {
+      var file_name = prompt("Enter new file name (eg. iron_note.txt)", "new_document.txt");
+
+      if (!file_name) return;
+      file_name = file_name.trim();
+
+      var folder = this.file_system[this.current_path];
+
+      // checking if file already exists
+      var file_exists = false;
+      
+      for(var j = 0; j < folder.length; j++) {
+        if(folder[j].name === file_name) {
+          file_exists = true;
+          break;
+        }
+      }
+
+      if (file_exists) {
+        alert("A file with that name already exists!")
+        return;
+      }
+
+      var ext = file_name.split(".").pop().toLowerCase();
+      var icon_path = "../assets/txt_icon.svg"; // default fallback icon
+
+      if (ext === "mp3" || ext === "wav") {
+        icon_path = "../assets/audio_icon.svg";
+      } 
+      
+      else if (ext === "sys") {
+        icon_path = "../assets/sys_icon.svg";
+      } 
+      
+      else if (ext === "cfg" || ext === "json") {
+        icon_path = "../assets/cfg_icon.svg";
+      } 
+      
+      else if (ext === "enc" || ext === "key") {
+        icon_path = "../assets/secure_icon.svg";
+      }
+
+      folder.push({
+        name: file_name,
+        type: (ext === "mp3" || ext === "wav") ? "audio": "file",
+        icon: icon_path,
+        content: "Newly created document in Iron_Explorer"
+      });
+      
+      this.save_fs();
+      this.render_directory();
+    });
+
+    // clicking on a file item in the grid
+    this.grid_el.addEventListener("click", (e) => {
+      var item = e.target.closest(".explorer_item");
+      if (!item) return;
+      
+      var file_name = item.dataset.name;
+      var file_obj = null;
+      var current_folder_files = this.file_system[this.current_path];
+      
+      for(var k = 0; k < current_folder_files.length; k++) {
+        if(current_folder_files[k].name === file_name) {
+          file_obj = current_folder_files[k];
+          break;
+        }
+      }
+
+      if (!file_obj) return;
+
+      if (file_obj.type === "audio") {
+        if (typeof open_window === "function") {
+          open_window("iron_player");
+        }
+        if (typeof iron_player !== "undefined" && typeof iron_player.load_track === "function") {
+          iron_player.load_track(file_obj.track_index || 0);
+          iron_player.play_track();
+        }
+      } 
+      
+      else {
+        if (typeof open_window === "function") {
+          open_window("iron_pad");
+        }
+        if (typeof iron_book !== "undefined") {
+          // searching notes in iron_book manually
+          var existing_note = null;
+
+          if(iron_book.notes) {
+            for(var n = 0; n < iron_book.notes.length; n++) {
+              if(iron_book.notes[n].title === file_obj.name) {
+                existing_note = iron_book.notes[n];
+                break;
+              }
+            }
+          }
+
+          if (existing_note) {
+            iron_book.open_note(existing_note.id);
+          }
+          
+          else {
+            iron_book.current_id = null;
+            iron_book.title.value = file_obj.name;
+            iron_book.content.value = file_obj.content || "";
+            iron_book.show_list();
+          }
+        }
+      }
+    });
+
+    this.render_directory();
+  },
+
+  save_fs: function () {
+    localStorage.setItem("iron_files_system", JSON.stringify(this.file_system));
+  },
+
+  render_directory: function () {
+    this.path_el.textContent = "Path: " + this.current_path;
+    this.grid_el.innerHTML = "";
+    
+    var files = this.file_system[this.current_path] || [];
+
+    if (files.length === 0) {
+      this.grid_el.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-top: 20px;">Directory is empty.</p>';
+      return;
+    }
+
+    // building file grid elements using a simple loop instead of modern array methods everywhere
+    for(var i = 0; i < files.length; i++) {
+      var file = files[i];
+      var div = document.createElement("div");
+      div.className = "explorer_item";
+      div.dataset.name = file.name;
+
+      div.innerHTML = '<div class="file_icon_wrap"><img src="' + file.icon + '" alt="file icon" class="file_svg_img" /></div><span class="file_name">' + file.name + '</span>';
+      
+      this.grid_el.appendChild(div);
+    }
+  }
+};
+
+// Wiring it up
+make_draggable(document.querySelector("#iron_explorer"));
+setup_icon("#explorer_open", "iron_explorer");
+
+var close_btn = document.querySelector("#close_iron_explorer");
+if (close_btn) {
+  close_btn.addEventListener("click", () => {
+    close_window("iron_explorer");
+  });
 }
+
+iron_explorer.init()
