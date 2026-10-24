@@ -1,4 +1,4 @@
-// Clock (Thanks for the jam)
+// Clock (Thanks for the Jam, love it hehe)
 setInterval(function () {
   document.querySelector("#current_time").textContent =
     new Date().toLocaleString();
