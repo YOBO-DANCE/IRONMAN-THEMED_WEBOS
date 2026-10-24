@@ -174,8 +174,23 @@
 
     <div class="explorer_layout">
       <aside class="explorer_sidebar">
-        
+        <h3>Directories</h3>
+        <ul id="dir_list">
+          <li class="dir_item active" data-path="/System">/System</li>
+          <li class="dir_item" data-path="/Documents">/Documents</li>
+          <li class="dir_item" data-path="/Music">/Music</li>
+          <li class="dir_item" data-path="/Hidden_from_fury">/Hidden_from_fury(Secret_Files)</li>
+        </ul>
       </aside>
+
+      <main class="explorer_main">
+        <div class="explorer_toolbar">
+          <span id="current_path_display">Location: /System</span>
+          <button id="new_file_btn">+ New File</button>
+        </div>
+
+        <div class="explorer_grid" id="explorer_grid"></div>
+      </main>
     </div>
   </div>
 </body>
