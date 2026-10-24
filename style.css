@@ -717,8 +717,8 @@ body {
 
 /* Iron_Explorer */
 .iron_explorer {
-  top: 18% !important;
-  left: 25% !important;
+  top: 18%;
+  left: 25%;
   width: 560px;
   height: 400px;
   min-width: 450px;
@@ -739,6 +739,21 @@ body {
   flex-direction: column;
   gap: 6px;
   word-break: break-all;
+}
+
+.explorer_splitter {
+  width: 1px;
+  cursor: ew-resize;
+  background: #e53935;
+  position: relative;
+  margin-left: -3px;
+  z-index: 10;
+  transition: background 0.15s;
+}
+
+.explorer_splitter:hover {
+  background: #ffd600;
+  box-shadow: 0 0 6px rgba(255, 214, 0, 0.6);
 }
 
 .explorer_sidebar h3 {

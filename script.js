@@ -48,10 +48,18 @@ function make_draggable(element) {
 
   header.addEventListener("pointerdown", function (e) {
     bring_to_front(element);
-    if (e.target.closest("button, input, textarea")) return;
+    if (e.target.closest("button.close, input, textarea")) return;
     e.preventDefault();
-    var offset_x = e.clientX - element.offsetLeft;
-    var offset_y = e.clientY - element.offsetTop;
+
+    var rect = element.getBoundingClientRect();
+
+    element.style.left = rect.left + "px";
+    element.style.top = rect.top + "px";
+    element.style.transform = "none";
+
+
+    var offset_x = e.clientX - rect.left;
+    var offset_y = e.clientY - rect.top;
 
     function move(ev) {
       element.style.left = ev.clientX - offset_x + "px";
@@ -985,6 +993,34 @@ var iron_explorer = {
       }
     });
 
+    const splitter = document.querySelector("#explorer_splitter");
+    const sidebar = document.querySelector(".explorer_sidebar");
+
+    if (splitter && sidebar) {
+      splitter.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+        let startX = e.clientX;
+        let startWidth = sidebar.offsetWidth;
+
+        const handleMove = (ev) => {
+          let diff = ev.clientX - startX;
+          let calculatedWidth = startWidth + diff;
+
+          if (calculatedWidth >= 100 && calculatedWidth <= 300) {
+            sidebar.style.width = calculatedWidth + "px";
+          }
+        };
+
+        const handleUp = () => {
+          document.removeEventListener("mousemove", handleMove);
+          document.removeEventListener("mouseup", handleUp);
+        };
+
+        document.addEventListener("mousemove", handleMove);
+        document.addEventListener("mouseup", handleUp);
+      });
+    }
+
     this.render_directory();
   },
 
@@ -1014,18 +1050,19 @@ var iron_explorer = {
       
       this.grid_el.appendChild(div);
     }
-  }
+  },
+
+  
 };
+iron_explorer.init()
 
 // Wiring it up
 make_draggable(document.querySelector("#iron_explorer"));
 setup_icon("#explorer_open", "iron_explorer");
 
-var close_btn = document.querySelector("#close_iron_explorer");
-if (close_btn) {
-  close_btn.addEventListener("click", () => {
+var close_explorer_btn = document.querySelector("#close_iron_explorer");
+if (close_explorer_btn) {
+  close_explorer_btn.addEventListener("click", () => {
     close_window("iron_explorer");
   });
 }
-
-iron_explorer.init()
