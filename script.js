@@ -808,8 +808,37 @@ jarvis_terminal.init();
 var iron_explorer = {
   curent_path: "/System",
   file_system: {
-    "/System": [
-      {name: "core_kernel.sys", type: "file", icon: "../assets/settings_icon.webp"}
+   "/System": [
+      { name: "core_kernel.sys", type: "file", icon: "../assets/sys_icon.svg", content: "IRON_OS KERNEL v4.8 - STABLE ARCHITECTURE" },
+      { name: "Jarvis.dat", type: "file", icon: "../assets/code_icon.svg", content: "Just A Rather Very Intelligent System - AI Core online." },
+      { name: "security_protocols.cfg", type: "file", icon: "../assets/cfg_icon.svg", content: "LOCKDOWN_LEVEL: ALPHA\nACCESS: AUTHORIZED (YOBO-DANCE)" }
+    ],
+    "/Documents": [
+      { name: "Welcome_Note.txt", type: "file", icon: "../assets/txt_icon.svg", content: "Welcome to Iron OS! Enjoy exploring this futuristic workspace." },
+      { name: "Project_Stardance.txt", type: "file", icon: "../assets/txt_icon.svg", content: "Hack Club Stardance submission checklist: maximum features [x], clean vanilla code [x]." }
+    ],
+    "/Music": [
+      { name: "Iron_Man_BS.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 0 },
+      { name: "Babydoll.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 1 },
+      { name: "Daylight.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 2 },
+      { name: "End_Of_Beginning.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 3 },
+      { name: "White_Keys.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 4 },
+      { name: "Perfect.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 5 },
+      { name: "Sailor_Song.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 6 },
+      { name: "Too_Sweet.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 7 },
+      { name: "Earrings.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 8 },
+      { name: "Back_To_Friends.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 9 },
+      { name: "Bad_Habit.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 10 },
+      { name: "Dracula.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 11 },
+      { name: "Loser.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 12 },
+      { name: "Self_Aware.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 13 },
+      { name: "Riptide.mp3", type: "audio", icon: "../assets/audio_icon.svg", track_index: 14 }
+    ],
+    "/Hidden_from_fury": [
+      { name: "Mark_LXXXV_Schematics.enc", type: "file", icon: "../assets/secure_icon.svg", content: "CONFIDENTIAL: Nano-tech energy distribution matrix optimized." },
+      { name: "Doom_Protocol.key", type: "file", icon: "../assets/key_icon.svg", content: "WARNING: Do not activate unless Stark core stability drops below 5%." }
     ]
-  }
+  },
+
+
 }
