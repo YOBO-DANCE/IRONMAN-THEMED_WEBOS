@@ -38,6 +38,7 @@
     <img src="../assets/IRON_PLAYER.webp" alt="iron_player" class="desktop_icon canva_designed" id="player_open" />
     <img src="../assets/Iron_explorer.webp" alt="Iron_explorer" class="desktop_icon canva_designed"
       id="explorer_open" />
+    <img src="../assets/Stark_Net.svg" alt="Stark_Net" class="desktop_icon canva_designed" id="stark_net_open" />
   </div>
 
   <!-- Welcome Window -->
@@ -200,7 +201,8 @@
     </div>
   </div>
 
-  <div class="window stark_net" id="stark_net" style="display: flex;">
+  <!-- Stark Net -->
+  <div class="window stark_net" id="stark_net" style="display: none;">
     <header class="window_header" id="stark_net_header">
       <h1>Stark Net</h1>
       <button class="close" id="close_stark_net" style="color: white;">
@@ -210,6 +212,7 @@
 
     <div class="browser_layout">
       <div class="browser_toolbar">
+        <button class="browser_nav_btn" id="browser_home"><img class="homepage_btn" src="../assets/homepage.svg" alt="homepage btn"></button>
         <button class="browser_nav_btn" id="browser_back">←</button>
         <button class="browser_nav_btn" id="browser_forward">→</button>
         <button class="browser_nav_btn" id="browser_refresh">⟳</button>
@@ -221,13 +224,14 @@
         <iframe id="viewport" sandbox="allow-scripts allow-same-origin"></iframe>
         <div id="stark_page" class="home_view">
           <h2 class="stark_net_title">STARK NET // CONNECTED SECURE GLOBAL NETWORK</h2>
-          <p class="stark_net_subtitle">Go seek the power of Stark's own net, or choose a path below, as thou hast done before.</p>
+          <p class="stark_net_subtitle">Go seek the power of Stark's own net, or choose a path below, as thou hast done
+            before.</p>
 
           <div class="quick_links">
             <button class="quick_link_card" data-url="https://hackclub.com">Hack Club HQ</button>
             <button class="quick_link_card" data-url="internal://stark_home">Stark Archives</button>
             <button class="quick_link_card" data-url="internal://avengers_intel">Avengers Protocol</button>
-            <button class="quick_link_card" data-url="https://stardance.hackclub.com/">stardance HQ</button>
+            <button class="quick_link_card" data-url="https://stardance.hackclub.com/home">stardance HQ</button>
           </div>
         </div>
       </div>

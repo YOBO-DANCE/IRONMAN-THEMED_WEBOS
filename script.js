@@ -1102,28 +1102,48 @@ var stark_net = {
       return;
     }
 
+    this.original_home_content = this.home_view.innerHTML;
+
     this.go_btn.addEventListener("click", () => {
+      this.navigate();
+    });
+
+    this.url_bar.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         this.navigate();
       }
     });
 
-    // Refresh current view (basically just calls navigate again lmao)
-    this.refresh_btn.addEventListener("click", () => {
-      this.navigate();
-    });
+    if (this.refresh_btn) {
+      this.refresh_btn.addEventListener("click", () => {
+        this.navigate();
+      });
+    }
+
+    if (this.back_btn) {
+      this.back_btn.addEventListener("click", () => {
+        this.home_view.innerHTML = this.original_home_content;
+        this.home_view.style.display = "block";
+        this.iframe.style.display = "none";
+        this.url_bar.value = "";
+        this.bind_quick_links();
+      });
+    }
+
+    this.bind_quick_links();
+  },
 
 
     // Quick links setup
-    var quick_links = document.querySelectorAll(".quick_link_card");
-    for(let i = 0; i < quick_links.length; i++) {
-      let card = quick_links[i];
+    bind_quick_links: function () {
+    var quick_links = this.home_view.querySelectorAll(".quick_link_card");
+    quick_links.forEach((card) => {
       card.addEventListener("click", () => {
         var target_url = card.dataset.url;
         this.url_bar.value = target_url;
         this.navigate();
       });
-    }
+    });
   },
 
   navigate: function () {
@@ -1131,13 +1151,12 @@ var stark_net = {
     if (!raw_url) return;
 
     if (this.internal_pages[raw_url]) {
-      this.iframe.style.display ="none";
+      this.iframe.style.display = "none";
       this.home_view.innerHTML = this.internal_pages[raw_url];
       this.home_view.style.display = "block";
       return;
     }
 
-    // Format web Urls, lets make sure it has https://
     var formatted_url = raw_url;
     if (!formatted_url.startsWith("http://") && !formatted_url.startsWith("https://")) {
       formatted_url = "https://" + formatted_url;
@@ -1146,7 +1165,21 @@ var stark_net = {
     this.home_view.style.display = "none";
     this.iframe.style.display = "block";
     this.iframe.src = formatted_url;
+
+    this.home_btn = document.querySelector("#browser_home");
+
+    if (this.home_btn) {
+      this.home_btn.addEventListener("click", () => {
+        this.home_view.innerHTML = this.original_home_content;
+        this.home_view.style.display = "block";
+        this.iframe.style.display = "none";
+        this.url_bar.value = "";
+        this.bind_quick_links();
+      });
+    }
   }
+
+  
 };
 
 // Wiring it up!

@@ -12,6 +12,7 @@ body {
   background-size: cover;
   font-weight: 900;
   letter-spacing: 0.08em;
+  overflow: hidden;
 }
 
 /* Shared window base */
@@ -194,12 +195,16 @@ body {
 }
 
 .start_icons {
-  margin: 2rem;
+  margin: 1.5rem;
+  height: calc(100vh - 3rem);
   display: flex;
-  flex-flow: column wrap;
-  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
   gap: 15px;
   filter: drop-shadow(0 5px 10px black);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .desktop_icon {
@@ -921,8 +926,8 @@ body {
 .stark_net{
   top: 20%;
   left: 28%;
-  width: 620px;
-  height: 440px;
+  width: 1057px;
+  height: 503px;
   min-width: 480px;
   min-height: 350px;
 }
@@ -952,7 +957,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
 }
 
 .browser_nav_btn:hover{
@@ -968,7 +973,7 @@ body {
   padding: 5px 10px;
   color: #ffd600;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   outline: none;
   caret-color: #e53935;
 }
@@ -981,7 +986,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
 }
 
 .viewport_container{
@@ -1012,13 +1017,13 @@ body {
 }
 
 .stark_net_title{
-  font-size: 1.1rem;
+  font-size: 2rem;
   color: #ffd600;
   text-shadow: 0 0 10px rgba(255, 214, 0, 0.4);
 }
 
 .stark_net_subtitle{
-  font-size: 0.75rem;
+  font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -1036,7 +1041,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   transition: all 0.15s;
 }
 
@@ -1044,4 +1049,9 @@ body {
   background: rgba(229, 57, 53, 0.2);
   border-color: #ffd600;
   transform: translateY(-2px);
+}
+
+.homepage_btn{
+  width: 20px;
+  filter: brightness(0) invert(1);
 }
