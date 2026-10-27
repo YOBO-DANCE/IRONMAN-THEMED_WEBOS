@@ -1148,3 +1148,16 @@ var stark_net = {
     this.iframe.src = formatted_url;
   }
 };
+
+// Wiring it up!
+make_draggable(document.querySelector("#stark_net"));
+setup_icon("#stark_net_open", "stark_net");
+
+var close_stark_net_btn = document.querySelector("#close_stark_net");
+if (close_stark_net_btn) {
+  close_stark_net_btn.addEventListener("click", () => {
+    close_window("stark_net");
+  });
+}
+
+stark_net.init();
