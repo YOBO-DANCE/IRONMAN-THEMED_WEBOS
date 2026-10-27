@@ -956,5 +956,92 @@ body {
 }
 
 .browser_nav_btn:hover{
-  
+  background: rgba(299, 57, 53, 0.2);
+  border-color: #ffd600;
+}
+
+#url_bar{
+  flex: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(299, 57, 53, 0.4);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: #ffd600;
+  font-family: 'Eurostile', sans-serif;
+  font-size: 0.75rem;
+  outline: none;
+  caret-color: #e53935;
+}
+
+#go_btn{
+  background: linear-gradient(135deg, #e53935, #c62828);
+  color: #ffffff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Eurostile', sans-serif;
+  font-size: 0.75rem;
+}
+
+.viewport_container{
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #08080c;
+}
+
+#viewport{
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+  display: none;
+}
+
+.home_view{
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.stark_net_title{
+  font-size: 1.1rem;
+  color: #ffd600;
+  text-shadow: 0 0 10px rgba(255, 214, 0, 0.4);
+}
+
+.stark_net_subtitle{
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.quick_links{
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.quick_link_card {
+  background: rgba(20, 20, 25, 0.8);
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  color: #ffd600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Eurostile', sans-serif;
+  font-size: 0.75rem;
+  transition: all 0.15s;
+}
+
+.quick_link_card:hover{
+  background: rgba(229, 57, 53, 0.2);
+  border-color: #ffd600;
+  transform: translateY(-2px);
 }

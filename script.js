@@ -1066,3 +1066,85 @@ if (close_explorer_btn) {
     close_window("iron_explorer");
   });
 }
+
+// Stark Net
+var stark_net = {
+  internal_pages: {
+    "internal://stark_home": `<div style="padding: 20px; color: #ffd600; font-family: 'Eurostile', sans-serif;">
+          <h2 style="color: #e53935; border-bottom: 1px solid #e53935; padding-bottom: 6px; margin-bottom: 12px;">STARK INDUSTRIES ARCHIVES</h2>
+          <p style="font-size: 0.85rem; color: #fff; margin-bottom: 10px;">Classification: Level 10 Security Clearance Required.</p>
+          <ul style="font-size: 0.8rem; line-height: 1.6; color: rgba(255,255,255,0.8); margin-left: 20px;">
+            <li>Arc Reactor Mk. L: Energy output stable at 100%.</li>
+            <li>Vibranium-Nanotech Alloy: Tensile strength verified.</li>
+            <li>Orbital Protocol: Satellite uplink active.</li>
+          </ul>
+        </div>`,
+
+    "internal://avengers_intel": `<div style="padding: 20px; color: #ffd600; font-family: 'Eurostile', sans-serif;">
+          <h2 style="color: #ffd600; border-bottom: 1px solid #ffd600; padding-bottom: 6px; margin-bottom: 12px;">AVENGERS GLOBAL NETWORK</h2>
+          <p style="font-size: 0.85rem; color: #fff; margin-bottom: 10px;">Status Report: Active Operations</p>
+          <div style="background: rgba(229,57,53,0.15); border: 1px solid #e53935; padding: 10px; border-radius: 6px; font-size: 0.8rem;">
+            <strong style="color: #e53935;">WARNING:</strong> Threat monitoring system active. Defense systems online.
+          </div>
+        </div>`,
+  },
+
+  init: function () {
+    this.url_bar = document.querySelector("#url_bar");
+    this.go_btn = document.querySelector("#go_btn");
+    this.iframe = document.querySelector("#viewport");
+    this.home_view = document.querySelector("#stark_page");
+    this.refresh_btn = document.querySelector("#browser_refresh");
+
+    // just in case it isn't on the page yet
+    if (!this.url_bar) {
+      console.log("Wait, couldn't find the url bar element?");
+      return;
+    }
+
+    this.go_btn.addEventListener("click", () => {
+      if (e.key === "Enter") {
+        this.navigate();
+      }
+    });
+
+    // Refresh current view (basically just calls navigate again lmao)
+    this.refresh_btn.addEventListener("click", () => {
+      this.navigate();
+    });
+
+
+    // Quick links setup
+    var quick_links = document.querySelectorAll(".quick_link_card");
+    for(let i = 0; i < quick_links.length; i++) {
+      let card = quick_links[i];
+      card.addEventListener("click", () => {
+        var target_url = card.dataset.url;
+        this.url_bar.value = target_url;
+        this.navigate();
+      });
+    }
+  },
+
+  navigate: function () {
+    var raw_url = this.url_bar.value.trim();
+    if (!raw_url) return;
+
+    if (this.internal_pages[raw_url]) {
+      this.iframe.style.display ="none";
+      this.home_view.innerHTML = this.internal_pages[raw_url];
+      this.home_view.style.display = "block";
+      return;
+    }
+
+    // Format web Urls, lets make sure it has https://
+    var formatted_url = raw_url;
+    if (!formatted_url.startsWith("http://") && !formatted_url.startsWith("https://")) {
+      formatted_url = "https://" + formatted_url;
+    }
+
+    this.home_view.style.display = "none";
+    this.iframe.style.display = "block";
+    this.iframe.src = formatted_url;
+  }
+};
