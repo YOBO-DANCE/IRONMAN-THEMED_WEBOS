@@ -916,3 +916,45 @@ body {
 .explorer_sidebar::-webkit-scrollbar-thumb {
   background: #e53935;
 }
+
+/* Stark Net */
+.stark_net{
+  top: 20%;
+  left: 28%;
+  width: 620px;
+  height: 440px;
+  min-width: 480px;
+  min-height: 350px;
+}
+
+.browser_layout{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: rgba(10, 10, 15, 0.95);
+}
+
+.browser_toolbar{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid rgba(229, 57, 53, 0.4);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.browser_nav_btn{
+  background: #1a1a1a;
+  border: 1px solid rgba(229, 57, 53, 0.4);
+  color: #ffd600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Eurostile', sans-serif;
+  font-size: 0.8rem;
+}
+
+.browser_nav_btn:hover{
+  
+}
