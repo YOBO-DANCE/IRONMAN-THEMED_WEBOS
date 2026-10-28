@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+:root {
+  --main-color: #ffd600;
+}
+
 body {
   background: url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif);
   color: #fff;
@@ -196,7 +200,7 @@ body {
 
 .start_icons {
   margin: 1.5rem;
-  height: calc(100vh - 3rem);
+  height: calc(100vh - 6rem);
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -1054,4 +1058,75 @@ body {
 .homepage_btn{
   width: 20px;
   filter: brightness(0) invert(1);
+}
+
+/* Iron Control Center */
+
+.Iron_control_panel {
+  top: 25%;
+  left: 30%;
+  width: 480px;
+  min-width: 577px;
+  min-height: 400px;
+}
+
+.control_layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(10, 10, 15, 0.95);
+  flex: 1;
+}
+
+.control_section {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(229, 57, 53, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.control_section h3 {
+  font-size: 0.85rem;
+  color: var(--accent-color, #ffd600);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+
+.palette_options, .wallpaper_options {
+  background: #1a1a1a;
+  border: 1px solid rgba(299, 57, 53, 0.4);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Eurostile', sans-serif;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.theme_btn:hover, .wallpaper_btn:hover {
+  border-color: #ffd600;
+  background: rgba(229, 57, 53, 0.2);
+}
+
+.theme_btn:active, .wallpaper_btn:active {
+  background: linear-gradient(135deg, #e53935, #c62828);
+  border-color: var(--main-color);
+  font-weight: bold;
+}
+
+.toggle_label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 1.8rem;
+  cursor: pointer;
+}
+
+.toggle_label input {
+  accent-color: #e53935;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
