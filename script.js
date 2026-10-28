@@ -1350,17 +1350,24 @@ var iron_control = {
   },
 
   apply_wallpaper: function (bg_key) {
+    var bg_video = document.querySelector("#bg_video");
+
     // wallpapers backgrounds
     if (bg_key === "arc") {
+      if (bg_video) bg_video.style.display = "none";
       document.body.style.backgroundImage = "url(../assets/wallpaper_3.jpg)";
     } 
     
     else if (bg_key === "minimal") {
-      document.body.style.backgroundImage = "url(../assets/Iron-Man-Snap.gif)";
+      document.body.style.backgroundImage = "none";
+      bg_video.style.display = "block";
+      bg_video.src = "../assets/Iron-Man-Snap-SnapYT.App.mp4";
+      bg_video.play();
     } 
     
     else {
       // default gif wallpaper path
+      if (bg_video) bg_video.style.display = "none";
       document.body.style.backgroundImage = "url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif)";
     }
   }

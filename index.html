@@ -11,6 +11,12 @@
 </head>
 
 <body>
+  <body>
+  <!-- Video Background Element -->
+  <video autoplay muted loop playsinline id="bg_video" style="display: none;">
+    <source src="../assets/assets/Iron-Man-Snap-SnapYT.App.mp4" type="video/mp4">
+  </video>
+  
   <div class="top_bar">
     <img src="../assets/Cool Text - Iron OS 516058731425365.webp" alt="iron_os" class="iron_os_logo" />
     <div class="ironpc_info">
@@ -261,8 +267,9 @@
       <div class="control_section">
         <h3>Audio Feedback Toggle</h3>
         <label class="toggle_label">
-          <input type="checkbox" id="audio_feedback_toggle" checked>
           <span>JARVIS Sound System</span>
+          <input type="checkbox" id="audio_feedback_toggle" checked>
+          <div class="hud_toggle_slider"></div>
         </label>
       </div>
 

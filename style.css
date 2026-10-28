@@ -22,6 +22,17 @@ body {
   overflow: hidden;
 }
 
+#bg_video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* Shared window base */
 .window {
   position: absolute;
@@ -1156,13 +1167,33 @@ body {
   cursor: pointer;
 }
 
-/* To overide those hardcoded colors */
+/* Global Theme Custom Properties */
+:root {
+  --border-color: #e53935;
+  --accent-color: #ffd600;
+  --glow-color: rgba(229, 57, 53, 0.3);
+}
+
+/* Theme Variant Variables */
 body.theme-cyan {
   --border-color: #00f0ff;
   --accent-color: #00f0ff;
   --glow-color: rgba(0, 240, 255, 0.4);
 }
 
+body.theme-gold {
+  --border-color: #ffd600;
+  --accent-color: #ffd600;
+  --glow-color: rgba(255, 214, 0, 0.4);
+}
+
+body.theme-crimson {
+  --border-color: #e53935;
+  --accent-color: #ffd600;
+  --glow-color: rgba(229, 57, 53, 0.3);
+}
+
+/* Dynamic Theme Buttons & Accents */
 body.theme-cyan .calc.op, 
 body.theme-cyan .editor_actions button, 
 body.theme-cyan #new_note, 
@@ -1170,19 +1201,6 @@ body.theme-cyan #new_file_btn,
 body.theme-cyan #go_btn {
   background: linear-gradient(135deg, #0088cc, #00f0ff);
   color: #000;
-}
-
-body.theme-cyan .control_section h3,
-body.theme-cyan .stark_net_title,
-body.theme-cyan .explorer_sidebar h3 {
-  color: #00f0ff;
-}
-
-/* Repulsor Gold Theme */
-body.theme-gold {
-  --border-color: #ffd600;
-  --accent-color: #ffd600;
-  --glow-color: rgba(255, 214, 0, 0.4);
 }
 
 body.theme-gold .calc.op, 
@@ -1194,96 +1212,54 @@ body.theme-gold #go_btn {
   color: #000;
 }
 
-/* Crimson Core Theme */
-body.theme-crimson {
-  --border-color: #e53935;
-  --accent-color: #ffd600;
-  --glow-color: rgba(229, 57, 53, 0.3);
+body.theme-cyan .control_section h3,
+body.theme-cyan .stark_net_title,
+body.theme-cyan .explorer_sidebar h3 {
+  color: #00f0ff;
 }
 
-.jarvis_terminal {
-  border: 2px solid var(--border-color, #e53935) !important;
-  box-shadow: 0 0 20px var(--glow-color, rgba(229, 57, 53, 0.3)) !important;
-  color: var(--accent-color, #ffd600) !important;
-}
-
-.jarvis_terminal .window_header {
-  border-bottom: 1px solid var(--border-color, #e53935) !important;
-}
-
-.jarvis_terminal .terminal_prompt,
-#terminal_input {
-  color: var(--accent-color, #ffd600) !important;
-}
-
-.iron_player {
-  border: 2px solid var(--border-color, #e53935) !important;
-  box-shadow: 0 0 20px var(--glow-color, rgba(229, 57, 53, 0.3)) !important;
-  color: var(--accent-color, #ffd600) !important;
-}
-
-.iron_player .window_header {
-  border-bottom: 1px solid var(--border-color, #e53935) !important;
-}
-
-.iron_player .track_title {
-  color: var(--accent-color, #ffd600) !important;
-}
-
-.window, .window_header, .jarvis_terminal, .iron_player {
-  border-color: var(--border-color, #e53935) !important;
-}
-
+/* Universal Component Border & Line Bindings */
+.window, 
 .window_header, 
+.jarvis_terminal, 
+.iron_player,
 .explorer_toolbar, 
 .browser_toolbar, 
-.explorer_splitter, 
 .calc_display, 
 .track_display, 
-.terminal_input_line {
-  border-color: var(--border-color, #e53935) !important;
-}
-
-/* 2. Iron Explorer Lines & Dividers */
-.explorer_splitter {
-  background: var(--border-color, #e53935) !important;
-}
-
-.explorer_splitter:hover {
-  background: var(--accent-color, #ffd600) !important;
-  box-shadow: 0 0 6px var(--glow-color, rgba(255, 214, 0, 0.6)) !important;
-}
-
-.explorer_toolbar, 
+.terminal_input_line,
 .explorer_item {
-  border-color: rgba(229, 57, 53, 0.3); /* fallback */
-  border-color: var(--border-color, #e53935) !important;
+  border-color: var(--border-color) !important;
 }
 
-.dir_item.active {
-  border-left: 3px solid var(--border-color, #e53935) !important;
-}
-
-/* 3. Iron Player & Terminal Inner Elements */
-.track_display, 
-.terminal_input_line, 
-.calc_display {
-  border: 1px solid var(--border-color, #e53935) !important;
-}
-
-.track_visualizer .bar {
-  background-color: var(--border-color, #e53935) !important;
-}
-
-/* 4. Text and Accents inside Player & Terminal */
+/* Text and Title Accents */
 .jarvis_terminal, 
 .iron_player, 
 .track_title, 
-.terminal_prompt {
-  color: var(--accent-color, #ffd600) !important;
+.terminal_prompt,
+#terminal_input {
+  color: var(--accent-color) !important;
+}
+
+/* Splitters & Dividers */
+.explorer_splitter {
+  background: var(--border-color) !important;
+}
+
+.explorer_splitter:hover {
+  background: var(--accent-color) !important;
+  box-shadow: 0 0 6px var(--glow-color) !important;
+}
+
+.dir_item.active {
+  border-left: 3px solid var(--border-color) !important;
+}
+
+.track_visualizer .bar {
+  background-color: var(--border-color) !important;
 }
 
 .terminal_highlight {
-  color: var(--border-color, #e53935) !important;
-  text-shadow: 0 0 8px var(--glow-color, rgba(229, 57, 53, 0.6)) !important;
+  color: var(--border-color) !important;
+  text-shadow: 0 0 8px var(--glow-color) !important;
 }
