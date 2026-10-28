@@ -238,6 +238,42 @@
     </div>
   </div>
 
+  <div class="window Iron_control_panel" id="Iron_control_panel" style="display: flex;">
+    <header class="window_header" id="Iron_control_header">
+      <h1>Iron Control Center</h1>
+      <button class="close" id="close_iron_control" style="color: white;">
+        ×
+      </button>
+    </header>
+
+    <div class="control_layout">
+      <div class="control_section">
+        <h3>System Color Palette</h3>
+        <div class="palette_options">
+          <button class="theme_btn active" data-theme="crimson">Crimson Core</button>
+          <button class="theme_btn" data-theme="cyan">Arc Cyan</button>
+          <button class="theme_btn" data-theme="gold">Repulsor Gold</button>
+        </div>
+      </div>
+
+      <div class="control_section">
+        <h3>Audio Feedback Toggle</h3>
+        <label class="toggle_label">
+          <input type="checkbox" id="audio_feedback_toggle" checked>
+          <span>JARVIS Sound System</span>
+        </label>
+      </div>
+
+      <div class="control_section">
+        <h3>Iron Wallpaper</h3>
+        <div class="wallpaper_options">
+          <button class="wallpaper_btn active" data-bg="default">Deep Space GIF</button>
+        <button class="wallpaper_btn" data-bg="arc">Arc Reactor Grid</button>
+        <button class="wallpaper_btn" data-bg="minimal">Dark HUD Matrix</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
 <script src="./script.js"></script>
