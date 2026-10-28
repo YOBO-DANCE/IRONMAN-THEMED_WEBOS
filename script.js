@@ -1218,5 +1218,162 @@ if (close_stark_net_btn) {
 
 stark_net.init();
 
-// Iron Control Center
+// Universal Audio Engine
+var iron_audio = {
+  ctx: null,
 
+  get_context: function () {
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (this.ctx.state === "suspended") {
+      this.ctx.resume();
+    }
+
+    return this.ctx;
+  },
+
+  init: function () {
+    const unlock = () => {
+      this.get_context();
+      window.removeEventListener("click", unlock);
+    };
+    window.addEventListener("click", unlock);
+
+    document.addEventListener("click", (e) => {
+      // Check if audio feedback is disabled in settings
+      if (typeof iron_control !== "undefined" && !iron_control.audio_enabled) return;
+
+      var target = e.target.closest(
+        "button, .desktop_icon, .explorer_item, .quick_link_card, .dir_item, input, select, .theme_btn, .wallpaper_btn, .close"
+      );
+
+      if (target) {
+        this.play_beep(1200, 0.03);
+      }
+    });
+  },
+
+  play_beep: function (freq = 1200, duration = 0.03) {
+    if (typeof iron_control !== "undefined" && !iron_control.audio_enabled) return;
+
+    try {
+      var audio_ctx = this.get_context();
+      if (!audio_ctx) return;
+
+      var osc = audio_ctx.createOscillator();
+      var gain = audio_ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, audio_ctx.currentTime);
+
+      gain.gain.setValueAtTime(1, audio_ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audio_ctx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audio_ctx.destination);
+
+      osc.start();
+      osc.stop(audio_ctx.currentTime + duration);
+    } catch (err) {
+      console.log("Audio play error:", err);
+    }
+  }
+};
+
+// Initializing our greatest audio engine
+iron_audio.init();
+
+// Iron Control Center
+// Lets start with the main thing now
+var iron_control = {
+  audio_enabled: true,
+
+  init: function () {
+    this.panel = document.querySelector("#Iron_control_panel");
+    if (!this.panel) return;
+
+    var theme_btns = this.panel.querySelectorAll(".theme_btn");
+
+    // Loop through theme btns and add listeners
+    for (var i = 0; i < theme_btns.length; i++) {
+      let btn = theme_btns[i]
+
+      btn.addEventListener("click", () => {
+        // remove active class from all first
+        theme_btns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        this.apply_theme(btn.dataset.theme);
+      });
+    }
+
+    var audio_toggle = document.querySelector("#audio_feedback_toggle");
+    if (audio_toggle) {
+      audio_toggle.addEventListener("change", (e) => {
+        this.audio_enabled = e.target.checked;
+        console.log("Audio feedback set to: " + this.audio_enabled);
+      });
+    }
+
+    var bg_btns = this.panel.querySelectorAll(".wallpaper_btn");
+    bg_btns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        bg_btns.forEach((b) => b.classList.remove("active"));
+
+        btn.classList.add("active");
+        this.apply_wallpaper(btn.dataset.bg);
+      });
+    });
+  },
+
+  apply_theme: function (theme) {
+    document.body.classList.remove("theme-cyan", "theme-gold", "theme-crimson");
+
+    if (theme === "cyan") {
+      document.body.classList.add("theme-cyan");
+      document.documentElement.style.setProperty("--accent-color", "#00f0ff");
+      document.documentElement.style.setProperty("--border-color", "#00f0ff");
+    } 
+    
+    else if (theme === "gold") {
+      document.body.classList.add("theme-gold");
+      document.documentElement.style.setProperty("--accent-color", "#ffd600");
+      document.documentElement.style.setProperty("--border-color", "#ffd600");
+    } 
+    
+    else {
+      document.body.classList.add("theme-crimson");
+      document.documentElement.style.setProperty("--accent-color", "#ffd600");
+      document.documentElement.style.setProperty("--border-color", "#e53935");
+    }
+  },
+
+  apply_wallpaper: function (bg_key) {
+    // wallpapers backgrounds
+    if (bg_key === "arc") {
+      document.body.style.backgroundImage = "url(../assets/wallpaper_3.jpg)";
+    } 
+    
+    else if (bg_key === "minimal") {
+      document.body.style.backgroundImage = "url(../assets/Iron-Man-Snap.gif)";
+    } 
+    
+    else {
+      // default gif wallpaper path
+      document.body.style.backgroundImage = "url(../assets/iron-man-deep-space-aesthetic-gif-wallpaper-preview.gif)";
+    }
+  }
+};
+
+// Lets wire them
+make_draggable(document.querySelector("#Iron_control_panel"));
+setup_icon("#Iron_control_open", "Iron_control_panel");
+
+var close_Iron_control_center_btn = document.querySelector("#close_iron_control");
+if (close_Iron_control_center_btn) {
+  close_Iron_control_center_btn.addEventListener("click", () => {
+    close_window("Iron_control_panel");
+  });
+}
+iron_control.init();

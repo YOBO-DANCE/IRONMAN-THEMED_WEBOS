@@ -8,6 +8,9 @@
 
 :root {
   --main-color: #ffd600;
+  --accent-color: #ffd600;
+  --border-color: #e53935;
+  --glow-color: rgba(229, 57, 53, 0.3);
 }
 
 body {
@@ -23,7 +26,7 @@ body {
 .window {
   position: absolute;
   color: #000;
-  border: 2px solid #e53935;
+  border: 2px solid var(--border-color, #e53935);
   border-radius: 1rem;
   padding: 10px;
   background-color: rgba(10, 10, 15, 0.92);
@@ -32,9 +35,18 @@ body {
   box-sizing: border-box;
   min-width: 250px;
   min-height: 150px;
-  color: #ffd600;
+  color: var(--accent-color, #ffd600);
   font-family: 'Eurostile', sans-serif;
-  box-shadow: 0 0 20px rgba(229, 57, 53, 0.3);
+  box-shadow: 0 0 20px var(--glow-color, rgba(229, 57, 53, 0.3));
+}
+
+.window_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border-color, #e53935);
+  cursor: grab;
 }
 
 .win_resizer {
@@ -1061,7 +1073,7 @@ body {
 }
 
 /* Iron Control Center */
-
+/* Iron Control Center */
 .Iron_control_panel {
   top: 25%;
   left: 30%;
@@ -1094,33 +1106,46 @@ body {
 }
 
 .palette_options, .wallpaper_options {
-  background: #1a1a1a;
-  border: 1px solid rgba(299, 57, 53, 0.4);
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.theme_btn, .wallpaper_btn {
+  background: rgba(15, 15, 20, 0.8);
+  border: 1px solid rgba(229, 57, 53, 0.5);
+  color: #ffd600;
+  padding: 8px 14px;
+  border-radius: 6px;
   font-family: 'Eurostile', sans-serif;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 0 5px rgba(229, 57, 53, 0.2);
 }
 
 .theme_btn:hover, .wallpaper_btn:hover {
-  border-color: #ffd600;
   background: rgba(229, 57, 53, 0.2);
+  border-color: #ffd600;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 214, 0, 0.4);
+  transform: translateY(-1px);
 }
 
-.theme_btn:active, .wallpaper_btn:active {
-  background: linear-gradient(135deg, #e53935, #c62828);
-  border-color: var(--main-color);
-  font-weight: bold;
+.theme_btn.active, .wallpaper_btn.active {
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  border-color: #ffd600;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 12px rgba(229, 57, 53, 0.7), inset 0 0 4px rgba(255, 255, 255, 0.3);
 }
 
 .toggle_label {
   display: flex;
   align-items: center;
   gap: 10px;
-  font: 1.8rem;
+  font-size: 1rem;
   cursor: pointer;
 }
 
@@ -1129,4 +1154,136 @@ body {
   width: 16px;
   height: 16px;
   cursor: pointer;
+}
+
+/* To overide those hardcoded colors */
+body.theme-cyan {
+  --border-color: #00f0ff;
+  --accent-color: #00f0ff;
+  --glow-color: rgba(0, 240, 255, 0.4);
+}
+
+body.theme-cyan .calc.op, 
+body.theme-cyan .editor_actions button, 
+body.theme-cyan #new_note, 
+body.theme-cyan #new_file_btn, 
+body.theme-cyan #go_btn {
+  background: linear-gradient(135deg, #0088cc, #00f0ff);
+  color: #000;
+}
+
+body.theme-cyan .control_section h3,
+body.theme-cyan .stark_net_title,
+body.theme-cyan .explorer_sidebar h3 {
+  color: #00f0ff;
+}
+
+/* Repulsor Gold Theme */
+body.theme-gold {
+  --border-color: #ffd600;
+  --accent-color: #ffd600;
+  --glow-color: rgba(255, 214, 0, 0.4);
+}
+
+body.theme-gold .calc.op, 
+body.theme-gold .editor_actions button, 
+body.theme-gold #new_note, 
+body.theme-gold #new_file_btn, 
+body.theme-gold #go_btn {
+  background: linear-gradient(135deg, #cca300, #ffd600);
+  color: #000;
+}
+
+/* Crimson Core Theme */
+body.theme-crimson {
+  --border-color: #e53935;
+  --accent-color: #ffd600;
+  --glow-color: rgba(229, 57, 53, 0.3);
+}
+
+.jarvis_terminal {
+  border: 2px solid var(--border-color, #e53935) !important;
+  box-shadow: 0 0 20px var(--glow-color, rgba(229, 57, 53, 0.3)) !important;
+  color: var(--accent-color, #ffd600) !important;
+}
+
+.jarvis_terminal .window_header {
+  border-bottom: 1px solid var(--border-color, #e53935) !important;
+}
+
+.jarvis_terminal .terminal_prompt,
+#terminal_input {
+  color: var(--accent-color, #ffd600) !important;
+}
+
+.iron_player {
+  border: 2px solid var(--border-color, #e53935) !important;
+  box-shadow: 0 0 20px var(--glow-color, rgba(229, 57, 53, 0.3)) !important;
+  color: var(--accent-color, #ffd600) !important;
+}
+
+.iron_player .window_header {
+  border-bottom: 1px solid var(--border-color, #e53935) !important;
+}
+
+.iron_player .track_title {
+  color: var(--accent-color, #ffd600) !important;
+}
+
+.window, .window_header, .jarvis_terminal, .iron_player {
+  border-color: var(--border-color, #e53935) !important;
+}
+
+.window_header, 
+.explorer_toolbar, 
+.browser_toolbar, 
+.explorer_splitter, 
+.calc_display, 
+.track_display, 
+.terminal_input_line {
+  border-color: var(--border-color, #e53935) !important;
+}
+
+/* 2. Iron Explorer Lines & Dividers */
+.explorer_splitter {
+  background: var(--border-color, #e53935) !important;
+}
+
+.explorer_splitter:hover {
+  background: var(--accent-color, #ffd600) !important;
+  box-shadow: 0 0 6px var(--glow-color, rgba(255, 214, 0, 0.6)) !important;
+}
+
+.explorer_toolbar, 
+.explorer_item {
+  border-color: rgba(229, 57, 53, 0.3); /* fallback */
+  border-color: var(--border-color, #e53935) !important;
+}
+
+.dir_item.active {
+  border-left: 3px solid var(--border-color, #e53935) !important;
+}
+
+/* 3. Iron Player & Terminal Inner Elements */
+.track_display, 
+.terminal_input_line, 
+.calc_display {
+  border: 1px solid var(--border-color, #e53935) !important;
+}
+
+.track_visualizer .bar {
+  background-color: var(--border-color, #e53935) !important;
+}
+
+/* 4. Text and Accents inside Player & Terminal */
+.jarvis_terminal, 
+.iron_player, 
+.track_title, 
+.terminal_prompt {
+  color: var(--accent-color, #ffd600) !important;
+}
+
+.terminal_highlight {
+  color: var(--border-color, #e53935) !important;
+  text-shadow: 0 0 8px var(--glow-color, rgba(229, 57, 53, 0.6)) !important;
 }
