@@ -138,6 +138,8 @@ body {
 
 .welcome_stuff {
   padding: 10px;
+  font-size: 1.5rem;
+  font-family: "Eurostile", sans-serif;
 }
 
 .top_bar {
@@ -155,7 +157,6 @@ body {
   box-shadow: 0 0 10px crimson;
   font-family: 'Orbitron';
   font-weight: 900;
-  font-size: 50px;
   corner-shape: squircle;
 }
 
@@ -168,7 +169,7 @@ body {
 }
 
 .top_bar .hud_info {
-  font-size: 0.6rem;
+  font-size: 1.6rem;
   padding: 3px 6px;
   line-height: 1;
   background: rgba(229, 57, 53, 0.1);
@@ -183,13 +184,13 @@ body {
   color: #8B0000;
   font-weight: 700;
   margin-right: 3px;
-  font-size: 0.98rem;
+  font-size: 1.3rem;
 }
 
 .top_bar .iron_value {
   color: #000000;
   font-weight: 700;
-  font-size: 0.96rem;
+  font-size: 1.3rem;
   /* text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); */
 }
 
@@ -197,7 +198,7 @@ body {
   border: 2px solid #8B0000;
   border-radius: 20px;
   padding: 4px 10px;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   font-family: 'Orbitron', monospace;
   backdrop-filter: blur(20px);
   background-color: rgba(0, 0, 0, 0.25);
@@ -207,18 +208,6 @@ body {
 
 .iron_os_logo {
   height: 42px;
-}
-
-#close_window {
-  display: flex;
-  justify-content: center;
-  border: 2px solid #ffd600;
-  border-radius: 10px;
-  font-family: "Caacupe One", sans-serif;
-  font-weight: 900;
-  font-size: 1rem;
-  letter-spacing: 10px;
-  cursor: pointer;
 }
 
 .start_icons {
@@ -255,6 +244,7 @@ body {
   min-height: 400px;
   max-width: calc(100vw - 2rem);
   overflow: hidden;
+  font-family: "Eurostile", sans-serif;
 }
 
 .window_2::before {
@@ -285,7 +275,7 @@ body {
 .window_header h1 {
   margin: 0;
   padding: 0;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
 }
 
 .close {
@@ -311,6 +301,7 @@ body {
 
 .sidebar h3 {
   margin-top: 0;
+  font-size: 1.5rem;
 }
 
 #notes_list {
@@ -351,6 +342,7 @@ body {
 
 #note_title {
   padding: 0.5rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
   caret-color: #ffd600;
 }
@@ -361,6 +353,7 @@ body {
   padding: 0.5rem;
   resize: vertical;
   font-family: inherit;
+  font-size: 1.2rem;
   caret-color: #e53935;
 }
 
@@ -381,6 +374,7 @@ body {
   transition:
     transform 0.1s,
     box-shadow 0.2s;
+  font-size: 1.2rem;
 }
 
 .editor_actions button:hover,
@@ -397,8 +391,8 @@ body {
 .calculator {
   top: 15%;
   left: 58%;
-  min-width: 340px;
-  min-height: 480px;
+  min-width: 400px;
+  min-height: 510px;
   max-width: calc(100vw - 2rem);
 }
 
@@ -433,7 +427,7 @@ body {
 }
 
 .calc_expression {
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   opacity: 0.5;
   min-height: 1.2em;
   word-break: break-all;
@@ -456,7 +450,7 @@ body {
 .calc {
   border: none;
   border-radius: 6px;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.08s;
@@ -495,8 +489,8 @@ body {
 .jarvis_terminal {
   top: 30%;
   left: 32%;
-  width: 580px;
-  height: 360px;
+  width: 850px;
+  height: 520px;
   background-color: rgba(10, 10, 15, 0.92);
   backdrop-filter: blur(12px);
   border: 2px solid #e53935;
@@ -530,7 +524,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   overflow: hidden;
 }
 
@@ -585,14 +579,14 @@ body {
   outline: none;
   color: #ffd600;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   caret-color: #e53935;
 }
 
 .iron_player {
   top: 22%;
   left: 42%;
-  width: 360px;
+  width: 500px;
   background-color: rgba(10, 10, 15, 0.92);
   backdrop-filter: blur(12px);
   border: 2px solid #e53935;
@@ -660,7 +654,7 @@ body {
 }
 
 .track_title {
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #ffd600;
   white-space: nowrap;
@@ -669,7 +663,7 @@ body {
 }
 
 .track_artist {
-  font-size: 0.65rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.6);
   margin-top: 2px;
 }
@@ -731,7 +725,7 @@ body {
   padding: 4px 8px;
   border-radius: 4px;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.7rem;
+  font-size: 1.7rem;
   outline: none;
   max-width: 160px;
 }
@@ -740,7 +734,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: 1.2rem;
 }
 
 .volume_control input[type="range"] {
@@ -789,7 +783,7 @@ body {
 }
 
 .explorer_sidebar h3 {
-  font-size: 0.85rem;
+  font-size: 1.9rem;
   color: #ffd600;
   margin-bottom: 4px;
 }
@@ -805,7 +799,7 @@ body {
   padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.8);
   transition: all 0.1s;
 }
@@ -836,7 +830,7 @@ body {
   align-items: center;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(229, 57, 53, 0.3);
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -847,7 +841,7 @@ body {
   color: #ffffff;
   border: none;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   font-family: "Eurostile", sans-serif;
   transition: transform 0.1s, box-shadow 0.2s;
 }
@@ -924,7 +918,7 @@ body {
 }
 
 .explorer_name {
-  font-size: 0.65rem;
+  font-size: 1.2rem;
   color: #ffd600;
   width: 100%;
   white-space: nowrap;
@@ -1110,7 +1104,7 @@ body {
 }
 
 .control_section h3 {
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   color: var(--accent-color, #ffd600);
   margin-bottom: 10px;
   letter-spacing: 0.05em;
@@ -1129,7 +1123,7 @@ body {
   padding: 8px 14px;
   border-radius: 6px;
   font-family: 'Eurostile', sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1155,26 +1149,74 @@ body {
 .toggle_label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1rem;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  color: var(--accent-color, #ffd600);
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+  border-radius: 6px;
+  position: relative;
 }
 
-.toggle_label input {
-  accent-color: #e53935;
+.toggle_label span {
+  border: 2px solid #e53935;
+  color: #ffd600;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.toggle_label input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.hud_toggle_slider {
+  position: relative;
+  width: 42px;
+  height: 20px;
+  background: rgba(20, 20, 25, 0.9);
+  border: 3px solid var(--border-color, #e53935);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.hud_toggle_slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
   width: 16px;
   height: 16px;
-  cursor: pointer;
+  background: var(--border-color, #e53935);
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px var(--glow-color, rgba(229, 57, 53, 0.6));
 }
 
-/* Global Theme Custom Properties */
+.toggle_label input[type="checkbox"]:checked ~ .hud_toggle_slider {
+  background: rgba(229, 57, 53, 0.2);
+  border-color: var(--accent-color, #ffd600);
+  box-shadow: 0 0 10px var(--glow-color, rgba(255, 214, 0, 0.4));
+}
+
+.toggle_label input[type="checkbox"]:checked ~ .hud_toggle_slider::before {
+  transform: translateX(20px);
+  background: var(--accent-color, #ffd600);
+  box-shadow: 0 0 8px var(--accent-color, #ffd600);
+}
+
+
+/* To Overide those hardcoded colour, so our settings app can actually work */
 :root {
   --border-color: #e53935;
   --accent-color: #ffd600;
   --glow-color: rgba(229, 57, 53, 0.3);
 }
 
-/* Theme Variant Variables */
 body.theme-cyan {
   --border-color: #00f0ff;
   --accent-color: #00f0ff;
@@ -1193,7 +1235,6 @@ body.theme-crimson {
   --glow-color: rgba(229, 57, 53, 0.3);
 }
 
-/* Dynamic Theme Buttons & Accents */
 body.theme-cyan .calc.op, 
 body.theme-cyan .editor_actions button, 
 body.theme-cyan #new_note, 
@@ -1218,7 +1259,6 @@ body.theme-cyan .explorer_sidebar h3 {
   color: #00f0ff;
 }
 
-/* Universal Component Border & Line Bindings */
 .window, 
 .window_header, 
 .jarvis_terminal, 
@@ -1232,7 +1272,6 @@ body.theme-cyan .explorer_sidebar h3 {
   border-color: var(--border-color) !important;
 }
 
-/* Text and Title Accents */
 .jarvis_terminal, 
 .iron_player, 
 .track_title, 
@@ -1241,7 +1280,6 @@ body.theme-cyan .explorer_sidebar h3 {
   color: var(--accent-color) !important;
 }
 
-/* Splitters & Dividers */
 .explorer_splitter {
   background: var(--border-color) !important;
 }
